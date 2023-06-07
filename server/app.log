@@ -1,0 +1,32 @@
+root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 15, in <module>
+    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
+    raise FeatureNotFound(
+bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?
+07-Jun-23 17:02:02 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 36, in <module>
+    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
+    raise FeatureNotFound(
+bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?
+07-Jun-23 17:02:13 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 36, in <module>
+    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
+    raise FeatureNotFound(
+bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?
+07-Jun-23 17:02:34 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 36, in <module>
+    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
+    raise FeatureNotFound(
+bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?

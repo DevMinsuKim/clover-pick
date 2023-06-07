@@ -1,10 +1,13 @@
-import math
 import numpy as np
 import pandas as pd
+import requests
 import logging
 from bs4 import BeautifulSoup
-from keras.models import load_model
+from keras.models import Sequential
+from keras.layers import LSTM, Dense
+from sklearn.model_selection import train_test_split
 from logging.handlers import RotatingFileHandler
+
 
 logging.basicConfig(
     filename='app.log', 
@@ -29,7 +32,12 @@ handler.setFormatter(formatter)
 # 로거에 핸들러 추가
 logger.addHandler(handler)
 
-try:
+
+url = 'https://dhlottery.co.kr/gameResult.do?method=allWinExel&gubun=byWin&nowPage=&drwNoStart=1&drwNoEnd=100000'
+output_path = './lotto_data.xls'
+
+# 데이터 전처리
+def preprocessing():
     with open('./lotto_data.xls', 'r', encoding='EUC-KR') as file:
         html_code = file.read()
 
@@ -46,33 +54,46 @@ try:
     df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번', '보너스'])
 
     data = np.array(df)
+
+    # 문자열을 숫자로 변환
+    data = data.astype(float)
+
+    # 시퀀스 생성 (X: 5회 당첨 번호, y: 다음 회 당첨 번호)
     n_steps = 5 
+    X, y = [], []
+    for i in range(n_steps, len(data)):
+        X.append(data[i-n_steps:i])
+        y.append(data[i])
 
-    # 모델 로드
-    model = load_model('lotto_model.keras', compile=False)
+    # numpy 배열로 변환
+    X = np.array(X)
+    y = np.array(y)
 
-    # 모델 컴파일
+    # 학습 데이터와 테스트 데이터로 분할
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # LSTM 모델 구성
+    model = Sequential()
+    model.add(LSTM(50, activation='relu', input_shape=(n_steps, 7)))
+    model.add(Dense(7))
     model.compile(optimizer='adam', loss='mse')
 
-    # 예측하기
-    x_input = np.array([data[-n_steps:]], dtype=np.float32)
+    # 모델 학습
+    model.fit(X_train, y_train, epochs=200, verbose=1)
 
-    print(x_input)
-    x_input = x_input.reshape((1, n_steps, 7))
+    # 모델 저장
+    model.save('lotto_model.keras')
 
-    predictions = []  # 예측 결과를 저장할 리스트
+try:
+    response = requests.get(url)
+    response.raise_for_status()  # 오류 발생 시 예외 처리
 
-    # for i in range(5):  # 최대 5번의 예측 수행
-    #     yhat = model.predict(x_input, verbose=0)
-    #     yhat_rounded = [math.floor(x) for x in yhat[0]]
-    #     predictions.append(yhat_rounded)
+    with open(output_path, 'wb') as file:
+        file.write(response.content)
 
-    #     # 다음 입력 준비
-    #     x_input = np.array([yhat_rounded], dtype=np.float32)
-    #     x_input = x_input.reshape((1, 1, 7))
-
-    # for prediction in predictions:
-    #     print(prediction)
+    preprocessing()
 
 except Exception as e:
     logging.error("Exception occurred", exc_info=True)
+
+

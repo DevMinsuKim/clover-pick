@@ -4,6 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+requests = "*"
+pandas = "*"
+beautifulsoup4 = "*"
+keras = "*"
+tensorflow = "*"
+scikit-learn = "*"
 
 [dev-packages]
 
