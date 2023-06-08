@@ -46,7 +46,9 @@ try:
     df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번', '보너스'])
 
     data = np.array(df)
-    n_steps = 5 
+    data[::-1]
+
+    n_steps = 5
 
     # 모델 로드
     model = load_model('lotto_model.keras', compile=False)
@@ -54,25 +56,17 @@ try:
     # 모델 컴파일
     model.compile(optimizer='adam', loss='mse')
 
-    # 예측하기
-    x_input = np.array([data[-n_steps:]], dtype=np.float32)
-
-    print(x_input)
-    x_input = x_input.reshape((1, n_steps, 7))
-
     predictions = []  # 예측 결과를 저장할 리스트
 
-    # for i in range(5):  # 최대 5번의 예측 수행
-    #     yhat = model.predict(x_input, verbose=0)
-    #     yhat_rounded = [math.floor(x) for x in yhat[0]]
-    #     predictions.append(yhat_rounded)
+    for i in range(5):  # 최대 5번의 예측 수행
+        x_input = np.array([data[i:i+n_steps]], dtype=np.float32)
+        x_input = x_input.reshape((1, n_steps, 7))
 
-    #     # 다음 입력 준비
-    #     x_input = np.array([yhat_rounded], dtype=np.float32)
-    #     x_input = x_input.reshape((1, 1, 7))
+        prediction = model.predict(x_input)
+        rounded_prediction = [math.floor(x) for x in prediction[0]]
+        predictions.append(rounded_prediction)
 
-    # for prediction in predictions:
-    #     print(prediction)
-
+    for prediction in predictions:
+        print(prediction)
 except Exception as e:
     logging.error("Exception occurred", exc_info=True)

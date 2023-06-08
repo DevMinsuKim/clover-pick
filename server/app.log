@@ -1,32 +1,171 @@
-root - ERROR - Exception occurred
+08-Jun-23 10:36:44 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 15, in <module>
-    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
-    raise FeatureNotFound(
-bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?
-07-Jun-23 17:02:02 - root - ERROR - Exception occurred
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 61, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 7 into shape (1,5,7)
+08-Jun-23 10:37:11 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 36, in <module>
-    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
-    raise FeatureNotFound(
-bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?
-07-Jun-23 17:02:13 - root - ERROR - Exception occurred
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 61, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 7 into shape (1,5,7)
+08-Jun-23 10:38:40 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 36, in <module>
-    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
-    raise FeatureNotFound(
-bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?
-07-Jun-23 17:02:34 - root - ERROR - Exception occurred
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 49, in <module>
+    data = data.reverse()
+           ^^^^^^^^^^^^
+AttributeError: 'numpy.ndarray' object has no attribute 'reverse'
+08-Jun-23 10:40:59 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 36, in <module>
-    soup = BeautifulSoup(html_code, 'html.parse', from_encoding='EUC-KR')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/bs4/__init__.py", line 250, in __init__
-    raise FeatureNotFound(
-bs4.FeatureNotFound: Couldn't find a tree builder with the features you requested: html.parse. Do you need to install a parser library?
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 7 into shape (1,5,7)
+08-Jun-23 10:45:02 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 7 into shape (1,5,7)
+08-Jun-23 10:45:15 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 7 into shape (1,5,7)
+08-Jun-23 10:45:55 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 1498 into shape (1,5,7)
+08-Jun-23 10:49:07 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 0 into shape (1,5,7)
+08-Jun-23 10:49:14 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 7 into shape (1,5,7)
+08-Jun-23 10:50:09 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, n_steps, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 14 into shape (1,5,7)
+08-Jun-23 10:57:24 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, 5, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 42 into shape (1,5,7)
+08-Jun-23 10:57:34 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    x_input = x_input.reshape((1, 5, 7))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 42 into shape (1,5,7)
+08-Jun-23 10:59:45 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 65, in <module>
+    rounded_predictions = np.argmax(predictions, axis=2)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<__array_function__ internals>", line 200, in argmax
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 1242, in argmax
+    return _wrapfunc(a, 'argmax', axis=axis, out=out, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 57, in _wrapfunc
+    return bound(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^
+numpy.AxisError: axis 2 is out of bounds for array of dimension 2
+08-Jun-23 11:00:01 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 65, in <module>
+    rounded_predictions = np.argmax(predictions, axis=2)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<__array_function__ internals>", line 200, in argmax
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 1242, in argmax
+    return _wrapfunc(a, 'argmax', axis=axis, out=out, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 57, in _wrapfunc
+    return bound(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^
+numpy.AxisError: axis 2 is out of bounds for array of dimension 2
+08-Jun-23 11:00:44 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 65, in <module>
+    rounded_predictions = np.argmax(predictions, axis=2)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<__array_function__ internals>", line 200, in argmax
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 1242, in argmax
+    return _wrapfunc(a, 'argmax', axis=axis, out=out, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 57, in _wrapfunc
+    return bound(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^
+numpy.AxisError: axis 2 is out of bounds for array of dimension 2
+08-Jun-23 11:01:58 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 65, in <module>
+    rounded_predictions = np.argmax(predictions, axis=2)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<__array_function__ internals>", line 200, in argmax
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 1242, in argmax
+    return _wrapfunc(a, 'argmax', axis=axis, out=out, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/numpy/core/fromnumeric.py", line 57, in _wrapfunc
+    return bound(*args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^
+numpy.AxisError: axis 2 is out of bounds for array of dimension 2
+08-Jun-23 11:02:28 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 68, in <module>
+    print(f"n_steps={n_steps}: {rounded_predictions}")
+                                ^^^^^^^^^^^^^^^^^^^
+NameError: name 'rounded_predictions' is not defined
+08-Jun-23 11:02:45 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 68, in <module>
+    print(f"n_steps={n_steps}: {rounded_predictions}")
+                                ^^^^^^^^^^^^^^^^^^^
+NameError: name 'rounded_predictions' is not defined
+08-Jun-23 11:02:54 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 68, in <module>
+    print(f"n_steps={n_steps}: {rounded_predictions}")
+                                ^^^^^^^^^^^^^^^^^^^
+NameError: name 'rounded_predictions' is not defined
+08-Jun-23 11:04:57 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 59, in <module>
+    print(   x_input = np.array([data[:n_steps]], dtype=np.float32))
+TypeError: 'x_input' is an invalid keyword argument for print()
+08-Jun-23 11:12:55 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    print(round(predictions))
+          ^^^^^^^^^^^^^^^^^^
+TypeError: type numpy.ndarray doesn't define __round__ method
+08-Jun-23 11:13:33 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    rounded_predictions = round(predictions)
+                          ^^^^^^^^^^^^^^^^^^
+TypeError: type numpy.ndarray doesn't define __round__ method
+08-Jun-23 11:13:47 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 62, in <module>
+    rounded_predictions = round(predictions[0])
+                          ^^^^^^^^^^^^^^^^^^^^^
+TypeError: type numpy.ndarray doesn't define __round__ method
+08-Jun-23 12:01:14 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/main.py", line 65, in <module>
+    predictions.append(rounded_prediction)
+    ^^^^^^^^^^^
+NameError: name 'predictions' is not defined
