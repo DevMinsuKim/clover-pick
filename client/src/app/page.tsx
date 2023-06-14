@@ -25,17 +25,13 @@ export default function Home() {
     let currentFrame = 0;
 
     const updateNumber = () => {
-      const randomNumber =
-        Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+      const randomNumber = aniNumber.map(() => {
+        return (
+          Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber
+        );
+      });
 
-      setAniNumber([
-        randomNumber,
-        randomNumber,
-        randomNumber,
-        randomNumber,
-        randomNumber,
-        randomNumber,
-      ]);
+      setAniNumber(randomNumber);
 
       currentFrame++;
 
@@ -54,6 +50,7 @@ export default function Home() {
     if (isAnimating) {
       animateNumber();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAnimating]);
 
   const handleDrawClick = () => {
@@ -81,22 +78,45 @@ export default function Home() {
       </div>
 
       <div className="flex bg-slate-100 items-center justify-center">
-        <div className="flex flex-col w-[1200px] h-[300px] bg-indigo-600 my-48 rounded-3xl items-center">
-          <ul className="flex justify-center gap-12 p-12">
-            {aniNumber.map((number, index) => (
-              <li
-                key={index}
-                className="flex w-16 h-16 bg-white rounded-2xl items-center justify-center text-indigo-600 font-bold text-5xl"
-              >
-                {number}
-              </li>
-            ))}
+        <div className="flex flex-col w-2/5 h-80 bg-indigo-600 my-48 rounded-3xl items-center">
+          <ul className="flex w-full justify-center gap-12 p-12">
+            {aniNumber.map((number, index) => {
+              let backgroundColor = "";
+
+              if (number >= 1 && number <= 10) {
+                backgroundColor = "bg-yellow-400";
+              } else if (number >= 11 && number <= 20) {
+                backgroundColor = "bg-blue-400"; // Tailwind에서 하늘색은 보통 'blue'에 해당합니다.
+              } else if (number >= 21 && number <= 30) {
+                backgroundColor = "bg-red-400";
+              } else if (number >= 31 && number <= 40) {
+                backgroundColor = "bg-gray-400";
+              } else if (number >= 41 && number <= 45) {
+                backgroundColor = "bg-green-400";
+              } else if (number === 0) {
+                backgroundColor = "bg-white";
+              }
+
+              return (
+                <li
+                  key={index}
+                  className={`flex w-20 h-20 rounded-full items-center justify-center ${
+                    number === 0 ? "text-indigo-600 " : "text-white"
+                  } font-bold text-5xl ${backgroundColor}`}
+                >
+                  {number}
+                </li>
+              );
+            })}
           </ul>
           <button
-            className="text-indigo-600 p-8 bg-white rounded-2xl  font-bold text-3xl"
+            className="text-indigo-600 p-5 bg-white rounded-2xl font-bold text-3xl"
             onClick={handleDrawClick}
+            disabled={isAnimating}
           >
-            추첨
+            {isAnimating
+              ? "행운을 불러오고 있습니다!"
+              : "행운의 문을 열어주세요!"}
           </button>
         </div>
       </div>
