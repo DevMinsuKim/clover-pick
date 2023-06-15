@@ -59,6 +59,26 @@ export default function Home() {
     }
   };
 
+  const lottoBgSelect = (number: Number) => {
+    let backgroundColor = "";
+
+    if (number >= 1 && number <= 10) {
+      backgroundColor = "bg-yellow-400";
+    } else if (number >= 11 && number <= 20) {
+      backgroundColor = "bg-blue-400";
+    } else if (number >= 21 && number <= 30) {
+      backgroundColor = "bg-red-400";
+    } else if (number >= 31 && number <= 40) {
+      backgroundColor = "bg-gray-400";
+    } else if (number >= 41 && number <= 45) {
+      backgroundColor = "bg-green-400";
+    } else if (number === 0) {
+      backgroundColor = "bg-white";
+    }
+
+    return backgroundColor;
+  };
+
   return (
     <section className="flex w-full flex-col">
       <div
@@ -78,31 +98,15 @@ export default function Home() {
       </div>
 
       <div className="flex bg-slate-100 items-center justify-center">
-        <div className="flex flex-col w-2/5 h-80 bg-indigo-600 my-48 rounded-3xl items-center">
-          <ul className="flex w-full justify-center gap-12 p-12">
+        <div className="flex flex-col w-2/5 bg-indigo-600 my-40 py-12 rounded-3xl items-center">
+          <ul className="flex w-full justify-center gap-12">
             {aniNumber.map((number, index) => {
-              let backgroundColor = "";
-
-              if (number >= 1 && number <= 10) {
-                backgroundColor = "bg-yellow-400";
-              } else if (number >= 11 && number <= 20) {
-                backgroundColor = "bg-blue-400"; // Tailwind에서 하늘색은 보통 'blue'에 해당합니다.
-              } else if (number >= 21 && number <= 30) {
-                backgroundColor = "bg-red-400";
-              } else if (number >= 31 && number <= 40) {
-                backgroundColor = "bg-gray-400";
-              } else if (number >= 41 && number <= 45) {
-                backgroundColor = "bg-green-400";
-              } else if (number === 0) {
-                backgroundColor = "bg-white";
-              }
-
               return (
                 <li
                   key={index}
                   className={`flex w-20 h-20 rounded-full items-center justify-center ${
                     number === 0 ? "text-indigo-600 " : "text-white"
-                  } font-bold text-5xl ${backgroundColor}`}
+                  } font-bold text-5xl ${lottoBgSelect(number)}`}
                 >
                   {number}
                 </li>
@@ -110,14 +114,31 @@ export default function Home() {
             })}
           </ul>
           <button
-            className="text-indigo-600 p-5 bg-white rounded-2xl font-bold text-3xl"
+            className={`text-indigo-600 p-5 mt-14 ${
+              isAnimating ? " bg-slate-50" : "bg-white "
+            } rounded-2xl font-bold text-3xl`}
             onClick={handleDrawClick}
             disabled={isAnimating}
           >
             {isAnimating
-              ? "행운을 불러오고 있습니다!"
-              : "행운의 문을 열어주세요!"}
+              ? "당신의 당첨을 응원합니다!"
+              : "당신의 번호를 뽑아보세요!"}
           </button>
+          {!isAnimating &&
+            number.map((row, rowIndex) => (
+              <ul key={rowIndex} className="flex w-full justify-center gap-12">
+                {row.map((number, columnIndex) => (
+                  <li
+                    key={columnIndex}
+                    className={`flex w-20 h-20 rounded-full items-center justify-center ${
+                      number === 0 ? "text-indigo-600 " : "text-white"
+                    } font-bold text-5xl ${lottoBgSelect(number)}`}
+                  >
+                    {number}
+                  </li>
+                ))}
+              </ul>
+            ))}
         </div>
       </div>
     </section>
