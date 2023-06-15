@@ -10,6 +10,8 @@ beautifulsoup4 = "*"
 keras = "*"
 tensorflow = "*"
 scikit-learn = "*"
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 
 [dev-packages]
 
