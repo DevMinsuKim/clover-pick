@@ -3,8 +3,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import lotto from "./components/lottie/lotto.json";
+import axios from "axios";
+import { fail } from "assert";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
   const [aniNumber, setAniNumber] = useState([0, 0, 0, 0, 0, 0]);
   const [number, setNumber] = useState([
     [1, 2, 3, 4, 5, 6],
@@ -13,16 +16,34 @@ export default function Home() {
     [20, 21, 22, 23, 24, 25],
     [30, 31, 32, 33, 34, 35],
   ]);
-  const [isAnimating, setAnimating] = useState(false);
+  // const [isAnimating, setAnimating] = useState(false);
 
-  const animateNumber = () => {
-    const animationDuration = 2000; // 애니메이션 진행 시간 (2초) (예시 값)
+  const getLottoNumbers = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/lotto`
+      );
+      return response.data;
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  const animateNumber = async () => {
+    const animationDuration = 1000;
     const minNumber = 1;
     const maxNumber = 45;
-    const framesPerSecond = 30; // 초당 프레임 수 (예시 값)
+    const framesPerSecond = 30;
     const frameDuration = 1000 / framesPerSecond;
     const totalFrames = Math.ceil(animationDuration / frameDuration);
     let currentFrame = 0;
+
+    let data: any = null;
+
+    setIsLoading(true);
+
+    console.log(isLoading);
 
     const updateNumber = () => {
       const randomNumber = aniNumber.map(() => {
@@ -35,27 +56,27 @@ export default function Home() {
 
       currentFrame++;
 
-      if (currentFrame <= totalFrames) {
-        requestAnimationFrame(updateNumber);
+      if (currentFrame >= totalFrames || isLoading) {
+        setAniNumber(data.numbers[0]);
       } else {
-        setAnimating(false);
-        setAniNumber([1, 7, 15, 30, 38, 45]);
+        requestAnimationFrame(updateNumber);
       }
     };
 
-    requestAnimationFrame(updateNumber);
+    try {
+      requestAnimationFrame(updateNumber);
+      // data = await getLottoNumbers();
+    } catch (err) {
+      console.error(err);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  useEffect(() => {
-    if (isAnimating) {
-      animateNumber();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAnimating]);
-
   const handleDrawClick = () => {
-    if (!isAnimating) {
-      setAnimating(true);
+    if (!isLoading) {
+      animateNumber();
     }
   };
 
@@ -115,16 +136,16 @@ export default function Home() {
           </ul>
           <button
             className={`text-indigo-600 p-5 mt-14 ${
-              isAnimating ? " bg-slate-50" : "bg-white "
+              isLoading ? " bg-slate-50" : "bg-white "
             } rounded-2xl font-bold text-3xl`}
             onClick={handleDrawClick}
-            disabled={isAnimating}
+            disabled={isLoading}
           >
-            {isAnimating
+            {isLoading
               ? "당신의 당첨을 응원합니다!"
               : "당신의 번호를 뽑아보세요!"}
           </button>
-          {!isAnimating &&
+          {!isLoading &&
             number.map((row, rowIndex) => (
               <ul key={rowIndex} className="flex w-full justify-center gap-12">
                 {row.map((number, columnIndex) => (

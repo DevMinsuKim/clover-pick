@@ -41,10 +41,10 @@ def generateLotto():
         data = []
         for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
             cells = row.find_all('td')
-            winning_numbers = [cell.text.strip() for cell in cells[-7:]]  # 당첨번호
+            winning_numbers = [cell.text.strip() for cell in cells[-6:]]  # 당첨번호
             data.append(winning_numbers)
 
-        df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번', '보너스'])
+        df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
 
         data = np.array(df)
         data[::-1]
@@ -61,7 +61,7 @@ def generateLotto():
 
         for i in range(5):  # 최대 5번의 예측 수행
             x_input = np.array([data[i:i+n_steps]], dtype=np.float32)
-            x_input = x_input.reshape((1, n_steps, 7))
+            x_input = x_input.reshape((1, n_steps, 6))
 
             prediction = model.predict(x_input)
             rounded_prediction = [math.floor(x) for x in prediction[0]]

@@ -48,10 +48,10 @@ def preprocessing():
     data = []
     for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
         cells = row.find_all('td')
-        winning_numbers = [cell.text.strip() for cell in cells[-7:]]  # 당첨번호
+        winning_numbers = [cell.text.strip() for cell in cells[-6:]]  # 당첨번호
         data.append(winning_numbers)
 
-    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번', '보너스'])
+    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
 
     data = np.array(df)
 
@@ -74,8 +74,8 @@ def preprocessing():
 
     # LSTM 모델 구성
     model = Sequential()
-    model.add(LSTM(50, activation='relu', input_shape=(n_steps, 7)))
-    model.add(Dense(7))
+    model.add(LSTM(50, activation='relu', input_shape=(n_steps, 6)))
+    model.add(Dense(6))
     model.compile(optimizer='adam', loss='mse')
 
     # 모델 학습
