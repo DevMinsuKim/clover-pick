@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from main import generateLotto
+from LSTM_training import preprocessing
 
 # uvicorn api:app --reload
 
@@ -24,7 +25,11 @@ app.add_middleware(
 
 @app.get("/lotto")
 def read_root():
+    preprocessing()
     return {"numbers": generateLotto()}
+    # return {"numbers": preprocessing()}
+
+    
 
 
 @app.get("/items/{item_id}")

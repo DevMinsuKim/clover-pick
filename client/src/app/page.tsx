@@ -1,22 +1,33 @@
 "use client";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import Lottie from "lottie-react";
-import lotto from "./components/lottie/lotto.json";
+import { useState } from "react";
 import axios from "axios";
-import { fail } from "assert";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [aniNumber, setAniNumber] = useState([0, 0, 0, 0, 0, 0]);
-  const [number, setNumber] = useState([
-    [1, 2, 3, 4, 5, 6],
-    [7, 8, 9, 10, 11, 12],
-    [12, 13, 14, 15, 16, 17],
-    [20, 21, 22, 23, 24, 25],
-    [30, 31, 32, 33, 34, 35],
+  const [number, setNumber] = useState([[]]);
+  const [circuitNumber, setCircuitNumber] = useState([
+    {
+      circuit: "1090",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
+    {
+      circuit: "1089",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
+    {
+      circuit: "1088",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
+    {
+      circuit: "1087",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
+    {
+      circuit: "1086",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
   ]);
-  // const [isAnimating, setAnimating] = useState(false);
 
   const getLottoNumbers = async () => {
     try {
@@ -31,50 +42,44 @@ export default function Home() {
   };
 
   const animateNumber = async () => {
-    const animationDuration = 1000;
+    // const animationDuration = 2000;
     const minNumber = 1;
     const maxNumber = 45;
-    const framesPerSecond = 30;
-    const frameDuration = 1000 / framesPerSecond;
-    const totalFrames = Math.ceil(animationDuration / frameDuration);
+    // const framesPerSecond = 30;
+    // const frameDuration = 1000 / framesPerSecond;
+    // const totalFrames = Math.ceil(animationDuration / frameDuration);
     let currentFrame = 0;
-
-    let data: any = null;
-
-    setIsLoading(true);
-
-    console.log(isLoading);
+    let isLoading = false;
 
     const updateNumber = () => {
-      const randomNumber = aniNumber.map(() => {
-        return (
+      const randomNumbers = Array.from(
+        { length: aniNumber.length },
+        () =>
           Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber
-        );
-      });
+      );
 
-      setAniNumber(randomNumber);
+      setAniNumber(randomNumbers);
 
       currentFrame++;
 
-      if (currentFrame >= totalFrames || isLoading) {
-        setAniNumber(data.numbers[0]);
-      } else {
+      if (isLoading) {
         requestAnimationFrame(updateNumber);
+      } else {
+        setAniNumber(data.numbers[0]);
       }
     };
 
-    try {
-      requestAnimationFrame(updateNumber);
-      // data = await getLottoNumbers();
-    } catch (err) {
-      console.error(err);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
+    setIsLoading(true);
+    isLoading = true;
+    updateNumber();
+    const data = await getLottoNumbers();
+    const [, ...remainingData] = data.numbers;
+    setNumber(remainingData);
+    isLoading = false;
+    setIsLoading(false);
   };
 
-  const handleDrawClick = () => {
+  const handleClick = async () => {
     if (!isLoading) {
       animateNumber();
     }
@@ -138,7 +143,7 @@ export default function Home() {
             className={`text-indigo-600 p-5 mt-14 ${
               isLoading ? " bg-slate-50" : "bg-white "
             } rounded-2xl font-bold text-3xl`}
-            onClick={handleDrawClick}
+            onClick={handleClick}
             disabled={isLoading}
           >
             {isLoading
@@ -147,7 +152,10 @@ export default function Home() {
           </button>
           {!isLoading &&
             number.map((row, rowIndex) => (
-              <ul key={rowIndex} className="flex w-full justify-center gap-12">
+              <ul
+                key={rowIndex}
+                className="flex w-full justify-center gap-12 mt-10"
+              >
                 {row.map((number, columnIndex) => (
                   <li
                     key={columnIndex}
@@ -160,6 +168,31 @@ export default function Home() {
                 ))}
               </ul>
             ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col bg-slate-100 items-center justify-center mt-8 ">
+        <div className="w-[1080px]">
+          <p className="text-xl font-bold my-6">지난 회차 번호</p>
+          {circuitNumber.map((row, rowIndex) => (
+            <ul className="flex relative" key={rowIndex}>
+              <div className="flex bg-indigo-600 mt-5 p-5 rounded-3xl gap-12">
+                <p className="absolute top-2 rounded-3xl text-black bg-slate-100">
+                  {row.circuit}
+                </p>
+                {row.number.map((number, columnIndex) => (
+                  <li
+                    key={columnIndex}
+                    className={`flex w-10 h-10 rounded-full items-center justify-center ${
+                      number === 0 ? "text-indigo-600 " : "text-white"
+                    } ${lottoBgSelect(number)}`}
+                  >
+                    {number}
+                  </li>
+                ))}
+              </div>
+            </ul>
+          ))}
         </div>
       </div>
     </section>

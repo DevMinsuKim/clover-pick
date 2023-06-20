@@ -79,17 +79,17 @@ def preprocessing():
     model.compile(optimizer='adam', loss='mse')
 
     # 모델 학습
-    model.fit(X_train, y_train, epochs=200, verbose=1)
+    model.fit(X_train, y_train, epochs=20, verbose=1)
 
     # 모델 저장
     model.save('lotto_model.keras')
 
 try:
-    response = requests.get(url)
-    response.raise_for_status()  # 오류 발생 시 예외 처리
+    # response = requests.get(url)
+    # response.raise_for_status()  # 오류 발생 시 예외 처리
 
-    with open(output_path, 'wb') as file:
-        file.write(response.content)
+    # with open(output_path, 'wb') as file:
+    #     file.write(response.content)
 
     preprocessing()
 
