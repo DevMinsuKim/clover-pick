@@ -171,28 +171,33 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col bg-slate-100 items-center justify-center mt-8 ">
+      <div className="flex bg-slate-100 items-center justify-center mt-8 ">
         <div className="w-[1080px]">
           <p className="text-xl font-bold my-6">지난 회차 번호</p>
-          {circuitNumber.map((row, rowIndex) => (
-            <ul className="flex relative" key={rowIndex}>
-              <div className="flex bg-indigo-600 mt-5 p-5 rounded-3xl gap-12">
-                <p className="absolute top-2 rounded-3xl text-black bg-slate-100">
-                  {row.circuit}
-                </p>
-                {row.number.map((number, columnIndex) => (
-                  <li
-                    key={columnIndex}
-                    className={`flex w-10 h-10 rounded-full items-center justify-center ${
-                      number === 0 ? "text-indigo-600 " : "text-white"
-                    } ${lottoBgSelect(number)}`}
-                  >
-                    {number}
-                  </li>
-                ))}
-              </div>
-            </ul>
-          ))}
+          <div className="flex flex-wrap justify-between">
+            {circuitNumber.map((row, rowIndex) => (
+              <ul key={rowIndex}>
+                <li className="flex flex-col relative bg-indigo-600 rounded-3xl">
+                  <span className="flex absolute bg-white text-indigo-600 font-bold rounded-3xl">
+                    {row.circuit} 회차
+                  </span>
+
+                  <div className="flex mt-10 mx-5">
+                    {row.number.map((number, columnIndex) => (
+                      <div
+                        key={columnIndex}
+                        className={`flex w-10 h-10 rounded-full items-center justify-center ${
+                          number === 0 ? "text-indigo-600" : "text-white"
+                        } ${lottoBgSelect(number)}`}
+                      >
+                        {number}
+                      </div>
+                    ))}
+                  </div>
+                </li>
+              </ul>
+            ))}
+          </div>
         </div>
       </div>
     </section>
