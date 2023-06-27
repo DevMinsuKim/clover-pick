@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { FaPlus } from "react-icons/fa";
+import React from "react";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +27,18 @@ export default function Home() {
     },
     {
       circuit: "1086",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
+    {
+      circuit: "1085",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
+    {
+      circuit: "1084",
+      number: [1, 11, 21, 31, 42, 5, 16],
+    },
+    {
+      circuit: "1083",
       number: [1, 11, 21, 31, 42, 5, 16],
     },
   ]);
@@ -171,27 +185,32 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex bg-slate-100 items-center justify-center mt-8 ">
-        <div className="w-[1080px]">
+      <div className="flex bg-slate-100 items-center justify-center mt-8">
+        <div className="w-[1320px] mb-8">
           <p className="text-xl font-bold my-6">지난 회차 번호</p>
-          <div className="flex flex-wrap justify-between">
+          <div className="grid grid-flow-row grid-cols-3 gap-4">
             {circuitNumber.map((row, rowIndex) => (
               <ul key={rowIndex}>
                 <li className="flex flex-col relative bg-indigo-600 rounded-3xl">
-                  <span className="flex absolute bg-white text-indigo-600 font-bold rounded-3xl">
+                  <span className="flex absolute bg-white text-indigo-600 font-bold rounded-3xl ml-3 mt-2 p-2">
                     {row.circuit} 회차
                   </span>
 
-                  <div className="flex mt-10 mx-5">
+                  <div className="flex mt-16 mx-5 mb-2 justify-between">
                     {row.number.map((number, columnIndex) => (
-                      <div
-                        key={columnIndex}
-                        className={`flex w-10 h-10 rounded-full items-center justify-center ${
-                          number === 0 ? "text-indigo-600" : "text-white"
-                        } ${lottoBgSelect(number)}`}
-                      >
-                        {number}
-                      </div>
+                      <React.Fragment key={columnIndex}>
+                        <div
+                          key={columnIndex}
+                          className={`flex w-10 h-10 rounded-full items-center justify-center ${
+                            number === 0 ? "text-indigo-600" : "text-white"
+                          } ${lottoBgSelect(number)}`}
+                        >
+                          {number}
+                        </div>
+                        {columnIndex === 5 && (
+                          <FaPlus className="self-center mx-1" color="white" />
+                        )}
+                      </React.Fragment>
                     ))}
                   </div>
                 </li>
