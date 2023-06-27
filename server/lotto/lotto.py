@@ -74,20 +74,28 @@ def data_file_update():
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)
 
-def getNumbers(): 
-    with open('./lotto_data.xls', 'r', encoding='EUC-KR') as file:
-        html_code = file.read()
+def get_round_number(round_number):
+    try:  
+        with open(data_file_path, 'r', encoding='EUC-KR') as file:
+            html_code = file.read()
 
-    soup = BeautifulSoup(html_code, 'html.parser')
-    table = soup.find_all('table')[1]  # 두 번째 테이블 선택
-    rows = table.find_all('tr')
+        soup = BeautifulSoup(html_code, 'html.parser')
+        table = soup.find_all('table')[1]  # 두 번째 테이블 선택
+        rows = table.find_all('tr')
 
-    data = []
-    for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
-        cells = row.find_all('td')
-        winning_numbers = [cell.text.strip() for cell in cells[-6:]]  # 당첨번호
-        data.append(winning_numbers)
+        data = []
+        for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
+            cells = row.find_all('td')
+            winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
+            bonus_number = cells[-1].text.strip() # 보너스 번호
+            data.append(winning_numbers + bonus_number)
 
-    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
+        print(data)
 
-    data = np.array(df)
+        # df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번', '보너스'])
+
+        # data = np.array(df)
+
+        return data
+    except Exception as e:
+        logging.error("Exception occurred", exc_info=True)

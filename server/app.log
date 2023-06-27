@@ -148,3 +148,237 @@ Traceback (most recent call last):
     model = load_module('./lotto/lotto_model.keras', compile=False)
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: load_module() got an unexpected keyword argument 'compile'
+27-Jun-23 16:46:04 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 86, in generateLotto
+    x_input = x_input.reshape((1, n_steps, 6))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 24 into shape (1,5,6)
+27-Jun-23 16:46:23 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 86, in generateLotto
+    x_input = x_input.reshape((1, n_steps, 6))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 24 into shape (1,5,6)
+27-Jun-23 17:22:52 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 7 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 7 columns
+27-Jun-23 17:22:52 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 7 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 7 columns
+27-Jun-23 17:23:01 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 5 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 5 columns
+27-Jun-23 17:23:02 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 5 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 5 columns
+27-Jun-23 17:32:54 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 4 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 4 columns
+27-Jun-23 17:32:54 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 4 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 4 columns
+27-Jun-23 17:33:02 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 5 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 5 columns
+27-Jun-23 17:33:03 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
+    columns = _validate_or_indexify_columns(contents, columns)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
+    raise AssertionError(
+AssertionError: 6 columns passed, passed data had 5 columns
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
+    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
+    arrays, columns, index = nested_data_to_arrays(
+                             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
+    arrays, columns = to_arrays(data, columns, dtype=dtype)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
+    content, columns = _finalize_columns_and_data(arr, columns, dtype)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
+    raise ValueError(err) from err
+ValueError: 6 columns passed, passed data had 5 columns
+27-Jun-23 18:04:54 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 91, in get_round_number
+    data.append(winning_numbers + bonus_number)
+                ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+TypeError: can only concatenate list (not "str") to list

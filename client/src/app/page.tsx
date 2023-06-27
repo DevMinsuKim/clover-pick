@@ -8,7 +8,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [aniNumber, setAniNumber] = useState([0, 0, 0, 0, 0, 0]);
   const [number, setNumber] = useState([[]]);
-  const [circuitNumber, setCircuitNumber] = useState([
+  const [roundNumber, setRoundNumber] = useState([
     {
       circuit: "1090",
       number: [1, 11, 21, 31, 42, 5, 16],

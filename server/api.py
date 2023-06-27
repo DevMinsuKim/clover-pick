@@ -3,7 +3,8 @@ from typing import Union
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from lotto.LSTM_training import generateLotto, preprocessing
+from lotto.LSTM_training import generate_lotto, preprocessing
+from lotto.lotto import get_round_number
 
 
 # uvicorn api:app --reload
@@ -26,12 +27,12 @@ app.add_middleware(
 @app.get("/api/lotto")
 def read_root():
     preprocessing()
-    return {"numbers": generateLotto()}
+    return {"numbers": generate_lotto()}
 
 @app.get("/api/lotto/{round_number}")
-def read_root():
-    return {"numbers": generateLotto()}
+def read_root(round_number:int):
+    return get_round_number(round_number)
 
-@app.get("/api/lotto/all")
-def read_root():
-    return {"numbers": generateLotto()}
+# @app.get("/api/lotto/all")
+# def read_root():
+#     return {"numbers": generateLotto()}

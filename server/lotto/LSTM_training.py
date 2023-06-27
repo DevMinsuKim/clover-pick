@@ -49,7 +49,7 @@ for file in files:
         data_file_path = os.path.join(directory, file)
         break
 
-def generateLotto():
+def generate_lotto():
     try:
         with open(data_file_path, 'r', encoding='EUC-KR') as file:
             html_code = file.read()
@@ -61,13 +61,12 @@ def generateLotto():
         data = []
         for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
             cells = row.find_all('td')
-            winning_numbers = [cell.text.strip() for cell in cells[-6:]]  # 당첨번호
+            winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
             data.append(winning_numbers)
 
         df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
 
         data = np.array(df)
-        data[::-1]
 
         n_steps = 5
 
@@ -81,7 +80,7 @@ def generateLotto():
 
         # 예측을 실행하고 중복 항목이 발견되면 다시 예측합니다.
         i = 0
-        while len(predictions) < 5:
+        while len(predictions) < 5 and i < len(data) - n_steps:
             x_input = np.array([data[i:i+n_steps]], dtype=np.float32)
             x_input = x_input.reshape((1, n_steps, 6))
 
@@ -90,13 +89,14 @@ def generateLotto():
 
             # 예측 결과에 중복 항목이 없는 경우에만 추가합니다.
             if len(rounded_prediction) == len(set(rounded_prediction)):
-                predictions.append(sorted(rounded_prediction))  
-                
+                # 예측 결과가 1~45 범위에 있는지 확인합니다.
+                if all(1 <= num <= 45 for num in rounded_prediction):
+                    predictions.append(sorted(rounded_prediction))  
+
             i += 1
 
         return predictions
 
-        # return predictions
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)
 
@@ -112,12 +112,14 @@ def preprocessing():
     data = []
     for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
         cells = row.find_all('td')
-        winning_numbers = [cell.text.strip() for cell in cells[-6:]]  # 당첨번호
+        winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
         data.append(winning_numbers)
 
     df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
 
     data = np.array(df)
+
+    print(data)
 
     # 문자열을 숫자로 변환
     data = data.astype(float)
@@ -143,7 +145,7 @@ def preprocessing():
     model.compile(optimizer='adam', loss='mse')
 
     # 모델 학습
-    model.fit(X_train, y_train, epochs=20, verbose=1)
+    model.fit(X_train, y_train, epochs=200, verbose=1)
 
     # 모델 저장
     model.save('./lotto/lotto_model.keras')
