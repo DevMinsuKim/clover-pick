@@ -1,2 +1,2 @@
-# Lotto-generate-website
-Lotto generate website
+# lotto-generate-website
+lotto generate website
