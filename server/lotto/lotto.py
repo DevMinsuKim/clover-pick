@@ -83,19 +83,47 @@ def get_round_number(round_number):
         table = soup.find_all('table')[1]  # 두 번째 테이블 선택
         rows = table.find_all('tr')
 
-        data = []
+        results = []
+        for i, row in enumerate(rows[2:]): # 첫 두 행은 제목이므로 무시합니다.
+            if i >= round_number:  # 파라미터로 전달된 숫자를 초과하면 반복문을 종료합니다.
+                break
+            cells = row.find_all('td')
+            circuit_numbers = [cell.text.strip() for cell in cells[-19]] #회차 번호
+            winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
+            bonus_number = [cell.text.strip() for cell in cells[-1]]  # 보너스 번호
+
+            result = {
+                'circuit': str(circuit_numbers[0]),
+                'number': winning_numbers + bonus_number
+            }
+            results.append(result)
+
+        return results
+    except Exception as e:
+        logging.error("Exception occurred", exc_info=True)
+
+def get_round_number_all():
+    try:  
+        with open(data_file_path, 'r', encoding='EUC-KR') as file:
+            html_code = file.read()
+
+        soup = BeautifulSoup(html_code, 'html.parser')
+        table = soup.find_all('table')[1]  # 두 번째 테이블 선택
+        rows = table.find_all('tr')
+
+        results = []
         for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
             cells = row.find_all('td')
+            circuit_numbers = [cell.text.strip() for cell in cells[-19]] #회차 번호
             winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
-            bonus_number = cells[-1].text.strip() # 보너스 번호
-            data.append(winning_numbers + bonus_number)
+            bonus_number = [cell.text.strip() for cell in cells[-1]]  # 보너스 번호
 
-        print(data)
-
-        # df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번', '보너스'])
-
-        # data = np.array(df)
-
-        return data
+            result = {
+                'circuit': str(circuit_numbers[0]),
+                'number': winning_numbers + bonus_number
+            }
+            results.append(result)
+            
+        return results
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)

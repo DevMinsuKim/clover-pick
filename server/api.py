@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from lotto.LSTM_training import generate_lotto, preprocessing
-from lotto.lotto import get_round_number
+from lotto.lotto import get_round_number, get_round_number_all
 
 
 # uvicorn api:app --reload
@@ -33,6 +33,6 @@ def read_root():
 def read_root(round_number:int):
     return get_round_number(round_number)
 
-# @app.get("/api/lotto/all")
-# def read_root():
-#     return {"numbers": generateLotto()}
+@app.get("/api/lotto/all")
+def read_root():
+    return get_round_number_all()

@@ -1,47 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { FaPlus } from "react-icons/fa";
+import { AiOutlineDown } from "react-icons/Ai";
 import React from "react";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [aniNumber, setAniNumber] = useState([0, 0, 0, 0, 0, 0]);
-  const [number, setNumber] = useState([[]]);
+  const [number, setNumber] = useState<number[][]>([]);
   const [roundNumber, setRoundNumber] = useState([
-    {
-      circuit: "1090",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
-    {
-      circuit: "1089",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
-    {
-      circuit: "1088",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
-    {
-      circuit: "1087",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
-    {
-      circuit: "1086",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
-    {
-      circuit: "1085",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
-    {
-      circuit: "1084",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
-    {
-      circuit: "1083",
-      number: [1, 11, 21, 31, 42, 5, 16],
-    },
+    { circuit: 0, number: [0, 0, 0, 0, 0, 0, 0] },
   ]);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getRoundNumbers();
+  }, []);
+
+  const getRoundNumbers = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/lotto/9`
+      );
+      return setRoundNumber(response.data);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+  };
 
   const getLottoNumbers = async () => {
     try {
@@ -120,14 +108,14 @@ export default function Home() {
   };
 
   return (
-    <section className="flex w-full flex-col">
+    <section className="w-full flex-col">
       <div
         className={
-          "flex flex-col w-full h-[720px] bg-gradient-to-t from-indigo-100 dark:bg-gradient-to-t dark:from-indigo-900  items-center justify-center"
+          "relative flex flex-col w-full h-screen bg-gradient-to-t from-indigo-600  via-indigo-100 to-white dark:bg-gradient-to-t dark:from-indigo-900 items-center"
         }
       >
-        <p className="text-5xl text-center font-bold">
-          로또의 미래, <br /> LSTM 기반 로또 6/45 <br /> 예측 시스템
+        <p className="text-5xl text-center font-bold mt-48">
+          로또 번호 예측, 최고의 선택 <br /> LSTM 기반 로또 6/45
         </p>
         <p className="text-2xl text-center mt-14">
           인공지능 신경망 LSTM의 힘을 결합한 우리의 시스템은 로또 번호 예측의
@@ -135,11 +123,42 @@ export default function Home() {
           정확한 예측으로 당신의 로또 경험을 혁신시켜줍니다. <br /> 로또의
           미래를 함께 만들어 가요
         </p>
+
+        <button
+          className="bg-indigo-600 text-white rounded-2xl p-4 mt-20 text-2xl hover:bg-indigo-500 hover:shadow-xl"
+          onClick={() => {
+            if (scrollRef.current) {
+              scrollRef.current.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+        >
+          당신의 로또 번호를 예측해보세요!
+        </button>
+
+        <button
+          className="absolute flex flex-col items-center justify-center bottom-3"
+          onClick={() => {
+            if (scrollRef.current) {
+              scrollRef.current.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+        >
+          <div className="flex w-8 h-16 border-white border-solid border-2 border-radius rounded-2xl items-center justify-center">
+            <span className="w-3 h-3 rounded-full bg-white animate-scrollDownDot" />
+          </div>
+          <AiOutlineDown
+            className="animate-scrollDownArrow mt-2 text-white"
+            size={"1.25rem"}
+          />
+        </button>
       </div>
 
-      <div className="flex bg-slate-100 items-center justify-center">
-        <div className="flex flex-col w-2/5 bg-indigo-600 my-40 py-12 rounded-3xl items-center">
-          <ul className="flex w-full justify-center gap-12">
+      <div
+        className="flex bg-slate-100 items-center justify-center scroll-mt-16"
+        ref={scrollRef}
+      >
+        <div className="flex flex-col bg-indigo-600 my-40 py-12 rounded-3xl items-center animate-generationLottoBg  bg-gradient-to-tr from-indigo-500 via-indigo-800 to-indigo-600">
+          <ul className="flex justify-center gap-12 mx-72 rounded-2xl p-4">
             {aniNumber.map((number, index) => {
               return (
                 <li
@@ -168,7 +187,7 @@ export default function Home() {
             number.map((row, rowIndex) => (
               <ul
                 key={rowIndex}
-                className="flex w-full justify-center gap-12 mt-10"
+                className="flex justify-center gap-12 mt-10  rounded-2xl p-4"
               >
                 {row.map((number, columnIndex) => (
                   <li
@@ -189,31 +208,43 @@ export default function Home() {
         <div className="w-[1320px] mb-8">
           <p className="text-xl font-bold my-6">지난 회차 번호</p>
           <div className="grid grid-flow-row grid-cols-3 gap-4">
-            {circuitNumber.map((row, rowIndex) => (
+            {roundNumber.map((row, rowIndex) => (
               <ul key={rowIndex}>
-                <li className="flex flex-col relative bg-indigo-600 rounded-3xl">
-                  <span className="flex absolute bg-white text-indigo-600 font-bold rounded-3xl ml-3 mt-2 p-2">
-                    {row.circuit} 회차
-                  </span>
+                {rowIndex === 8 ? (
+                  <li className="bg-indigo-600 rounded-3xl h-full">
+                    <button className="flex text-white h-full w-full text-xl font-bold items-center justify-center">
+                      <FaPlus className="mr-2" color="white" />
+                      더보기
+                    </button>
+                  </li>
+                ) : (
+                  <li className="flex flex-col relative bg-indigo-600 rounded-3xl">
+                    <span className="flex absolute bg-white text-indigo-600 font-bold rounded-3xl ml-3 mt-2 p-2">
+                      {row.circuit} 회차
+                    </span>
 
-                  <div className="flex mt-16 mx-5 mb-2 justify-between">
-                    {row.number.map((number, columnIndex) => (
-                      <React.Fragment key={columnIndex}>
-                        <div
-                          key={columnIndex}
-                          className={`flex w-10 h-10 rounded-full items-center justify-center ${
-                            number === 0 ? "text-indigo-600" : "text-white"
-                          } ${lottoBgSelect(number)}`}
-                        >
-                          {number}
-                        </div>
-                        {columnIndex === 5 && (
-                          <FaPlus className="self-center mx-1" color="white" />
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-                </li>
+                    <div className="flex mt-16 mx-5 mb-2 justify-between">
+                      {row.number.map((number, columnIndex) => (
+                        <React.Fragment key={columnIndex}>
+                          <div
+                            key={columnIndex}
+                            className={`flex w-10 h-10 rounded-full items-center justify-center ${
+                              number === 0 ? "text-indigo-600" : "text-white"
+                            } ${lottoBgSelect(number)}`}
+                          >
+                            {number}
+                          </div>
+                          {columnIndex === 5 && (
+                            <FaPlus
+                              className="self-center mx-1"
+                              color="white"
+                            />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </li>
+                )}
               </ul>
             ))}
           </div>

@@ -382,3 +382,37 @@ Traceback (most recent call last):
     data.append(winning_numbers + bonus_number)
                 ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
 TypeError: can only concatenate list (not "str") to list
+29-Jun-23 10:39:52 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 91, in get_round_number
+    data.append(winning_numbers + bonus_number)
+                ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+TypeError: can only concatenate list (not "str") to list
+29-Jun-23 11:02:46 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 83, in get_round_number
+    df = pd.read_excel(data_file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 478, in read_excel
+    io = ExcelFile(io, storage_options=storage_options, engine=engine)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 1500, in __init__
+    raise ValueError(
+ValueError: Excel file format cannot be determined, you must specify an engine manually.
+29-Jun-23 11:02:49 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 83, in get_round_number
+    df = pd.read_excel(data_file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 478, in read_excel
+    io = ExcelFile(io, storage_options=storage_options, engine=engine)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 1500, in __init__
+    raise ValueError(
+ValueError: Excel file format cannot be determined, you must specify an engine manually.
+29-Jun-23 11:24:24 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 87, in get_round_number
+    for i, row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
+        ^^^^^^
+ValueError: too many values to unpack (expected 2)
