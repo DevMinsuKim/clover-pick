@@ -3,7 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import { AiOutlineDown } from "react-icons/Ai";
+import { BiWallet } from "react-icons/bi";
 import React from "react";
+import lottoAutoSelector from "./api/lottoAutoSelector";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +89,7 @@ export default function Home() {
     }
   };
 
-  const lottoBgSelect = (number: Number) => {
+  const lottoBgSelect = (number: number) => {
     let backgroundColor = "";
 
     if (number >= 1 && number <= 10) {
@@ -159,6 +161,14 @@ export default function Home() {
       >
         <div className="flex flex-col bg-indigo-600 my-40 py-12 rounded-3xl items-center animate-generationLottoBg  bg-gradient-to-tr from-indigo-500 via-indigo-800 to-indigo-600">
           <ul className="flex justify-center gap-12 mx-72 rounded-2xl p-4">
+            <button
+              onClick={() => {
+                // lottoAutoSelector();
+              }}
+            >
+              <BiWallet size={"2.5rem"} className="text-white" />
+            </button>
+
             {aniNumber.map((number, index) => {
               return (
                 <li
