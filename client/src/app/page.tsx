@@ -3,14 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import { AiOutlineDown } from "react-icons/Ai";
-import { BiWallet } from "react-icons/bi";
+import { BsFillCheckCircleFill } from "react-icons/bs";
 import React from "react";
-import lottoAutoSelector from "./api/lottoAutoSelector";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
-  const [aniNumber, setAniNumber] = useState([0, 0, 0, 0, 0, 0]);
-  const [number, setNumber] = useState<number[][]>([]);
+  const [aniNumber, setAniNumber] = useState([[0, 0, 0, 0, 0, 0]]);
   const [roundNumber, setRoundNumber] = useState([
     { circuit: 0, number: [0, 0, 0, 0, 0, 0, 0] },
   ]);
@@ -46,20 +44,18 @@ export default function Home() {
   };
 
   const animateNumber = async () => {
-    // const animationDuration = 2000;
     const minNumber = 1;
     const maxNumber = 45;
-    // const framesPerSecond = 30;
-    // const frameDuration = 1000 / framesPerSecond;
-    // const totalFrames = Math.ceil(animationDuration / frameDuration);
     let currentFrame = 0;
     let isLoading = false;
 
     const updateNumber = () => {
-      const randomNumbers = Array.from(
-        { length: aniNumber.length },
-        () =>
-          Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber
+      const randomNumbers = Array.from({ length: aniNumber.length }, () =>
+        Array.from(
+          { length: aniNumber[0].length },
+          () =>
+            Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber
+        )
       );
 
       setAniNumber(randomNumbers);
@@ -69,7 +65,7 @@ export default function Home() {
       if (isLoading) {
         requestAnimationFrame(updateNumber);
       } else {
-        setAniNumber(data.numbers[0]);
+        setAniNumber(data.numbers);
       }
     };
 
@@ -77,8 +73,6 @@ export default function Home() {
     isLoading = true;
     updateNumber();
     const data = await getLottoNumbers();
-    const [, ...remainingData] = data.numbers;
-    setNumber(remainingData);
     isLoading = false;
     setIsLoading(false);
   };
@@ -159,46 +153,21 @@ export default function Home() {
         className="flex bg-slate-100 items-center justify-center scroll-mt-16"
         ref={scrollRef}
       >
-        <div className="flex flex-col bg-indigo-600 my-40 py-12 rounded-3xl items-center animate-generationLottoBg  bg-gradient-to-tr from-indigo-500 via-indigo-800 to-indigo-600">
-          <ul className="flex justify-center gap-12 mx-72 rounded-2xl p-4">
-            <button
-              onClick={() => {
-                // lottoAutoSelector();
-              }}
-            >
-              <BiWallet size={"2.5rem"} className="text-white" />
-            </button>
-
-            {aniNumber.map((number, index) => {
-              return (
-                <li
-                  key={index}
-                  className={`flex w-20 h-20 rounded-full items-center justify-center ${
-                    number === 0 ? "text-indigo-600 " : "text-white"
-                  } font-bold text-5xl ${lottoBgSelect(number)}`}
-                >
-                  {number}
-                </li>
-              );
-            })}
-          </ul>
-          <button
-            className={`text-indigo-600 p-5 mt-14 ${
-              isLoading ? " bg-slate-50" : "bg-white "
-            } rounded-2xl font-bold text-3xl`}
-            onClick={handleClick}
-            disabled={isLoading}
-          >
-            {isLoading
-              ? "당신의 당첨을 응원합니다!"
-              : "당신의 번호를 뽑아보세요!"}
-          </button>
-          {!isLoading &&
-            number.map((row, rowIndex) => (
+        <div className="flex flex-col bg-indigo-600 my-40 py-12 rounded-3xl items-center animate-generationLottoBg  bg-gradient-to-tr from-indigo-400 via-indigo-800 to-indigo-400">
+          {aniNumber.map((row, rowIndex) =>
+            isLoading && rowIndex !== 0 ? null : (
               <ul
                 key={rowIndex}
-                className="flex justify-center gap-12 mt-10  rounded-2xl p-4"
+                className={`flex justify-center gap-11 mx-72 p-4  rounded-full mt-8 ${
+                  rowIndex === 1 ? "bg-indigo-950" : "bg-indigo-900"
+                }`}
               >
+                <BsFillCheckCircleFill
+                  className={` self-center cursor-pointer ${
+                    rowIndex === 1 ? "text-indigo-600" : "text-slate-300"
+                  }`}
+                  size={"2rem"}
+                />
                 {row.map((number, columnIndex) => (
                   <li
                     key={columnIndex}
@@ -210,7 +179,19 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-            ))}
+            )
+          )}
+          <button
+            className={`text-indigo-600 p-5 mt-14 ${
+              isLoading ? " bg-slate-50" : "bg-white "
+            } rounded-2xl font-bold text-3xl`}
+            onClick={handleClick}
+            disabled={isLoading}
+          >
+            {isLoading
+              ? "당신의 당첨을 응원합니다!"
+              : "당신의 번호를 뽑아보세요!"}
+          </button>
         </div>
       </div>
 
