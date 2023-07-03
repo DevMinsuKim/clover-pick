@@ -104,7 +104,7 @@ export default function Home() {
   };
 
   return (
-    <section className="w-full flex-col">
+    <section>
       <div
         className={
           "relative flex flex-col w-full h-screen bg-gradient-to-t from-indigo-600  via-indigo-100 to-white dark:bg-gradient-to-t dark:from-indigo-900 items-center"
@@ -153,7 +153,7 @@ export default function Home() {
         className="flex bg-slate-100 items-center justify-center scroll-mt-16"
         ref={scrollRef}
       >
-        <div className="flex flex-col bg-indigo-600 my-40 py-12 rounded-3xl items-center animate-generationLottoBg  bg-gradient-to-tr from-indigo-400 via-indigo-800 to-indigo-400">
+        <div className="flex flex-col bg-indigo-600 my-40 py-12 rounded-3xl items-center animate-generationLottoBg  bg-gradient-to-tr from-indigo-400 via-indigo-800 to-indigo-400 max-w-screen-xl">
           {aniNumber.map((row, rowIndex) =>
             isLoading && rowIndex !== 0 ? null : (
               <ul
@@ -162,12 +162,15 @@ export default function Home() {
                   rowIndex === 1 ? "bg-indigo-950" : "bg-indigo-900"
                 }`}
               >
-                <BsFillCheckCircleFill
-                  className={` self-center cursor-pointer ${
-                    rowIndex === 1 ? "text-indigo-600" : "text-slate-300"
-                  }`}
-                  size={"2rem"}
-                />
+                {row[0] !== 0 && (
+                  <BsFillCheckCircleFill
+                    className={` self-center cursor-pointer ${
+                      rowIndex === 1 ? "text-indigo-600" : "text-slate-300"
+                    }`}
+                    size={"2rem"}
+                  />
+                )}
+
                 {row.map((number, columnIndex) => (
                   <li
                     key={columnIndex}
@@ -195,10 +198,10 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex bg-slate-100 items-center justify-center mt-8">
-        <div className="w-[1320px] mb-8">
+      <div className="flex w-ull bg-slate-100 mt-8 justify-center items-center">
+        <div className="mb-8 w-full max-w-screen-xl">
           <p className="text-xl font-bold my-6">지난 회차 번호</p>
-          <div className="grid grid-flow-row grid-cols-3 gap-4">
+          <div className="grid grid-flow-row grid-cols-3 gap-4 ">
             {roundNumber.map((row, rowIndex) => (
               <ul key={rowIndex}>
                 {rowIndex === 8 ? (
