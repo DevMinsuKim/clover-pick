@@ -26,9 +26,9 @@ export async function GET(request: Request) {
     const firstTab = pages[1];
     await firstTab.bringToFront();
 
-    const frames: puppeteer.Frame[] = page2
+    const frames = page2
       .frames()
-      .filter((frame: puppeteer.Frame) => frame.name() === "ifrm_tab");
+      .filter((frame) => frame.name() === "ifrm_tab");
 
     for (const numbers of numberSets) {
       for (const number of numbers) {

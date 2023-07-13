@@ -24,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/lotto")
+@app.post("/api/lotto")
 def read_root():
     preprocessing()
     return {"numbers": generate_lotto()}

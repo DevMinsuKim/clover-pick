@@ -4,6 +4,8 @@ import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import { AiOutlineDown } from "react-icons/Ai";
 import { BsFillCheckCircleFill } from "react-icons/bs";
+import { LuFileInput } from "react-icons/lu";
+import { MdCopyAll } from "react-icons/md";
 import React from "react";
 
 export default function Home() {
@@ -12,6 +14,8 @@ export default function Home() {
   const [roundNumber, setRoundNumber] = useState([
     { circuit: 0, number: [0, 0, 0, 0, 0, 0, 0] },
   ]);
+  const [checkBoxNumber, setCheckBoxNumber] = useState([false]);
+  const [firstLottery, setFirstLottery] = useState(true);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +37,7 @@ export default function Home() {
 
   const getLottoNumbers = async () => {
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/lotto`
       );
       return response.data;
@@ -66,12 +70,15 @@ export default function Home() {
         requestAnimationFrame(updateNumber);
       } else {
         setAniNumber(data.numbers);
+        setCheckBoxNumber(Array(data.numbers.length).fill(false));
       }
     };
 
     setIsLoading(true);
     isLoading = true;
+    setFirstLottery(false);
     updateNumber();
+    setCheckBoxNumber([false]);
     const data = await getLottoNumbers();
     isLoading = false;
     setIsLoading(false);
@@ -101,6 +108,14 @@ export default function Home() {
     }
 
     return backgroundColor;
+  };
+
+  const handleCheckboxChange = (index: number) => {
+    setCheckBoxNumber((prevCheckboxes) =>
+      prevCheckboxes.map((isChecked, i) =>
+        i === index ? !isChecked : isChecked
+      )
+    );
   };
 
   return (
@@ -159,18 +174,27 @@ export default function Home() {
               <ul
                 key={rowIndex}
                 className={`flex justify-center gap-11 mx-72 p-4  rounded-full mt-8 ${
-                  rowIndex === 1 ? "bg-indigo-950" : "bg-indigo-900"
+                  checkBoxNumber[rowIndex] ? "bg-indigo-950" : "bg-indigo-900"
                 }`}
               >
-                {row[0] !== 0 && (
-                  <BsFillCheckCircleFill
-                    className={` self-center cursor-pointer ${
-                      rowIndex === 1 ? "text-indigo-600" : "text-slate-300"
-                    }`}
-                    size={"2rem"}
-                  />
-                )}
+                {row[0] !== 0 && !isLoading && (
+                  <label key={rowIndex} className={"flex"}>
+                    <input
+                      type={"checkbox"}
+                      onChange={() => handleCheckboxChange(rowIndex)}
+                      className={"hidden"}
+                    />
 
+                    <BsFillCheckCircleFill
+                      className={` self-center cursor-pointer ${
+                        checkBoxNumber[rowIndex]
+                          ? "text-indigo-600"
+                          : "text-slate-300"
+                      }`}
+                      size={"2rem"}
+                    />
+                  </label>
+                )}
                 {row.map((number, columnIndex) => (
                   <li
                     key={columnIndex}
@@ -184,17 +208,40 @@ export default function Home() {
               </ul>
             )
           )}
-          <button
-            className={`text-indigo-600 p-5 mt-14 ${
-              isLoading ? " bg-slate-50" : "bg-white "
-            } rounded-2xl font-bold text-3xl`}
-            onClick={handleClick}
-            disabled={isLoading}
+          <div
+            className={`text-indigo-600 p-3 mt-14
+             ${!isLoading && !firstLottery && " bg-white"}
+             rounded-2xl font-bold text-3xl`}
           >
-            {isLoading
-              ? "당신의 당첨을 응원합니다!"
-              : "당신의 번호를 뽑아보세요!"}
-          </button>
+            {!isLoading && !firstLottery && (
+              <div className="flex flex-row mb-5 justify-between">
+                <button className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-sm items-center justify-center ">
+                  <LuFileInput className="mr-1" />
+                  선택한 번호 자동 입력
+                </button>
+                <p className="text-2xl self-center">|</p>
+                <button className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-sm items-center justify-center ">
+                  <MdCopyAll className="mr-1" /> 선택한 번호 복사
+                </button>
+              </div>
+            )}
+
+            <button
+              className={`w-full rounded-2xl p-3 ${
+                !isLoading && !firstLottery
+                  ? " bg-indigo-600 text-white"
+                  : "bg-white"
+              }`}
+              onClick={handleClick}
+              disabled={isLoading}
+            >
+              {isLoading
+                ? "당신의 당첨을 응원합니다!"
+                : firstLottery
+                ? "당신의 번호를 뽑아보세요!"
+                : "다시 뽑아보세요!"}
+            </button>
+          </div>
         </div>
       </div>
 
