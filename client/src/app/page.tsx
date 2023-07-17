@@ -37,10 +37,38 @@ export default function Home() {
 
   const getLottoNumbers = async () => {
     try {
-      const response = await axios.post(
+      const eventSource = new EventSource(
         `${process.env.NEXT_PUBLIC_API_URL}/lotto`
       );
-      return response.data;
+
+      eventSource.onmessage = (event) => {
+        const progress = JSON.parse(event.data);
+        console.log("Progress:", progress);
+      };
+
+      eventSource.onerror = (event) => {
+        console.log(
+          "로또 생성에 오류가 발생했습니다. 다시 시도하여 주시기 바랍니다."
+        );
+        eventSource.close();
+      };
+
+      eventSource.addEventListener("progress", (event) => {
+        const progress = JSON.parse(event.data);
+        console.log("Progress:", progress);
+      });
+
+      eventSource.addEventListener("numbers", (event) => {
+        const numbers = JSON.parse(event.data);
+        eventSource.close();
+        console.log("Numbers:", numbers);
+        return { numbers: numbers };
+      });
+
+      // const response = await axios.post(
+      //   `${process.env.NEXT_PUBLIC_API_URL}/lotto`
+      // );
+      // return response.data;
     } catch (err) {
       console.error(err);
       throw err;
