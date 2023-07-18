@@ -1,5 +1,6 @@
 import json
-from typing import Union
+import queue
+import threading
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,11 +9,11 @@ from lotto.LSTM_training import generate_lotto, preprocessing
 from lotto.lotto import get_round_number, get_round_number_all
 
 from sse_starlette import EventSourceResponse
-from starlette.responses import StreamingResponse
 
-
+from keras.callbacks import Callback
 
 # uvicorn api:app --reload
+
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
@@ -31,20 +32,37 @@ app.add_middleware(
 
 @app.get("/api/lotto")
 async def read_root():
-    async def generate_numbers():
-        # yield {"event": "progress","data": 0,\n\n"}
-        # yield {json.dumps({ "progress": 0, "data": {} }) + "\n\n"}
-        yield "event: progress\ndata: 0\n\n"
-        preprocessing()
-        yield "event: progress\ndata: 20\n\n"
-        numbers = generate_lotto()
-        yield "event: progress\ndata: 60\n\n"
-        # yield {"event": "numbers", "data": numbers}
-    # return {"numbers": generate_lotto()}
-    response = StreamingResponse(generate_numbers(), media_type="text/event-stream")
-    response.headers["X-Accel-Buffering"] = "no"
-    return response
-    # return EventSourceResponse(generate_numbers())
+    epochs = 200
+    q = queue.Queue()
+    class Callbacks(Callback):
+        def on_epoch_end(self, epoch, logs=None):
+            q.put(epoch)
+
+    def fit_model(model, X_train, y_train):
+        model.fit(X_train, y_train, epochs=epochs, verbose=0, callbacks=[Callbacks()])
+        model.save('./lotto/lotto_model.keras')
+        generate_lotto()
+        print('학습 끝!!!')
+        q.put(None)
+
+    model, X_train, y_train = await preprocessing()
+    threading.Thread(target=fit_model, args=(model, X_train, y_train)).start()
+
+    def generator():
+        while True:
+            try:
+                # Queue에서 epoch 값을 가져옵니다. 값이 없을 때는 1초 동안 대기합니다.
+                epoch = q.get(timeout=1)
+                
+                if epoch is None:
+                    break
+                
+                yield f"data: {json.dumps({'epoch': epoch})}\n\n"
+            except queue.Empty:
+                # Queue가 비어있을 때는 이번 루프를 건너뛰고 다음 루프로 진행합니다.
+                continue
+
+    return EventSourceResponse(generator())
 
 @app.get("/api/lotto/{round_number}")
 def read_root(round_number:int):

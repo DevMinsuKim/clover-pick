@@ -42,8 +42,10 @@ export default function Home() {
       );
 
       eventSource.onmessage = (event) => {
-        const progress = JSON.parse(event.data);
-        console.log("Progress:", progress);
+        console.log(event.data);
+        // const progress = JSON.parse(event.data);
+        // console.log("Progress:", progress);
+        //  eventSource.close();
       };
 
       eventSource.onerror = (event) => {
@@ -53,17 +55,17 @@ export default function Home() {
         eventSource.close();
       };
 
-      eventSource.addEventListener("progress", (event) => {
-        const progress = JSON.parse(event.data);
-        console.log("Progress:", progress);
-      });
+      // eventSource.addEventListener("progress", (event) => {
+      //   const progress = JSON.parse(event.data);
+      //   console.log("Progress:", progress);
+      // });
 
-      eventSource.addEventListener("numbers", (event) => {
-        const numbers = JSON.parse(event.data);
-        eventSource.close();
-        console.log("Numbers:", numbers);
-        return { numbers: numbers };
-      });
+      // eventSource.addEventListener("numbers", (event) => {
+      //   const numbers = JSON.parse(event.data);
+      //   eventSource.close();
+      //   console.log("Numbers:", numbers);
+      //   return { numbers: numbers };
+      // });
 
       // const response = await axios.post(
       //   `${process.env.NEXT_PUBLIC_API_URL}/lotto`

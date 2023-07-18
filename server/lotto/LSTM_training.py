@@ -1,5 +1,6 @@
 import math
 import os
+import queue
 import numpy as np
 import pandas as pd
 import logging
@@ -42,6 +43,8 @@ files = os.listdir(directory)
 
 # 데이터 파일 경로
 data_file_path = None
+
+q = queue.Queue()
 
 # 데이터 파일 찾기
 for file in files:
@@ -101,7 +104,7 @@ def generate_lotto():
         logging.error("Exception occurred", exc_info=True)
 
 # 데이터 전처리
-def preprocessing():
+async def preprocessing():
     with open(data_file_path, 'r', encoding='EUC-KR') as file:
         html_code = file.read()
 
@@ -118,8 +121,6 @@ def preprocessing():
     df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
 
     data = np.array(df)
-
-    print(data)
 
     # 문자열을 숫자로 변환
     data = data.astype(float)
@@ -144,8 +145,10 @@ def preprocessing():
     model.add(Dense(6))
     model.compile(optimizer='adam', loss='mse')
 
-    # 모델 학습
-    model.fit(X_train, y_train, epochs=200, verbose=1)
+    return model, X_train, y_train
 
-    # 모델 저장
-    model.save('./lotto/lotto_model.keras')
+    # # 모델 학습
+    # model.fit(X_train, y_train, epochs=200, verbose=0)
+
+    # # 모델 저장
+    # model.save('./lotto/lotto_model.keras')
