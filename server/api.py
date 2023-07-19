@@ -34,35 +34,53 @@ app.add_middleware(
 async def read_root():
     epochs = 200
     q = queue.Queue()
+
     class Callbacks(Callback):
         def on_epoch_end(self, epoch, logs=None):
-            q.put(epoch)
+            q.put({'epoch': epoch})
 
     def fit_model(model, X_train, y_train):
-        model.fit(X_train, y_train, epochs=epochs, verbose=0, callbacks=[Callbacks()])
-        model.save('./lotto/lotto_model.keras')
-        generate_lotto()
-        print('학습 끝!!!')
-        q.put(None)
+        try:
+            model.fit(X_train, y_train, epochs=epochs, verbose=0, callbacks=[Callbacks()])
+            model.save('./lotto/lotto_model.keras')
+            lotto_results = generate_lotto()
+            q.put({'epoch': None, 'lotto_results': lotto_results})
+        except Exception as e:
+            print(f"Error during model fitting: {e}")
+            q.put({'epoch': None, 'error': str(e)})
 
     model, X_train, y_train = await preprocessing()
-    threading.Thread(target=fit_model, args=(model, X_train, y_train)).start()
 
     def generator():
+        yield f"{json.dumps({'percent': 10, 'numbers': {}})}\n\n"
+        threading.Thread(target=fit_model, args=(model, X_train, y_train)).start()
+
+        last_percent = 0
         while True:
             try:
                 # Queue에서 epoch 값을 가져옵니다. 값이 없을 때는 1초 동안 대기합니다.
-                epoch = q.get(timeout=1)
+                data = q.get(timeout=1)
+                epoch = data.get('epoch')
                 
                 if epoch is None:
+                    if 'error' in data:
+                        print(f"Error during model fitting: {data['error']}")
+                        break
+                    lotto_results = data.get('lotto_results')
+                    yield f"{json.dumps({'percent': 100, 'numbers': lotto_results})}\n\n"
                     break
                 
-                yield f"data: {json.dumps({'epoch': epoch})}\n\n"
+                percent = (epoch / epochs) * 100
+                if 20 <= percent <= 90 and percent // 10 > last_percent:
+                    last_percent = percent // 10
+                    yield f"{json.dumps({'percent': percent, 'numbers': {}})}\n\n"
             except queue.Empty:
                 # Queue가 비어있을 때는 이번 루프를 건너뛰고 다음 루프로 진행합니다.
                 continue
 
     return EventSourceResponse(generator())
+
+
 
 @app.get("/api/lotto/{round_number}")
 def read_root(round_number:int):

@@ -8,6 +8,10 @@ import { LuFileInput } from "react-icons/lu";
 import { MdCopyAll } from "react-icons/md";
 import React from "react";
 
+type LottoNumbersResponse = {
+  numbers: number[][];
+};
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [aniNumber, setAniNumber] = useState([[0, 0, 0, 0, 0, 0]]);
@@ -16,6 +20,7 @@ export default function Home() {
   ]);
   const [checkBoxNumber, setCheckBoxNumber] = useState([false]);
   const [firstLottery, setFirstLottery] = useState(true);
+  const [generatePercent, setGeneratePercent] = useState(0);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -35,83 +40,73 @@ export default function Home() {
     }
   };
 
-  const getLottoNumbers = async () => {
-    try {
-      const eventSource = new EventSource(
-        `${process.env.NEXT_PUBLIC_API_URL}/lotto`
-      );
-
-      eventSource.onmessage = (event) => {
-        console.log(event.data);
-        // const progress = JSON.parse(event.data);
-        // console.log("Progress:", progress);
-        //  eventSource.close();
-      };
-
-      eventSource.onerror = (event) => {
-        console.log(
-          "로또 생성에 오류가 발생했습니다. 다시 시도하여 주시기 바랍니다."
+  const getLottoNumbers = (): Promise<LottoNumbersResponse> => {
+    return new Promise((resolve, reject) => {
+      try {
+        const eventSource = new EventSource(
+          `${process.env.NEXT_PUBLIC_API_URL}/lotto`
         );
-        eventSource.close();
-      };
 
-      // eventSource.addEventListener("progress", (event) => {
-      //   const progress = JSON.parse(event.data);
-      //   console.log("Progress:", progress);
-      // });
+        eventSource.onmessage = (event) => {
+          console.log(event.data);
+          const data = JSON.parse(event.data);
+          if (data.percent === 100) {
+            eventSource.close();
+            resolve({ numbers: data.numbers });
+          } else {
+            setGeneratePercent(data.percent);
+          }
+        };
 
-      // eventSource.addEventListener("numbers", (event) => {
-      //   const numbers = JSON.parse(event.data);
-      //   eventSource.close();
-      //   console.log("Numbers:", numbers);
-      //   return { numbers: numbers };
-      // });
-
-      // const response = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_API_URL}/lotto`
-      // );
-      // return response.data;
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
+        eventSource.onerror = (event) => {
+          eventSource.close();
+          reject(
+            new Error(
+              "로또 생성에 오류가 발생했습니다. 다시 시도하여 주시기 바랍니다."
+            )
+          );
+        };
+      } catch (err) {
+        console.error(err);
+        reject(err);
+      }
+    });
   };
 
   const animateNumber = async () => {
     const minNumber = 1;
     const maxNumber = 45;
-    let currentFrame = 0;
-    let isLoading = false;
+    let isLoading = true;
 
     const updateNumber = () => {
-      const randomNumbers = Array.from({ length: aniNumber.length }, () =>
-        Array.from(
-          { length: aniNumber[0].length },
-          () =>
-            Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber
-        )
-      );
-
-      setAniNumber(randomNumbers);
-
-      currentFrame++;
-
       if (isLoading) {
+        const randomNumbers = Array.from({ length: aniNumber.length }, () =>
+          Array.from(
+            { length: aniNumber[0].length },
+            () =>
+              Math.floor(Math.random() * (maxNumber - minNumber + 1)) +
+              minNumber
+          )
+        );
+        setAniNumber(randomNumbers);
         requestAnimationFrame(updateNumber);
-      } else {
-        setAniNumber(data.numbers);
-        setCheckBoxNumber(Array(data.numbers.length).fill(false));
       }
     };
 
     setIsLoading(true);
-    isLoading = true;
     setFirstLottery(false);
     updateNumber();
     setCheckBoxNumber([false]);
-    const data = await getLottoNumbers();
-    isLoading = false;
-    setIsLoading(false);
+
+    try {
+      const data = await getLottoNumbers();
+      isLoading = false;
+      setIsLoading(false);
+      setAniNumber(data.numbers);
+      setCheckBoxNumber(Array(data.numbers.length).fill(false));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleClick = async () => {
@@ -258,18 +253,22 @@ export default function Home() {
 
             <button
               className={`w-full rounded-2xl p-3 ${
-                !isLoading && !firstLottery
-                  ? " bg-indigo-600 text-white"
-                  : "bg-white"
+                isLoading
+                  ? "bg-gradient-to-r from-white from-0% via-indigo-900 via-50% to-white to-100% text-white"
+                  : firstLottery
+                  ? "bg-white"
+                  : "bg-indigo-600 text-white"
               }`}
               onClick={handleClick}
               disabled={isLoading}
             >
-              {isLoading
-                ? "당신의 당첨을 응원합니다!"
-                : firstLottery
-                ? "당신의 번호를 뽑아보세요!"
-                : "다시 뽑아보세요!"}
+              <span className="z-10 ">
+                {isLoading
+                  ? "당신의 당첨을 응원합니다!"
+                  : firstLottery
+                  ? "당신의 번호를 뽑아보세요!"
+                  : "다시 뽑아보세요!"}
+              </span>
             </button>
           </div>
         </div>

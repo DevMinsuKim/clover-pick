@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
     const browser = await puppeteer.launch({
       headless: false,
