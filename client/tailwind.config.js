@@ -20,7 +20,7 @@ module.exports = {
           },
           "100%": {
             opacity: 1,
-            transform: "translateY(1rem)",
+            transform: "translateY(0.6rem)",
           },
         },
         scrollDownArrow: {
@@ -57,6 +57,25 @@ module.exports = {
         scrollDownDot: "scrollDownDot 1.15s linear infinite",
         scrollDownArrow: "scrollDownArrow 1.15s linear infinite",
         generationLottoBg: "generationLottoBg 4s ease infinite",
+      },
+      screens: {
+        sm: "330px",
+        // => @media (min-width: 320px) { ... }
+
+        md: "425px",
+        // => @media (min-width: 320px) { ... }
+
+        lg: "576px",
+        // => @media (min-width: 576px) { ... }
+
+        xl: "768px",
+        // => @media (min-width: 768px) { ... }
+
+        "2xl": "1024px",
+        // => @media (min-width: 1024px) { ... }
+
+        "3xl": "1440px",
+        // => @media (min-width: 1440px) { ... }
       },
     },
   },

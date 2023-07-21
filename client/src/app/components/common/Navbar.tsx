@@ -28,19 +28,19 @@ export default function Navbar() {
   return (
     <div className="flex justify-center items-center">
       <nav>
-        <ul className="flex items-center gap-4 p-2">
+        <ul className="flex items-center p-3">
           <li
-            className={`flex w-24 cursor-pointer items-center justify-center  ${
-              pathName === "/" ? "bg-indigo-600 p-2 rounded-md" : ""
+            className={`flex cursor-pointer items-center justify-center  ${
+              pathName === "/" ? "bg-indigo-600 p-2 rounded-md" : "p-2"
             }`}
           >
             <Link href="/">
               <p
-                className={`text-lg ${
+                className={`text-sm ${
                   pathName === "/"
                     ? "text-white"
-                    : "text-slate-500 dark:text-slate-300 hover:text-slate-900 hover:dark:text-white"
-                }`}
+                    : "text-slate-500 dark:text-slate-300 hover:text-indigo-900 hover:dark:text-white"
+                } md:text-base`}
               >
                 로또 6/45
               </p>
@@ -48,31 +48,35 @@ export default function Navbar() {
           </li>
 
           <li>
-            {isDarkModeOn ? (
+            {!isDarkModeOn ? (
               <WiDaySunny
-                className={"flex w-12 h-12 cursor-pointer text-amber-300 "}
+                className={
+                  "flex w-6 h-6 md:w-8 sm:h-8 cursor-pointer text-amber-300 mx-4"
+                }
                 onClick={handleClick}
               />
             ) : (
               <MdNightlight
-                className={"flex w-10 h-12 cursor-pointer text-amber-300 "}
+                className={
+                  "flex w-4 h-4 md:w-6 sm:h-6 cursor-pointer text-amber-500 mx-4"
+                }
                 onClick={handleClick}
               />
             )}
           </li>
 
           <li
-            className={`flex w-32 cursor-pointer items-center justify-center ${
-              pathName === "/pension" ? "bg-indigo-600 p-2 rounded-md" : ""
+            className={`flex cursor-pointer items-center justify-center ${
+              pathName === "/pension" ? "bg-indigo-600 p-2 rounded-md" : "p-2"
             }`}
           >
             <Link href="/pension">
               <p
-                className={`text-lg ${
+                className={`text-sm ${
                   pathName === "/pension"
                     ? "text-white"
-                    : "text-slate-500 dark:text-slate-300 hover:text-slate-900 hover:dark:text-white"
-                }`}
+                    : "text-slate-500 dark:text-slate-300 hover:text-indigo-900 hover:dark:text-white"
+                } md:text-base`}
               >
                 연금복권720+
               </p>

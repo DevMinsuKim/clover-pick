@@ -7,6 +7,7 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { LuFileInput } from "react-icons/lu";
 import { MdCopyAll } from "react-icons/md";
 import React from "react";
+import IntroduceLotto from "./components/lotto/IntroduceLotto";
 
 type LottoNumbersResponse = {
   numbers: number[][];
@@ -145,49 +146,7 @@ export default function Home() {
 
   return (
     <section>
-      <div
-        className={
-          "relative flex flex-col w-full h-screen bg-gradient-to-t from-indigo-600  via-indigo-100 to-white dark:bg-gradient-to-t dark:from-indigo-900 items-center"
-        }
-      >
-        <p className="text-5xl text-center font-bold mt-48">
-          로또 번호 예측, 최고의 선택 <br /> LSTM 기반 로또 6/45
-        </p>
-        <p className="text-2xl text-center mt-14">
-          인공지능 신경망 LSTM의 힘을 결합한 우리의 시스템은 로또 번호 예측의
-          새로운 경지를 엽니다. <br /> 더 이상의 추측이 아닌, 데이터 기반의
-          정확한 예측으로 당신의 로또 경험을 혁신시켜줍니다. <br /> 로또의
-          미래를 함께 만들어 가요
-        </p>
-
-        <button
-          className="bg-indigo-600 text-white rounded-2xl p-4 mt-20 text-2xl hover:bg-indigo-500 hover:shadow-xl"
-          onClick={() => {
-            if (scrollRef.current) {
-              scrollRef.current.scrollIntoView({ behavior: "smooth" });
-            }
-          }}
-        >
-          당신의 로또 번호를 예측해보세요!
-        </button>
-
-        <button
-          className="absolute flex flex-col items-center justify-center bottom-3"
-          onClick={() => {
-            if (scrollRef.current) {
-              scrollRef.current.scrollIntoView({ behavior: "smooth" });
-            }
-          }}
-        >
-          <div className="flex w-8 h-16 border-white border-solid border-2 border-radius rounded-2xl items-center justify-center">
-            <span className="w-3 h-3 rounded-full bg-white animate-scrollDownDot" />
-          </div>
-          <AiOutlineDown
-            className="animate-scrollDownArrow mt-2 text-white"
-            size={"1.25rem"}
-          />
-        </button>
-      </div>
+      <IntroduceLotto targetRef={scrollRef} />
 
       <div
         className="flex bg-slate-100 items-center justify-center scroll-mt-16"

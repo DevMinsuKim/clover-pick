@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Open_Sans } from "next/font/google";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "./components/common/Navbar";
+import Footer from "./components/common/Footer";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -17,11 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={openSans.className}>
-      <body className="">
+      <body>
         <header className="fixed w-full top-0 bg-white dark:bg-slate-950 z-10">
           <Navbar />
         </header>
-        <main className="dark:flex w-full dark:bg-slate-950">{children}</main>
+        <main>{children}</main>
         <footer>
           <Footer />
         </footer>
