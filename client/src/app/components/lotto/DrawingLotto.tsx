@@ -1,20 +1,40 @@
 import React, { forwardRef, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { LuFileInput } from "react-icons/lu";
 import { MdCopyAll } from "react-icons/md";
 import LottoBgSelect from "../common/LottoBgSelect";
+import AlertModal from "../modal/AlertModal";
 
 type LottoNumbersResponse = {
   numbers: number[][];
 };
 
-const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
+const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
+  const [alertMdoal, setAlertModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [aniNumber, setAniNumber] = useState([[0, 0, 0, 0, 0, 0]]);
   const [checkBoxNumber, setCheckBoxNumber] = useState([false]);
   const [firstLottery, setFirstLottery] = useState(true);
   const [generatePercent, setGeneratePercent] = useState(0);
   const [iconSize, setIconSize] = useState("1rem");
+
+  const alertMdoalHandler = () => {
+    setAlertModal(!alertMdoal);
+  };
+
+  useEffect(() => {
+    const isMobile = !!navigator.userAgent.match(
+      /(iPhone|iPad|Android|BlackBerry|Windows Phone)/i
+    );
+
+    if (isMobile) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, []);
 
   useEffect(() => {
     const checkSize = () => {
@@ -31,7 +51,6 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
 
     checkSize();
 
-    // add listener on mount, remove on unmount
     window.addEventListener("resize", checkSize);
     return () => window.removeEventListener("resize", checkSize);
   }, []);
@@ -49,6 +68,7 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           if (data.percent === 100) {
             eventSource.close();
             resolve({ numbers: data.numbers });
+            setGeneratePercent(data.percent);
           } else {
             setGeneratePercent(data.percent);
           }
@@ -90,6 +110,7 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     };
 
     setIsLoading(true);
+    setGeneratePercent(0);
     setFirstLottery(false);
     updateNumber();
     setCheckBoxNumber([false]);
@@ -117,6 +138,16 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
         i === index ? !isChecked : isChecked
       )
     );
+  };
+
+  const autoInput = () => {
+    if (isMobile) {
+      // alert("모바일입니다");
+      alertMdoalHandler();
+      console.log("모바일입니다.");
+    } else {
+      console.log("PC입니다.");
+    }
   };
 
   return (
@@ -173,7 +204,10 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
         >
           {!isLoading && !firstLottery && (
             <div className="flex flex-row mb-5 justify-between">
-              <button className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-xs sm:text-sm xl:text-base 2xl:text-lg items-center justify-center ">
+              <button
+                className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-xs sm:text-sm xl:text-base 2xl:text-lg items-center justify-center "
+                onClick={autoInput}
+              >
                 <LuFileInput className="mr-1" />
                 선택한 번호 자동 입력
               </button>
@@ -185,9 +219,9 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           )}
 
           <button
-            className={`relative w-full rounded-2xl py-2 px-3 ${
+            className={`relative w-full rounded-2xl p-2 ${
               isLoading
-                ? "bg-indigo-950 text-white"
+                ? "bg-white"
                 : firstLottery
                 ? "bg-white"
                 : "bg-indigo-600 text-white"
@@ -195,8 +229,13 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
             onClick={handleClick}
             disabled={isLoading}
           >
-            <div className="absolute bg-indigo-950 w-full h-full" />
-            <span className="text-sm sm:text-base xl:text-lg 2xl:text-2xl">
+            <div
+              className={`absolute top-0 left-0 h-full bg-indigo-200 rounded-2xl transition-all duration-400 ease-in-out ${
+                generatePercent === 100 && "hidden"
+              }`}
+              style={{ width: `${generatePercent}%` }}
+            />
+            <span className="relative z-10 text-sm sm:text-base xl:text-lg 2xl:text-2xl">
               {isLoading
                 ? "당신의 당첨을 응원합니다!"
                 : firstLottery
@@ -206,8 +245,9 @@ const Drawing = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           </button>
         </div>
       </div>
+      {alertMdoal ? createPortal(<AlertModal />, document.body) : null}
     </div>
   );
 });
 
-export default Drawing;
+export default DrawingLotto;

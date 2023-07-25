@@ -4,8 +4,8 @@ import axios from "axios";
 import { FaPlus } from "react-icons/fa";
 import React from "react";
 import IntroduceLotto from "./components/lotto/IntroduceLotto";
-import Drawing from "./components/lotto/Drawing";
 import LottoBgSelect from "./components/common/LottoBgSelect";
+import DrawingLotto from "./components/lotto/DrawingLotto";
 
 export default function Home() {
   const scrollRef = useRef(null);
@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <section>
       <IntroduceLotto targetRef={scrollRef} />
-      <Drawing ref={scrollRef} />
+      <DrawingLotto ref={scrollRef} />
 
       <div className="flex w-ull bg-slate-100 mt-8 justify-center items-center">
         <div className="mb-8 w-full max-w-screen-xl">

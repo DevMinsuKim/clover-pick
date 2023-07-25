@@ -13,8 +13,6 @@ export default function IntroduceLotto({ targetRef }: IntroduceLottoProps) {
     }
   };
 
-  // bg-gradient-to-t from-indigo-600  via-indigo-100 to-white dark:bg-gradient-to-t
-
   return (
     <div
       className={
@@ -26,8 +24,8 @@ export default function IntroduceLotto({ targetRef }: IntroduceLottoProps) {
       </p>
       <p className="w-4/5 text-center mt-14 2xl:text-lg dark:text-white">
         인공지능 신경망 LSTM의 힘을 결합한 <br className="lg:hidden" /> 우리의
-        시스템은 로또 번호 예측의 <br className="lg:hidden" />
-        새로운 경지를 엽니다. <br />더 이상의 추측이 아닌, 데이터 기반의{" "}
+        시스템은 로또 번호 예측의 <br className="xl:hidden" />
+        새로운 경지를 엽니다. <br />더 이상의 추측이 아닌, 데이터 기반의
         <br className="lg:hidden" />
         정확한 예측으로 <br />
         당신의 로또 경험을 혁신시켜줍니다. <br />

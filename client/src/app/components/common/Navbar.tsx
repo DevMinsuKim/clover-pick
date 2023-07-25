@@ -2,29 +2,16 @@
 import React, { useEffect, useState } from "react";
 import { WiDaySunny } from "react-icons/wi";
 import { MdNightlight } from "react-icons/md";
+import { GrPersonalComputer } from "react-icons/gr";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 
 export default function Navbar() {
   const pathName = usePathname();
 
-  const [isDarkModeOn, setIsDarkModeOn] = useState(false);
+  const { resolvedTheme, theme, setTheme } = useTheme();
 
-  useEffect(() => {
-    setIsDarkModeOn(document.body.classList.contains("dark"));
-  }, []);
-
-  const handleClick = () => {
-    if (isDarkModeOn) {
-      document.body.classList.remove("dark");
-      localStorage.setItem("darkMode", "false");
-      setIsDarkModeOn(false);
-    } else {
-      document.body.classList.add("dark");
-      localStorage.setItem("darkMode", "true");
-      setIsDarkModeOn(true);
-    }
-  };
   return (
     <div className="flex justify-center items-center">
       <nav>
@@ -48,19 +35,19 @@ export default function Navbar() {
           </li>
 
           <li>
-            {!isDarkModeOn ? (
+            {resolvedTheme === "light" ? (
               <WiDaySunny
                 className={
                   "flex w-6 h-6 md:w-8 sm:h-8 cursor-pointer text-amber-300 mx-4"
                 }
-                onClick={handleClick}
+                onClick={() => setTheme("dark")}
               />
             ) : (
               <MdNightlight
                 className={
                   "flex w-4 h-4 md:w-6 sm:h-6 cursor-pointer text-amber-500 mx-4"
                 }
-                onClick={handleClick}
+                onClick={() => setTheme("light")}
               />
             )}
           </li>

@@ -2,6 +2,7 @@ import "./globals.css";
 import { Open_Sans } from "next/font/google";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
+import { Providers } from "./Providers";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -16,15 +17,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={openSans.className}>
-      <body>
-        <header className="fixed w-full top-0 bg-white dark:bg-slate-950 z-10">
-          <Navbar />
-        </header>
-        <main>{children}</main>
-        <footer>
-          <Footer />
-        </footer>
+    <html lang="en" className={openSans.className} suppressHydrationWarning>
+      <body className="bg-white dark:bg-slate-950">
+        <Providers>
+          <header className="fixed w-full top-0 bg-white dark:bg-slate-950 z-10">
+            <Navbar />
+          </header>
+          <main>{children}</main>
+          <footer>
+            <Footer />
+          </footer>
+        </Providers>
       </body>
     </html>
   );
