@@ -1,23 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { WiDaySunny } from "react-icons/wi";
-import { MdNightlight } from "react-icons/md";
-import { GrPersonalComputer } from "react-icons/gr";
+import React from "react";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
 import Link from "next/link";
+import ThemeButton from "./ThemeButton";
 
 export default function Navbar() {
   const pathName = usePathname();
 
-  const { resolvedTheme, theme, setTheme } = useTheme();
-
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center">
       <nav>
         <ul className="flex items-center p-3">
           <li
-            className={`flex cursor-pointer items-center justify-center  ${
+            className={`flex cursor-pointer items-center justify-center ml-5  ${
               pathName === "/" ? "bg-indigo-600 p-2 rounded-md" : "p-2"
             }`}
           >
@@ -34,22 +29,8 @@ export default function Navbar() {
             </Link>
           </li>
 
-          <li>
-            {resolvedTheme === "light" ? (
-              <WiDaySunny
-                className={
-                  "flex w-6 h-6 md:w-8 sm:h-8 cursor-pointer text-amber-300 mx-4"
-                }
-                onClick={() => setTheme("dark")}
-              />
-            ) : (
-              <MdNightlight
-                className={
-                  "flex w-4 h-4 md:w-6 sm:h-6 cursor-pointer text-amber-500 mx-4"
-                }
-                onClick={() => setTheme("light")}
-              />
-            )}
+          <li className="relative items-center">
+            <ThemeButton />
           </li>
 
           <li

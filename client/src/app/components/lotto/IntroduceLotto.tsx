@@ -16,7 +16,7 @@ export default function IntroduceLotto({ targetRef }: IntroduceLottoProps) {
   return (
     <div
       className={
-        "relative flex flex-col w-full h-screen items-center dark:bg-slate-950 "
+        "relative flex flex-col w-full items-center dark:bg-slate-950 h-screen"
       }
     >
       <p className="text-2xl text-b sm:text-3xl md:text-4xl lg:text-5xl text-center font-bold mt-28 xl:mt-72 dark:text-white">

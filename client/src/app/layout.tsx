@@ -20,14 +20,16 @@ export default function RootLayout({
     <html lang="en" className={openSans.className} suppressHydrationWarning>
       <body className="bg-white dark:bg-slate-950">
         <Providers>
-          <header className="fixed w-full top-0 bg-white dark:bg-slate-950 z-10">
+          <header className="fixed w-full bg-white dark:bg-slate-950 z-10">
             <Navbar />
           </header>
+
           <main>{children}</main>
           <footer>
             <Footer />
           </footer>
         </Providers>
+        <div id="modal" />
       </body>
     </html>
   );

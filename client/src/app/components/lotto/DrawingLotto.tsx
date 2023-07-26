@@ -5,6 +5,7 @@ import { LuFileInput } from "react-icons/lu";
 import { MdCopyAll } from "react-icons/md";
 import LottoBgSelect from "../common/LottoBgSelect";
 import AlertModal from "../modal/AlertModal";
+import { isDesktop } from "react-device-detect";
 
 type LottoNumbersResponse = {
   numbers: number[][];
@@ -13,7 +14,6 @@ type LottoNumbersResponse = {
 const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   const [alertMdoal, setAlertModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [aniNumber, setAniNumber] = useState([[0, 0, 0, 0, 0, 0]]);
   const [checkBoxNumber, setCheckBoxNumber] = useState([false]);
   const [firstLottery, setFirstLottery] = useState(true);
@@ -23,18 +23,6 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   const alertMdoalHandler = () => {
     setAlertModal(!alertMdoal);
   };
-
-  useEffect(() => {
-    const isMobile = !!navigator.userAgent.match(
-      /(iPhone|iPad|Android|BlackBerry|Windows Phone)/i
-    );
-
-    if (isMobile) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  }, []);
 
   useEffect(() => {
     const checkSize = () => {
@@ -126,7 +114,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     }
   };
 
-  const handleClick = async () => {
+  const generationClick = async () => {
     if (!isLoading) {
       animateNumber();
     }
@@ -141,12 +129,11 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   };
 
   const autoInput = () => {
-    if (isMobile) {
-      // alert("모바일입니다");
+    if (isDesktop) {
+      console.log("PC입니다.");
+    } else {
       alertMdoalHandler();
       console.log("모바일입니다.");
-    } else {
-      console.log("PC입니다.");
     }
   };
 
@@ -226,7 +213,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
                 ? "bg-white"
                 : "bg-indigo-600 text-white"
             }`}
-            onClick={handleClick}
+            onClick={generationClick}
             disabled={isLoading}
           >
             <div
@@ -245,7 +232,11 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           </button>
         </div>
       </div>
-      {alertMdoal ? createPortal(<AlertModal />, document.body) : null}
+      {alertMdoal && (
+        <AlertModal onClose={alertMdoalHandler}>
+          <div className="font-bold text-lg">PC에서 이용해주세요</div>
+        </AlertModal>
+      )}
     </div>
   );
 });
