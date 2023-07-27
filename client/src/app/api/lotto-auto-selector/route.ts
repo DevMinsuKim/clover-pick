@@ -1,19 +1,16 @@
-import { NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 
-export async function POST(request: Request) {
-  try {
-    const browser = await puppeteer.launch({
-      headless: false,
-      defaultViewport: null,
-      args: ["--window-size=1920,1080"],
-    });
-    const [page1] = await browser.pages();
+export async function POST(req: Request) {
+  const browser = await puppeteer.launch({
+    headless: false,
+    defaultViewport: null,
+    args: ["--window-size=1920,1080"],
+  });
 
-    const numberSets = [
-      [2, 10, 15, 20, 30, 40],
-      [3, 11, 16, 25, 31, 45],
-    ];
+  try {
+    const numberSets = await req.json();
+
+    const [page1] = await browser.pages();
 
     await page1.goto("https://dhlottery.co.kr/user.do?method=login&returnUrl=");
     await page1.waitForSelector(".money");
@@ -54,8 +51,9 @@ export async function POST(request: Request) {
       }
     }
 
-    return new Response("ok!!");
+    return new Response("ok!");
   } catch (error) {
+    await browser.close();
     console.error(error);
   }
 }

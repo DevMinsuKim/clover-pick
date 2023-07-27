@@ -6,8 +6,10 @@ import React from "react";
 import IntroduceLotto from "./components/lotto/IntroduceLotto";
 import LottoBgSelect from "./components/common/LottoBgSelect";
 import DrawingLotto from "./components/lotto/DrawingLotto";
+import AlertModal from "./components/modal/AlertModal";
 
 export default function Home() {
+  const [alertMdoal, setAlertModal] = useState(false);
   const scrollRef = useRef(null);
 
   const [roundNumber, setRoundNumber] = useState([
@@ -18,6 +20,10 @@ export default function Home() {
     getRoundNumbers();
   }, []);
 
+  const alertMdoalHandler = () => {
+    setAlertModal(!alertMdoal);
+  };
+
   const getRoundNumbers = async () => {
     try {
       const response = await axios.get(
@@ -25,8 +31,7 @@ export default function Home() {
       );
       return setRoundNumber(response.data);
     } catch (err) {
-      console.error(err);
-      throw err;
+      setAlertModal(true);
     }
   };
 
@@ -81,6 +86,14 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {alertMdoal && (
+        <AlertModal onClose={alertMdoalHandler}>
+          <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
+            현재 요청을 처리하는 데 문제가 발생했습니다. 나중에 다시 시도해
+            주세요.
+          </p>
+        </AlertModal>
+      )}
     </section>
   );
 }

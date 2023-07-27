@@ -1,27 +1,37 @@
-import React, { forwardRef, useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { LuFileInput } from "react-icons/lu";
 import { MdCopyAll } from "react-icons/md";
 import LottoBgSelect from "../common/LottoBgSelect";
 import AlertModal from "../modal/AlertModal";
 import { isDesktop } from "react-device-detect";
+import axios from "axios";
+import ActionModal from "../modal/ActionModal";
 
-type LottoNumbersResponse = {
-  numbers: number[][];
-};
+interface NumberSet {
+  numbers: number[];
+  clicked: boolean;
+}
 
 const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
+  const [error, setError] = useState(false);
+  const [actionModal, setaAtionModal] = useState(false);
   const [alertMdoal, setAlertModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [aniNumber, setAniNumber] = useState([[0, 0, 0, 0, 0, 0]]);
-  const [checkBoxNumber, setCheckBoxNumber] = useState([false]);
+  const [aniNumber, setAniNumber] = useState([
+    { numbers: [0, 0, 0, 0, 0, 0], clicked: false },
+  ]);
   const [firstLottery, setFirstLottery] = useState(true);
   const [generatePercent, setGeneratePercent] = useState(0);
   const [iconSize, setIconSize] = useState("1rem");
 
   const alertMdoalHandler = () => {
     setAlertModal(!alertMdoal);
+    setError(false);
+  };
+
+  const actionModalHandler = () => {
+    setaAtionModal(!actionModal);
   };
 
   useEffect(() => {
@@ -43,7 +53,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
-  const getLottoNumbers = (): Promise<LottoNumbersResponse> => {
+  const getLottoNumbers = (): Promise<NumberSet[]> => {
     return new Promise((resolve, reject) => {
       try {
         const eventSource = new EventSource(
@@ -55,7 +65,12 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           const data = JSON.parse(event.data);
           if (data.percent === 100) {
             eventSource.close();
-            resolve({ numbers: data.numbers });
+
+            const updatedData = data.numbers.map((numbersArray: number[]) => {
+              return { numbers: numbersArray, clicked: false };
+            });
+
+            resolve(updatedData);
             setGeneratePercent(data.percent);
           } else {
             setGeneratePercent(data.percent);
@@ -86,12 +101,13 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
       if (isLoading) {
         const randomNumbers = Array.from({ length: aniNumber.length }, () =>
           Array.from(
-            { length: aniNumber[0].length },
+            { length: aniNumber[0].numbers.length },
             () =>
               Math.floor(Math.random() * (maxNumber - minNumber + 1)) +
               minNumber
           )
-        );
+        ).map((numbers) => ({ numbers, clicked: false }));
+
         setAniNumber(randomNumbers);
         requestAnimationFrame(updateNumber);
       }
@@ -101,41 +117,65 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     setGeneratePercent(0);
     setFirstLottery(false);
     updateNumber();
-    setCheckBoxNumber([false]);
 
     try {
       const data = await getLottoNumbers();
       isLoading = false;
       setIsLoading(false);
-      setAniNumber(data.numbers);
-      setCheckBoxNumber(Array(data.numbers.length).fill(false));
+      setAniNumber(data);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const generationClick = async () => {
+  const generationLotto = async () => {
     if (!isLoading) {
       animateNumber();
     }
   };
 
-  const handleCheckboxChange = (index: number) => {
-    setCheckBoxNumber((prevCheckboxes) =>
-      prevCheckboxes.map((isChecked, i) =>
-        i === index ? !isChecked : isChecked
+  const checkboxChangeHandler = (index: number) => {
+    setAniNumber(
+      aniNumber.map((item, idx) =>
+        idx === index ? { ...item, clicked: !item.clicked } : item
       )
     );
   };
 
-  const autoInput = () => {
-    if (isDesktop) {
-      console.log("PC입니다.");
-    } else {
+  const autoInput = async () => {
+    const selectedNumbers = aniNumber
+      .filter((row) => row.clicked)
+      .map((row) => row.numbers);
+
+    // console.log("numbersToSend@@@@@@@@@", numbersToSend);
+    try {
+      await axios.post(
+        `/api/lotto-auto-selector`,
+        JSON.stringify(selectedNumbers),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return actionModalHandler();
+    } catch (err) {
       alertMdoalHandler();
-      console.log("모바일입니다.");
+      setError(true);
     }
   };
+
+  const copyToClipboard = useCallback(() => {
+    const selectedNumbers = aniNumber
+      .filter((row) => row.clicked)
+      .map((row) => row.numbers);
+
+    const formattedText = selectedNumbers
+      .map((numbers) => `(${numbers.join(", ")})`)
+      .join(", ");
+
+    navigator.clipboard.writeText(formattedText);
+  }, [aniNumber]);
 
   return (
     <div
@@ -147,32 +187,30 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           isLoading && rowIndex !== 0 ? null : (
             <ul
               key={rowIndex}
+              onClick={(e) => checkboxChangeHandler(rowIndex)}
               className={`flex justify-center rounded-full gap-4 px-4 md:gap-6 md:px-4 xl:gap-8 xl:px-6 mx-2 mt-2 xl:mt-4 2xl:mt-6 ${
-                checkBoxNumber[rowIndex] ? "bg-indigo-950" : "bg-indigo-900"
+                row.clicked ? "bg-indigo-950" : "bg-indigo-900"
               }`}
             >
-              {row[0] !== 0 && !isLoading && (
-                <label key={rowIndex} className={"flex"}>
+              {row.numbers[0] !== 0 && !isLoading && (
+                <div className={"flex items-center"}>
                   <input
                     type={"checkbox"}
-                    onChange={() => handleCheckboxChange(rowIndex)}
                     className={"hidden"}
+                    checked={row.clicked}
                   />
-
                   <BsFillCheckCircleFill
-                    className={`self-center cursor-pointer ${
-                      checkBoxNumber[rowIndex]
-                        ? "text-indigo-600"
-                        : "text-slate-300"
+                    className={`cursor-pointer ${
+                      row.clicked ? "text-indigo-600" : "text-slate-300"
                     }`}
                     size={iconSize}
                   />
-                </label>
+                </div>
               )}
-              {row.map((number, columnIndex) => (
+              {row.numbers.map((number, columnIndex) => (
                 <li
                   key={columnIndex}
-                  className={`flex rounded-full items-center justify-center my-2 w-7 h-7 sm:w-8 sm:h-8 md:w-8 md:h-8 xl:w-12 xl:h-12  2xl:w-16 2xl:h-16 ${
+                  className={`flex rounded-full items-center justify-center my-2 w-7 h-7 sm:w-8 sm:h-8 md:w-8 md:h-8 xl:w-12 xl:h-12 2xl:w-16 2xl:h-16 ${
                     number === 0 ? "text-indigo-600 " : "text-white"
                   } font-bold text-xl md:text-2xl xl:text-3xl 2xl:text-4xl ${LottoBgSelect(
                     number
@@ -184,6 +222,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
             </ul>
           )
         )}
+
         <div
           className={`text-indigo-600 p-3 my-2 xl:my-6
              ${!isLoading && !firstLottery && " bg-white"}
@@ -193,13 +232,16 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
             <div className="flex flex-row mb-5 justify-between">
               <button
                 className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-xs sm:text-sm xl:text-base 2xl:text-lg items-center justify-center "
-                onClick={autoInput}
+                onClick={isDesktop ? actionModalHandler : alertMdoalHandler}
               >
                 <LuFileInput className="mr-1" />
-                선택한 번호 자동 입력
+                선택한 번호 자동입력
               </button>
               <p className="text-2xl self-center">|</p>
-              <button className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-xs sm:text-sm xl:text-base 2xl:text-lg items-center justify-center ">
+              <button
+                className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-xs sm:text-sm xl:text-base 2xl:text-lg items-center justify-center"
+                onClick={copyToClipboard}
+              >
                 <MdCopyAll className="mr-1" /> 선택한 번호 복사
               </button>
             </div>
@@ -213,7 +255,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
                 ? "bg-white"
                 : "bg-indigo-600 text-white"
             }`}
-            onClick={generationClick}
+            onClick={generationLotto}
             disabled={isLoading}
           >
             <div
@@ -232,9 +274,51 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           </button>
         </div>
       </div>
+      {actionModal && (
+        <ActionModal onClose={actionModalHandler} onRun={autoInput}>
+          <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg mb-4">
+            번호 자동입력 안내
+          </p>
+          <p className="px-4 text-center text-xs sm:text-sm md:text-base xl:text-lg mb-2">
+            해당 기능은 모바일에서 이용할 수 없으며, PC 브라우저에서 진행하셔야
+            합니다.
+          </p>
+          <p className="px-4 text-center text-xs sm:text-sm md:text-base xl:text-lg mb-2">
+            1. 아래 확인 버튼을 누르시면 자동으로 동행복권 사이트로 이동합니다.{" "}
+            <br />
+            2. 회원가입 또는 로그인을 진행하시면 선택한 번호가 자동으로
+            입력됩니다. <br />
+            3. 자동 기입된 번호가 맞는지 확인하시고, 본인이 구매 버튼을 누른 후
+            정상적으로 구매가 이루어졌는지 확인합니다.
+          </p>
+          <p className="px-4 text-center text-xs sm:text-sm md:text-base xl:text-lg mb-2">
+            <br /> 모든 과정에서 입력하신 정보는 따로 보관하지 않으며, 애초에
+            저희 측에서 확인할 방법도 없습니다.
+          </p>
+          <p className="px-4 text-center text-xs sm:text-sm md:text-base xl:text-lg">
+            위 내용을 확인하셨다면, 아래 확인 버튼을 눌러주세요.
+          </p>
+        </ActionModal>
+      )}
       {alertMdoal && (
         <AlertModal onClose={alertMdoalHandler}>
-          <div className="font-bold text-lg">PC에서 이용해주세요</div>
+          {error && (
+            <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
+              작업 중인 창을 닫았거나 다른 이유로 현재 요청을 처리할 수
+              없습니다. <br />
+              잠시 후에 다시 시도해 주세요.
+            </p>
+          )}
+          {!isDesktop && !error ? (
+            <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
+              죄송합니다! <br /> 현재 해당 기능은 모바일에서 이용하실 수
+              없습니다.
+              <br /> 더 나은 사용자 경험을 위해 <br className="sm:hidden" />
+              PC 브라우저를 이용해주세요.
+              <br />
+              감사합니다!
+            </p>
+          ) : null}
         </AlertModal>
       )}
     </div>

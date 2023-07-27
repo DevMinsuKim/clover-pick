@@ -3,11 +3,16 @@ import useOutSideClick from "../hook/useOutSideClick";
 import ModalContainer from "./ModalContainer";
 
 type AlertModalProps = {
+  onRun: () => void;
   onClose: () => void;
   children: ReactNode;
 };
 
-export default function AlertModal({ onClose, children }: AlertModalProps) {
+export default function ActionModal({
+  onRun,
+  onClose,
+  children,
+}: AlertModalProps) {
   const modalRef = useRef(null);
   const handleClose = () => {
     onClose?.();
@@ -31,10 +36,17 @@ export default function AlertModal({ onClose, children }: AlertModalProps) {
         >
           {children}
 
-          <div className="flex items-center justify-center">
+          <div className="flex flex-row items-center justify-center">
+            <button
+              className="p-2 bg-slate-400 dark:bg-slate-600 text-white rounded-md mt-8 mr-4"
+              onClick={handleClose}
+            >
+              취소
+            </button>
+
             <button
               className="p-2 bg-indigo-600 text-white rounded-md mt-8"
-              onClick={handleClose}
+              onClick={onRun}
             >
               확인
             </button>

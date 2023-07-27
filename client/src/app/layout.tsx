@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import { Providers } from "./Providers";
+import SWRConfigContext from "./context/SWRConfigContext";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
             <Navbar />
           </header>
 
-          <main>{children}</main>
+          <main>
+            <SWRConfigContext>{children}</SWRConfigContext>
+          </main>
           <footer>
             <Footer />
           </footer>
