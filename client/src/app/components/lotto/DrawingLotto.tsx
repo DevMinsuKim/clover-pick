@@ -14,6 +14,8 @@ interface NumberSet {
 }
 
 const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
+  const [noSelect, setNoSelect] = useState(false);
+  const [clipboard, setClipboard] = useState(false);
   const [error, setError] = useState(false);
   const [actionModal, setaAtionModal] = useState(false);
   const [alertMdoal, setAlertModal] = useState(false);
@@ -27,7 +29,9 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
 
   const alertMdoalHandler = () => {
     setAlertModal(!alertMdoal);
-    setError(false);
+    if (error) setError(false);
+    if (clipboard) setClipboard(false);
+    if (noSelect) setNoSelect(false);
   };
 
   const actionModalHandler = () => {
@@ -147,7 +151,6 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
       .filter((row) => row.clicked)
       .map((row) => row.numbers);
 
-    // console.log("numbersToSend@@@@@@@@@", numbersToSend);
     try {
       await axios.post(
         `/api/lotto-auto-selector`,
@@ -165,16 +168,35 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     }
   };
 
+  const autoInputHandler = () => {
+    const hasSelection = aniNumber.some((row) => row.clicked);
+    if (!hasSelection) {
+      setNoSelect(true);
+      setAlertModal(true);
+    } else {
+      isDesktop ? actionModalHandler : alertMdoalHandler;
+    }
+  };
+
   const copyToClipboard = useCallback(() => {
-    const selectedNumbers = aniNumber
-      .filter((row) => row.clicked)
-      .map((row) => row.numbers);
+    const hasSelection = aniNumber.some((row) => row.clicked);
+    if (!hasSelection) {
+      setNoSelect(true);
+      setAlertModal(true);
+    } else {
+      const selectedNumbers = aniNumber
+        .filter((row) => row.clicked)
+        .map((row) => row.numbers);
 
-    const formattedText = selectedNumbers
-      .map((numbers) => `(${numbers.join(", ")})`)
-      .join(", ");
+      const formattedText = selectedNumbers
+        .map((numbers) => `(${numbers.join(", ")})`)
+        .join(", ");
 
-    navigator.clipboard.writeText(formattedText);
+      navigator.clipboard.writeText(formattedText);
+
+      setAlertModal(true);
+      setClipboard(true);
+    }
   }, [aniNumber]);
 
   return (
@@ -232,7 +254,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
             <div className="flex flex-row mb-5 justify-between">
               <button
                 className="flex-row flex bg-indigo-600 text-white rounded-2xl p-3 text-xs sm:text-sm xl:text-base 2xl:text-lg items-center justify-center "
-                onClick={isDesktop ? actionModalHandler : alertMdoalHandler}
+                onClick={autoInputHandler}
               >
                 <LuFileInput className="mr-1" />
                 선택한 번호 자동입력
@@ -307,6 +329,16 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
               작업 중인 창을 닫았거나 다른 이유로 현재 요청을 처리할 수
               없습니다. <br />
               잠시 후에 다시 시도해 주세요.
+            </p>
+          )}
+          {clipboard && (
+            <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
+              클립보드에 복사가 완료되었습니다.
+            </p>
+          )}
+          {noSelect && (
+            <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
+              선택한 번호가 없습니다. 번호를 선택하신 후 다시 시도해주세요.
             </p>
           )}
           {!isDesktop && !error ? (
