@@ -30,12 +30,17 @@ export default function HistoryLotto() {
     }
   };
   return (
-    <div className="flex w-ull bg-white dark:bg-slate-950 justify-center items-center">
-      <div className="w-full">
-        <p className="text-xl font-bold text-black dark:text-white m-6">
-          지난 회차 번호
-        </p>
-        <div className="grid grid-flow-row grid-cols-3 gap-4 ">
+    <div className="flex w-full bg-white dark:bg-slate-950 justify-center items-center">
+      <div className="flex w-11/12 max-w-7xl">
+        <div className="flex w-full justify-between">
+          <p className="text-sm sm:text-base font-bold text-black my-6 dark:text-white">
+            지난 회차 번호
+          </p>
+          <button className="text-sm sm:text-base font-bold text-black my-6 dark:text-white">
+            더 보기
+          </button>
+        </div>
+        {/* <div className="grid grid-flow-row grid-cols-3 gap-4 ">
           {roundNumber.map((row, rowIndex) => (
             <ul key={rowIndex}>
               {rowIndex === 8 ? (
@@ -72,14 +77,14 @@ export default function HistoryLotto() {
               )}
             </ul>
           ))}
-        </div>
+        </div> */}
       </div>
 
       {alertMdoal && (
         <AlertModal onClose={alertMdoalHandler}>
-          <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
-            현재 요청을 처리하는 데 문제가 발생했습니다. 나중에 다시 시도해
-            주세요.
+          <p className="px-4 text-center font-bold text-xs sm:text-sm xl:text-lg">
+            현재 요청을 처리하는 데 문제가 발생했습니다.
+            <br /> 나중에 다시 시도해 주세요.
           </p>
         </AlertModal>
       )}
