@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div className="mb-6 mt-6 text-center">
-      <span className="font-bold">ⓒ SMOTTO</span>
+    <div className="text-center w-full">
+      <p className="text-xs py-5 xl:py-10">ⓒ SMOTTO All rights reserved.</p>
     </div>
   );
 }

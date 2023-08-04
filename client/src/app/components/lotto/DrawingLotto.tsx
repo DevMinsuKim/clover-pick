@@ -17,7 +17,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   const [noSelect, setNoSelect] = useState(false);
   const [clipboard, setClipboard] = useState(false);
   const [error, setError] = useState(false);
-  const [actionModal, setaAtionModal] = useState(false);
+  const [actionModal, setActionModal] = useState(false);
   const [alertMdoal, setAlertModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [aniNumber, setAniNumber] = useState([
@@ -35,7 +35,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   };
 
   const actionModalHandler = () => {
-    setaAtionModal(!actionModal);
+    setActionModal(!actionModal);
   };
 
   useEffect(() => {
@@ -65,7 +65,6 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
         );
 
         eventSource.onmessage = (event) => {
-          console.log(event.data);
           const data = JSON.parse(event.data);
           if (data.percent === 100) {
             eventSource.close();
@@ -169,12 +168,16 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   };
 
   const autoInputHandler = () => {
-    const hasSelection = aniNumber.some((row) => row.clicked);
-    if (!hasSelection) {
-      setNoSelect(true);
-      setAlertModal(true);
+    if (isDesktop) {
+      const hasSelection = aniNumber.some((row) => row.clicked);
+      if (!hasSelection) {
+        setNoSelect(true);
+        setAlertModal(true);
+      } else {
+        actionModalHandler();
+      }
     } else {
-      isDesktop ? actionModalHandler : alertMdoalHandler;
+      alertMdoalHandler();
     }
   };
 
@@ -220,6 +223,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
                     type={"checkbox"}
                     className={"hidden"}
                     checked={row.clicked}
+                    onChange={() => {}}
                   />
                   <BsFillCheckCircleFill
                     className={`cursor-pointer ${
@@ -314,8 +318,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
             정상적으로 구매가 이루어졌는지 확인합니다.
           </p>
           <p className="px-4 text-center text-xs sm:text-sm md:text-base xl:text-lg mb-2">
-            <br /> 모든 과정에서 입력하신 정보는 따로 보관하지 않으며, 애초에
-            저희 측에서 확인할 방법도 없습니다.
+            <br /> 모든 과정에서 입력하신 정보는 저희 측에서 보관하지 않습니다.
           </p>
           <p className="px-4 text-center text-xs sm:text-sm md:text-base xl:text-lg">
             위 내용을 확인하셨다면, 아래 확인 버튼을 눌러주세요.
@@ -338,10 +341,11 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           )}
           {noSelect && (
             <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
-              선택한 번호가 없습니다. 번호를 선택하신 후 다시 시도해주세요.
+              선택한 번호가 없습니다. <br />
+              번호를 선택하신 후 다시 시도해주세요.
             </p>
           )}
-          {!isDesktop && !error ? (
+          {!isDesktop && !error && !clipboard && !noSelect ? (
             <p className="px-4 text-center font-bold text-xs sm:text-sm md:text-base xl:text-lg">
               죄송합니다! <br /> 현재 해당 기능은 모바일에서 이용하실 수
               없습니다.
