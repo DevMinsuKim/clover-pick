@@ -13,7 +13,7 @@ interface NumberSet {
   clicked: boolean;
 }
 
-const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
+const DrawingPension = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   const [noSelect, setNoSelect] = useState(false);
   const [clipboard, setClipboard] = useState(false);
   const [error, setError] = useState(false);
@@ -57,11 +57,11 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
-  const getLottoNumbers = (): Promise<NumberSet[]> => {
+  const getPensionNumbers = (): Promise<NumberSet[]> => {
     return new Promise((resolve, reject) => {
       try {
         const eventSource = new EventSource(
-          `${process.env.NEXT_PUBLIC_API_URL}/lotto`
+          `${process.env.NEXT_PUBLIC_API_URL}/pension`
         );
 
         eventSource.onmessage = (event) => {
@@ -84,7 +84,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           eventSource.close();
           reject(
             new Error(
-              "로또 생성에 오류가 발생했습니다. 다시 시도하여 주시기 바랍니다."
+              "연금복권 생성에 오류가 발생했습니다. 다시 시도하여 주시기 바랍니다."
             )
           );
         };
@@ -122,7 +122,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     updateNumber();
 
     try {
-      const data = await getLottoNumbers();
+      const data = await getPensionNumbers();
       isLoading = false;
       setIsLoading(false);
       setAniNumber(data);
@@ -131,7 +131,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
     }
   };
 
-  const generationLotto = async () => {
+  const generationPension = async () => {
     if (!isLoading) {
       animateNumber();
     }
@@ -152,7 +152,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
 
     try {
       await axios.post(
-        `/api/lotto-auto-selector`,
+        `/api/pension-auto-selector`,
         JSON.stringify(selectedNumbers),
         {
           headers: {
@@ -207,7 +207,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
       className="flex bg-gray-100 dark:bg-slate-800 items-center justify-center scroll-mt-16"
       ref={ref}
     >
-      <div className="flex flex-col rounded-3xl items-center animate-generationLottoBg bg-indigo-600 my-28 xl:my-64 xl:max-w-xl 2xl:max-w-3xl 3xl:max-w-5xl">
+      <div className="flex flex-col rounded-3xl items-center animate-generationPensionBg bg-indigo-600 my-28 xl:my-64 xl:max-w-xl 2xl:max-w-3xl 3xl:max-w-5xl">
         {aniNumber.map((row, rowIndex) =>
           isLoading && rowIndex !== 0 ? null : (
             <ul
@@ -281,7 +281,7 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
                 ? "bg-white"
                 : "bg-indigo-600 text-white"
             }`}
-            onClick={generationLotto}
+            onClick={generationPension}
             disabled={isLoading}
           >
             <div
@@ -361,4 +361,4 @@ const DrawingLotto = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   );
 });
 
-export default DrawingLotto;
+export default DrawingPension;

@@ -5,7 +5,7 @@ type IntroduceLottoProps = {
   targetRef: RefObject<HTMLElement>;
 };
 
-export default function IntroduceLotto({ targetRef }: IntroduceLottoProps) {
+export default function IntroducePension({ targetRef }: IntroduceLottoProps) {
   const scrollMove = () => {
     const target = targetRef.current;
     if (target) {
@@ -20,23 +20,23 @@ export default function IntroduceLotto({ targetRef }: IntroduceLottoProps) {
       }
     >
       <p className="text-2xl md:text-3xl lg:text-5xl text-center font-bold mt-28 xl:mt-72 dark:text-white">
-        로또 번호 예측, 최고의 선택 <br /> LSTM 기반 로또 6/45
+        연금복권 번호 예측, 최고의 선택 <br /> LSTM 기반 연금복권720+
       </p>
       <p className="w-4/5 text-sm sm:text-base md:text-lg lg:text-xl text-center mt-14 dark:text-white">
         인공지능 신경망 LSTM의 힘을 결합한 <br className="lg:hidden" /> 우리의
-        시스템은 로또 번호 <br className="3xl:hidden" />
+        시스템은 연금복권 번호 <br className="3xl:hidden" />
         예측의 새로운 경지를 엽니다. <br />더 이상의 추측이 아닌, 데이터 기반의{" "}
         <br className="lg:hidden" />
         정확한 예측으로 <br />
-        당신의 로또 경험을 혁신시켜줍니다. <br />
-        로또의 미래를 함께 만들어 가요
+        당신의 연금복권 경험을 혁신시켜줍니다. <br />
+        연금복권의 미래를 함께 만들어 가요
       </p>
 
       <button
         className="p-3 mt-20 text-lg xl:text-2xl bg-indigo-600 text-white rounded-2xl hover:bg-indigo-500 hover:shadow-xl"
         onClick={scrollMove}
       >
-        당신의 로또 번호를 예측해보세요!
+        당신의 연금복권 번호를 예측해보세요!
       </button>
 
       <button

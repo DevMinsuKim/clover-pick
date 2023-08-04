@@ -2,8 +2,8 @@ import glob
 import os
 import requests
 import datetime
-import numpy
-import pandas
+import numpy as np
+import pandas as pd
 import logging
 from bs4 import BeautifulSoup
 from logging.handlers import RotatingFileHandler
@@ -33,7 +33,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 # 파일이 위치한 디렉토리 경로
-directory = "./lotto/data"
+directory = "./pension/data"
 
 # 디렉토리 내의 모든 파일 검색
 files = os.listdir(directory)
@@ -52,27 +52,38 @@ def data_file_update():
         current_datetime = datetime.datetime.now()
 
         filename_format = "%Y-%m-%d"
-
         formatted_date = current_datetime.strftime(filename_format)
 
-        url = 'https://dhlottery.co.kr/gameResult.do?method=allWinExel&gubun=byWin&nowPage=&drwNoStart=1&drwNoEnd=100000'
-        output_path = f'{directory}/lotto_data_{formatted_date}.xls'
+        url = 'https://dhlottery.co.kr/gameResult.do?method=allWinPension720Exel&drwNoStart=1&drwNoEnd=100000'
+        output_path = f'{directory}/pension_data_{formatted_date}.xls'
 
         response = requests.get(url)
         response.raise_for_status()
 
-        with open(output_path, 'wb') as file:
-            file.write(response.content)
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # 각 행을 순회
+        for row in soup.find_all('tr'):
+            cells = row.find_all('td')
+            # 년도가 '2022'인 행을 찾음
+            if cells and cells[0].get_text() == '2022':
+                # 년도와 회차의 위치를 바꿈
+                cells[0], cells[1] = cells[1], cells[0]
+
+        # Write the modified HTML content to the file
+        with open(output_path, 'w', encoding='EUC-KR') as file:
+            file.write(str(soup))
 
         files = glob.glob(os.path.join(directory, "*"))
  
-        files_to_delete = [file for file in files if not file.endswith(f"lotto_data_{formatted_date}.xls")]
+        files_to_delete = [file for file in files if not file.endswith(f"pension_data_{formatted_date}.xls")]
 
         for file_path in files_to_delete:
             os.remove(file_path)
 
     except Exception as e:
-        logging.error("Exception occurred", exc_info=True)
+        print("Exception occurred", e)
 
 def get_round_number(round_number):
     try:  
@@ -127,3 +138,6 @@ def get_round_number_all():
         return results
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)
+
+
+data_file_update()        

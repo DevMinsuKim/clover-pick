@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import LottoBgSelect from "../common/LottoBgSelect";
+import NumberBgSelect from "../common/NumberBgSelect";
 import AlertModal from "../modal/AlertModal";
 import { FaPlus } from "react-icons/fa";
 
@@ -36,9 +36,9 @@ export default function HistoryLotto() {
           <p className="text-sm sm:text-base 2xl:text-lg font-bold text-black my-6 dark:text-white">
             지난 회차 번호
           </p>
-          <button className="text-sm sm:text-base 2xl:text-lg font-bold text-black my-6 dark:text-white">
+          {/* <button className="text-sm sm:text-base 2xl:text-lg font-bold text-black my-6 dark:text-white">
             더 보기
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="flex w-full justify-center">
@@ -57,7 +57,7 @@ export default function HistoryLotto() {
                         key={columnIndex}
                         className={`flex w-8 h-8 md:w-9 md:h-9 xl:w-8 xl:h-8 3xl:w-10 3xl:h-10 rounded-full items-center justify-center ${
                           number === 0 ? "text-indigo-600" : "text-white"
-                        } ${LottoBgSelect(number)} my-1`}
+                        } ${NumberBgSelect(number)} my-1`}
                       >
                         {number}
                       </div>

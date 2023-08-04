@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function LottoBgSelect(number: number) {
+export default function NumberBgSelect(number: number) {
   let backgroundColor = "";
 
   if (number >= 1 && number <= 10) {

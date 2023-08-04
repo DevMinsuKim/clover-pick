@@ -1,9 +1,15 @@
-export default function page() {
+"use client";
+import React, { useRef } from "react";
+import DrawingPension from "../components/pension/DrawingPension";
+import IntroducePension from "../components/pension/IntroducePension";
+
+export default function Pension() {
+  const scrollRef = useRef(null);
+
   return (
-    <section
-      className={"flex w-full h-[720px] bg-gradient-to-t from-indigo-100"}
-    >
-      dwdw
+    <section>
+      <IntroducePension targetRef={scrollRef} />
+      <DrawingPension ref={scrollRef} />
     </section>
   );
 }
