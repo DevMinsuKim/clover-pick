@@ -36,7 +36,7 @@ logger.addHandler(handler)
 
 
 # 파일이 위치한 디렉토리 경로
-directory = "./lotto/data"
+directory = "./pension/data"
 
 # 디렉토리 내의 모든 파일 검색
 files = os.listdir(directory)
@@ -52,7 +52,7 @@ for file in files:
         data_file_path = os.path.join(directory, file)
         break
 
-def generate_lotto():
+def generate_pension():
     try:
         with open(data_file_path, 'r', encoding='EUC-KR') as file:
             html_code = file.read()
@@ -104,7 +104,7 @@ def generate_lotto():
         logging.error("Exception occurred", exc_info=True)
 
 # 데이터 전처리
-async def preprocessing():
+async def preprocessing_pension():
     with open(data_file_path, 'r', encoding='EUC-KR') as file:
         html_code = file.read()
 
@@ -115,15 +115,10 @@ async def preprocessing():
     data = []
     for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
         cells = row.find_all('td')
-        winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
+        winning_numbers = [int(cell.text.strip()) for cell in cells[-7:-1]]  # 당첨번호
         data.append(winning_numbers)
 
-    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
-
-    data = np.array(df)
-
-    # 문자열을 숫자로 변환
-    data = data.astype(float)
+    data = np.array(data)
 
     # 시퀀스 생성 (X: 5회 당첨 번호, y: 다음 회 당첨 번호)
     n_steps = 5 
@@ -141,14 +136,8 @@ async def preprocessing():
 
     # LSTM 모델 구성
     model = Sequential()
-    model.add(LSTM(50, activation='relu', input_shape=(n_steps, 6)))
+    model.add(LSTM(50, activation='tanh', input_shape=(n_steps, 6)))
     model.add(Dense(6))
     model.compile(optimizer='adam', loss='mse')
 
     return model, X_train, y_train
-
-    # # 모델 학습
-    # model.fit(X_train, y_train, epochs=200, verbose=0)
-
-    # # 모델 저장
-    # model.save('./lotto/lotto_model.keras')

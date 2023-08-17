@@ -2,8 +2,6 @@ import glob
 import os
 import requests
 import datetime
-import numpy
-import pandas
 import logging
 from bs4 import BeautifulSoup
 from logging.handlers import RotatingFileHandler

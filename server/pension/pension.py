@@ -63,14 +63,6 @@ def data_file_update():
         # Parse the HTML content
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # 각 행을 순회
-        for row in soup.find_all('tr'):
-            cells = row.find_all('td')
-            # 년도가 '2022'인 행을 찾음
-            if cells and cells[0].get_text() == '2022':
-                # 년도와 회차의 위치를 바꿈
-                cells[0], cells[1] = cells[1], cells[0]
-
         # Write the modified HTML content to the file
         with open(output_path, 'w', encoding='EUC-KR') as file:
             file.write(str(soup))
@@ -85,7 +77,7 @@ def data_file_update():
     except Exception as e:
         print("Exception occurred", e)
 
-def get_round_number(round_number):
+def get_round_number_pension(round_number):
     try:  
         with open(data_file_path, 'r', encoding='EUC-KR') as file:
             html_code = file.read()
@@ -113,7 +105,7 @@ def get_round_number(round_number):
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)
 
-def get_round_number_all():
+def get_round_number_all_pension():
     try:  
         with open(data_file_path, 'r', encoding='EUC-KR') as file:
             html_code = file.read()
