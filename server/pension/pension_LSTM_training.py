@@ -1,6 +1,7 @@
 import math
 import os
 import queue
+import re
 import numpy as np
 import pandas as pd
 import logging
@@ -57,87 +58,84 @@ def generate_pension():
         with open(data_file_path, 'r', encoding='EUC-KR') as file:
             html_code = file.read()
 
-        soup = BeautifulSoup(html_code, 'html.parser')
-        table = soup.find_all('table')[1]  # 두 번째 테이블 선택
-        rows = table.find_all('tr')
-
-        data = []
-        for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
-            cells = row.find_all('td')
-            winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
-            data.append(winning_numbers)
-
-        df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
-
-        data = np.array(df)
+        # Extract patterns using regex
+        pattern = re.compile(r'(\d+)조<br/>(\d+)')
+        matches = pattern.findall(html_code)
+        
+        # Convert the matches to individual numbers and normalize them
+        formatted_matches = [f"{match[0]}조{match[1]}" for match in matches]
+        sequences = [list(map(int, list(match.replace("조", "")))) for match in formatted_matches]
+        sequences_normalized = [[num / 10 for num in seq] for seq in sequences]
+        data = np.array(sequences_normalized)
 
         n_steps = 5
 
-        # 모델 로드
-        model = load_model('./lotto/lotto_model.keras', compile=False)
+        # Load the model
+        model = load_model('./pension/pension_model.keras', compile=False)
 
-        # 모델 컴파일
+        # Compile the model
         model.compile(optimizer='adam', loss='mse')
 
-        predictions = []  # 예측 결과를 저장할 리스트
+        predictions = []
 
-        # 예측을 실행하고 중복 항목이 발견되면 다시 예측합니다.
-        i = 0
-        while len(predictions) < 5 and i < len(data) - n_steps:
-            x_input = np.array([data[i:i+n_steps]], dtype=np.float32)
-            x_input = x_input.reshape((1, n_steps, 6))
-
+        # Predict using the model for 5 times
+        x_input = np.array([data[-n_steps:]], dtype=np.float32)
+        for _ in range(5):
+            x_input = x_input.reshape((1, n_steps, 7))
             prediction = model.predict(x_input)
-            rounded_prediction = [math.floor(x) for x in prediction[0]]
+            
+            # De-normalize the prediction
+            rounded_prediction = [math.floor(x * 10) for x in prediction[0]]
 
-            # 예측 결과에 중복 항목이 없는 경우에만 추가합니다.
-            if len(rounded_prediction) == len(set(rounded_prediction)):
-                # 예측 결과가 1~45 범위에 있는지 확인합니다.
-                if all(1 <= num <= 45 for num in rounded_prediction):
-                    predictions.append(sorted(rounded_prediction))  
+            if rounded_prediction[0] > 5:
+                rounded_prediction[0] = 5
+            # Convert prediction to desired format
+            predictions.append(rounded_prediction)
+            
+            # Use this prediction for the next input (shift left and append new prediction)
+            x_input = np.roll(x_input, shift=-1, axis=1)
+            x_input[0, -1] = prediction / 10  # normalized prediction
 
-            i += 1
-
+        print(predictions)
         return predictions
 
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)
+        return []
 
 # 데이터 전처리
 async def preprocessing_pension():
     with open(data_file_path, 'r', encoding='EUC-KR') as file:
         html_code = file.read()
 
-    soup = BeautifulSoup(html_code, 'html.parser')
-    table = soup.find_all('table')[1]  # 두 번째 테이블 선택
-    rows = table.find_all('tr')
+    # Extract patterns using regex
+    pattern = re.compile(r'(\d+)조<br/>(\d+)')
+    matches = pattern.findall(html_code)
+    
+    # Convert the matches to individual numbers and normalize them
+    formatted_matches = [f"{match[0]}조{match[1]}" for match in matches]
+    sequences = [list(map(int, list(match.replace("조", "")))) for match in formatted_matches]
+    sequences_normalized = [[num / 10 for num in seq] for seq in sequences]
+    data = np.array(sequences_normalized)
 
-    data = []
-    for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
-        cells = row.find_all('td')
-        winning_numbers = [int(cell.text.strip()) for cell in cells[-7:-1]]  # 당첨번호
-        data.append(winning_numbers)
-
-    data = np.array(data)
-
-    # 시퀀스 생성 (X: 5회 당첨 번호, y: 다음 회 당첨 번호)
+    # Generate sequences (X: 5 sequences, y: next sequence)
     n_steps = 5 
     X, y = [], []
     for i in range(n_steps, len(data)):
         X.append(data[i-n_steps:i])
         y.append(data[i])
 
-    # numpy 배열로 변환
+    # Convert to numpy arrays
     X = np.array(X)
     y = np.array(y)
 
-    # 학습 데이터와 테스트 데이터로 분할
+    # Split data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # LSTM 모델 구성
+    # Build LSTM model
     model = Sequential()
-    model.add(LSTM(50, activation='tanh', input_shape=(n_steps, 6)))
-    model.add(Dense(6))
+    model.add(LSTM(50, activation='tanh', input_shape=(n_steps, 7)))  # Update input shape to consider 7 numbers
+    model.add(Dense(7))  # Update output layer to output 7 numbers
     model.compile(optimizer='adam', loss='mse')
 
     return model, X_train, y_train

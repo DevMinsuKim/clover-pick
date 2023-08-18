@@ -52,7 +52,7 @@ async def read_root():
             print(f"Error during model fitting: {e}")
             q.put({'epoch': None, 'error': str(e)})
 
-    model, X_train, y_train = await preprocessing_pension()
+    model, X_train, y_train = await preprocessing()
 
     def generator():
         yield f"{json.dumps({'percent': 10, 'numbers': {}})}\n\n"
@@ -113,7 +113,7 @@ async def read_root():
             print(f"Error during model fitting: {e}")
             q.put({'epoch': None, 'error': str(e)})
 
-    model, X_train, y_train = await preprocessing()
+    model, X_train, y_train = await preprocessing_pension()
 
     def generator():
         yield f"{json.dumps({'percent': 10, 'numbers': {}})}\n\n"

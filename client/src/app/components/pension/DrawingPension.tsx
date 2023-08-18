@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useEffect, useState } from "react";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { LuFileInput } from "react-icons/lu";
 import { MdCopyAll } from "react-icons/md";
-import NumberBgSelect from "../common/NumberBgSelect";
+import NumberBgSelect, { IndexBgSelect } from "../common/NumberBgSelect";
 import AlertModal from "../modal/AlertModal";
 import { isDesktop } from "react-device-detect";
 import axios from "axios";
@@ -21,7 +21,10 @@ const DrawingPension = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
   const [alertMdoal, setAlertModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [aniNumber, setAniNumber] = useState([
-    { numbers: [0, 0, 0, 0, 0, 0], clicked: false },
+    {
+      numbers: [0, 0, 0, 0, 0, 0, 0],
+      clicked: false,
+    },
   ]);
   const [firstLottery, setFirstLottery] = useState(true);
   const [generatePercent, setGeneratePercent] = useState(0);
@@ -97,7 +100,7 @@ const DrawingPension = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
 
   const animateNumber = async () => {
     const minNumber = 1;
-    const maxNumber = 45;
+    const maxNumber = 9;
     let isLoading = true;
 
     const updateNumber = () => {
@@ -192,7 +195,10 @@ const DrawingPension = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
         .map((row) => row.numbers);
 
       const formattedText = selectedNumbers
-        .map((numbers) => `(${numbers.join(", ")})`)
+        .map((numbers) => {
+          const [firstNum, ...restNums] = numbers;
+          return `(${firstNum}조, ${restNums.join(", ")})`;
+        })
         .join(", ");
 
       navigator.clipboard.writeText(formattedText);
@@ -212,8 +218,8 @@ const DrawingPension = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
           isLoading && rowIndex !== 0 ? null : (
             <ul
               key={rowIndex}
-              onClick={(e) => checkboxChangeHandler(rowIndex)}
-              className={`flex justify-center rounded-full gap-4 px-4 md:gap-6 md:px-4 xl:gap-8 xl:px-6 mx-2 mt-2 xl:mt-4 2xl:mt-6 ${
+              onClick={() => checkboxChangeHandler(rowIndex)}
+              className={`flex justify-center rounded-full gap-1 px-2 md:gap-3 md:px-4 xl:gap-3 xl:px-6 mx-2 mt-2 xl:mt-4 2xl:mt-6 ${
                 row.clicked ? "bg-indigo-950" : "bg-indigo-900"
               }`}
             >
@@ -226,7 +232,7 @@ const DrawingPension = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
                     onChange={() => {}}
                   />
                   <BsFillCheckCircleFill
-                    className={`cursor-pointer ${
+                    className={`cursor-pointer${
                       row.clicked ? "text-indigo-600" : "text-slate-300"
                     }`}
                     size={iconSize}
@@ -234,16 +240,24 @@ const DrawingPension = forwardRef<HTMLDivElement>(function Drawing(props, ref) {
                 </div>
               )}
               {row.numbers.map((number, columnIndex) => (
-                <li
-                  key={columnIndex}
-                  className={`flex rounded-full items-center justify-center my-2 w-7 h-7 sm:w-8 sm:h-8 md:w-8 md:h-8 xl:w-12 xl:h-12 2xl:w-16 2xl:h-16 ${
-                    number === 0 ? "text-indigo-600 " : "text-white"
-                  } font-bold text-xl md:text-2xl xl:text-3xl 2xl:text-4xl ${NumberBgSelect(
-                    number
-                  )}`}
-                >
-                  {number}
-                </li>
+                <>
+                  <li
+                    key={columnIndex}
+                    className={`flex rounded-full items-center justify-center my-2 w-7 h-7 sm:w-8 sm:h-8 md:w-8 md:h-8 xl:w-12 xl:h-12 2xl:w-16 2xl:h-16 text-white font-bold text-xl md:text-2xl xl:text-3xl 2xl:text-4xl ${IndexBgSelect(
+                      columnIndex
+                    )}`}
+                  >
+                    {number}
+                  </li>
+                  <li
+                    className={`${
+                      columnIndex !== 0 && "hidden"
+                    } flex rounded-full items-center justify-center my-2 w-7 h-7 sm:w-8 sm:h-8 md:w-8 md:h-8 xl:w-12 xl:h-12 2xl:w-16 2xl:h-16
+                    } font-bold text-xl md:text-2xl xl:text-3xl 2xl:text-4xl bg-white text-indigo-600`}
+                  >
+                    조
+                  </li>
+                </>
               ))}
             </ul>
           )

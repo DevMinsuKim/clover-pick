@@ -1,418 +1,190 @@
-27-Jun-23 13:51:37 - root - ERROR - Exception occurred
+18-Aug-23 10:59:56 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 51, in data_file_update
-    with open(output_path, 'wb') as file:
-         ^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '$./lotto/data/lotto_data_2023-06-27.xls'
-27-Jun-23 13:52:04 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 51, in data_file_update
-    with open(output_path, 'wb') as file:
-         ^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '$./lotto/data/lotto_data_2023-06-27.xls'
-27-Jun-23 13:52:14 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 51, in data_file_update
-    with open(output_path, 'wb') as file:
-         ^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '$./lotto/data/lotto_data_2023-06-27.xls'
-27-Jun-23 14:49:16 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 126, in generateLotto
-    model = load_module('lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 14:50:37 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 129, in generateLotto
-    model = load_module('lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 14:53:03 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 126, in generateLotto
-    model = load_module('lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 14:53:22 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 126, in generateLotto
-    model = load_module('lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:16:01 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 126, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:17:05 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 126, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:17:58 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:18:00 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:19:26 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:19:29 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:23:03 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:23:05 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:23:29 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:23:32 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:23:45 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 128, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:24:19 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 78, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:26:31 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 77, in generateLotto
-    model = load_module('./lotto/lotto_model', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:27:04 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 77, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:28:54 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 77, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:29:18 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 77, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:29:19 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 77, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 15:30:31 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 77, in generateLotto
-    model = load_module('./lotto/lotto_model.keras', compile=False)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: load_module() got an unexpected keyword argument 'compile'
-27-Jun-23 16:46:04 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 86, in generateLotto
-    x_input = x_input.reshape((1, n_steps, 6))
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/pension/pension_LSTM_training.py", line 80, in generate_pension
+    x_input = x_input.reshape((1, n_steps, 7))
               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ValueError: cannot reshape array of size 24 into shape (1,5,6)
-27-Jun-23 16:46:23 - root - ERROR - Exception occurred
+ValueError: cannot reshape array of size 0 into shape (1,5,7)
+18-Aug-23 11:12:57 - tensorflow - WARNING - 5 out of the last 5 calls to <function Model.make_predict_function.<locals>.predict_function at 0x29fc500e0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+18-Aug-23 11:13:02 - tensorflow - WARNING - 6 out of the last 6 calls to <function Model.make_predict_function.<locals>.predict_function at 0x2cb5ce160> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+18-Aug-23 11:16:15 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 86, in generateLotto
-    x_input = x_input.reshape((1, n_steps, 6))
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ValueError: cannot reshape array of size 24 into shape (1,5,6)
-27-Jun-23 17:22:52 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 7 columns
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/pension/pension_LSTM_training.py", line 85, in generate_pension
+    prediction = model.predict(x_input)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/var/folders/ld/gfz18mn13js_pwjrwct7mndh0000gn/T/__autograph_generated_file_r6lis15.py", line 18, in tf__predict_function
+    raise
+ValueError: in user code:
 
-The above exception was the direct cause of the following exception:
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2341, in predict_function  *
+        return step_function(self, iterator)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2327, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2315, in run_step  **
+        outputs = model.predict_step(data)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2283, in predict_step
+        return self(x, training=False)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+        raise e.with_traceback(filtered_tb) from None
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/input_spec.py", line 298, in assert_input_compatibility
+        raise ValueError(
 
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 7 columns
-27-Jun-23 17:22:52 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 7 columns
+    ValueError: Input 0 of layer "sequential" is incompatible with the layer: expected shape=(None, 5, 7), found shape=(None, 20, 7)
 
-The above exception was the direct cause of the following exception:
+18-Aug-23 11:16:35 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/pension/pension_LSTM_training.py", line 85, in generate_pension
+    prediction = model.predict(x_input)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/var/folders/ld/gfz18mn13js_pwjrwct7mndh0000gn/T/__autograph_generated_filel8r6vnjw.py", line 18, in tf__predict_function
+    raise
+ValueError: in user code:
 
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 7 columns
-27-Jun-23 17:23:01 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 5 columns
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2341, in predict_function  *
+        return step_function(self, iterator)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2327, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2315, in run_step  **
+        outputs = model.predict_step(data)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2283, in predict_step
+        return self(x, training=False)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+        raise e.with_traceback(filtered_tb) from None
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/input_spec.py", line 298, in assert_input_compatibility
+        raise ValueError(
 
-The above exception was the direct cause of the following exception:
+    ValueError: Input 0 of layer "sequential" is incompatible with the layer: expected shape=(None, 5, 7), found shape=(None, 20, 7)
 
+18-Aug-23 12:32:17 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 5 columns
-27-Jun-23 17:23:02 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 5 columns
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/lotto/lotto_LSTM_training.py", line 90, in generate_lotto
+    prediction = model.predict(x_input)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/var/folders/ld/gfz18mn13js_pwjrwct7mndh0000gn/T/__autograph_generated_filen_7q3nzy.py", line 18, in tf__predict_function
+    raise
+ValueError: in user code:
 
-The above exception was the direct cause of the following exception:
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2341, in predict_function  *
+        return step_function(self, iterator)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2327, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2315, in run_step  **
+        outputs = model.predict_step(data)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2283, in predict_step
+        return self(x, training=False)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+        raise e.with_traceback(filtered_tb) from None
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/input_spec.py", line 298, in assert_input_compatibility
+        raise ValueError(
 
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1', '2', '3', '4', '5', '6'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 5 columns
-27-Jun-23 17:32:54 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 4 columns
+    ValueError: Input 0 of layer "sequential_6" is incompatible with the layer: expected shape=(None, 5, 7), found shape=(None, 5, 6)
 
-The above exception was the direct cause of the following exception:
+18-Aug-23 13:48:12 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/lotto/lotto_LSTM_training.py", line 90, in generate_lotto
+    prediction = model.predict(x_input)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/var/folders/ld/gfz18mn13js_pwjrwct7mndh0000gn/T/__autograph_generated_filen_7q3nzy.py", line 18, in tf__predict_function
+    raise
+ValueError: in user code:
 
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 4 columns
-27-Jun-23 17:32:54 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 4 columns
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2341, in predict_function  *
+        return step_function(self, iterator)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2327, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2315, in run_step  **
+        outputs = model.predict_step(data)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2283, in predict_step
+        return self(x, training=False)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+        raise e.with_traceback(filtered_tb) from None
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/input_spec.py", line 298, in assert_input_compatibility
+        raise ValueError(
 
-The above exception was the direct cause of the following exception:
+    ValueError: Input 0 of layer "sequential_8" is incompatible with the layer: expected shape=(None, 5, 7), found shape=(None, 5, 6)
 
+18-Aug-23 13:57:21 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 4 columns
-27-Jun-23 17:33:02 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 5 columns
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/lotto/lotto_LSTM_training.py", line 90, in generate_lotto
+    prediction = model.predict(x_input)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/var/folders/ld/gfz18mn13js_pwjrwct7mndh0000gn/T/__autograph_generated_file6gcbue2n.py", line 18, in tf__predict_function
+    raise
+ValueError: in user code:
 
-The above exception was the direct cause of the following exception:
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2341, in predict_function  *
+        return step_function(self, iterator)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2327, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2315, in run_step  **
+        outputs = model.predict_step(data)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2283, in predict_step
+        return self(x, training=False)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+        raise e.with_traceback(filtered_tb) from None
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/input_spec.py", line 298, in assert_input_compatibility
+        raise ValueError(
 
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 5 columns
-27-Jun-23 17:33:03 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 934, in _finalize_columns_and_data
-    columns = _validate_or_indexify_columns(contents, columns)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 981, in _validate_or_indexify_columns
-    raise AssertionError(
-AssertionError: 6 columns passed, passed data had 5 columns
+    ValueError: Input 0 of layer "sequential" is incompatible with the layer: expected shape=(None, 5, 7), found shape=(None, 5, 6)
 
-The above exception was the direct cause of the following exception:
+18-Aug-23 13:57:52 - root - ERROR - Exception occurred
+Traceback (most recent call last):
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/lotto/lotto_LSTM_training.py", line 90, in generate_lotto
+    prediction = model.predict(x_input)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/var/folders/ld/gfz18mn13js_pwjrwct7mndh0000gn/T/__autograph_generated_fileivkqljaq.py", line 18, in tf__predict_function
+    raise
+ValueError: in user code:
 
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2341, in predict_function  *
+        return step_function(self, iterator)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2327, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2315, in run_step  **
+        outputs = model.predict_step(data)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2283, in predict_step
+        return self(x, training=False)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+        raise e.with_traceback(filtered_tb) from None
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/input_spec.py", line 298, in assert_input_compatibility
+        raise ValueError(
+
+    ValueError: Input 0 of layer "sequential" is incompatible with the layer: expected shape=(None, 5, 7), found shape=(None, 5, 6)
+
+18-Aug-23 13:59:28 - root - ERROR - Exception occurred
 Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/LSTM_training.py", line 67, in generateLotto
-    df = pd.DataFrame(data, columns=['1번', '2번', '3번', '4번', '5번', '6번'])
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/frame.py", line 782, in __init__
-    arrays, columns, index = nested_data_to_arrays(
-                             ^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 498, in nested_data_to_arrays
-    arrays, columns = to_arrays(data, columns, dtype=dtype)
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 840, in to_arrays
-    content, columns = _finalize_columns_and_data(arr, columns, dtype)
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/core/internals/construction.py", line 937, in _finalize_columns_and_data
-    raise ValueError(err) from err
-ValueError: 6 columns passed, passed data had 5 columns
-27-Jun-23 18:04:54 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 91, in get_round_number
-    data.append(winning_numbers + bonus_number)
-                ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-TypeError: can only concatenate list (not "str") to list
-29-Jun-23 10:39:52 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 91, in get_round_number
-    data.append(winning_numbers + bonus_number)
-                ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-TypeError: can only concatenate list (not "str") to list
-29-Jun-23 11:02:46 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 83, in get_round_number
-    df = pd.read_excel(data_file_path)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 478, in read_excel
-    io = ExcelFile(io, storage_options=storage_options, engine=engine)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 1500, in __init__
-    raise ValueError(
-ValueError: Excel file format cannot be determined, you must specify an engine manually.
-29-Jun-23 11:02:49 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 83, in get_round_number
-    df = pd.read_excel(data_file_path)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 478, in read_excel
-    io = ExcelFile(io, storage_options=storage_options, engine=engine)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/pandas/io/excel/_base.py", line 1500, in __init__
-    raise ValueError(
-ValueError: Excel file format cannot be determined, you must specify an engine manually.
-29-Jun-23 11:24:24 - root - ERROR - Exception occurred
-Traceback (most recent call last):
-  File "/Users/kaistudio/Desktop/Lotto-generate-website/server/lotto/lotto.py", line 87, in get_round_number
-    for i, row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
-        ^^^^^^
-ValueError: too many values to unpack (expected 2)
+  File "/Users/kaistudio/Desktop/lotto-generate-website/server/lotto/lotto_LSTM_training.py", line 90, in generate_lotto
+    prediction = model.predict(x_input)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/var/folders/ld/gfz18mn13js_pwjrwct7mndh0000gn/T/__autograph_generated_filept42qpbn.py", line 18, in tf__predict_function
+    raise
+ValueError: in user code:
+
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2341, in predict_function  *
+        return step_function(self, iterator)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2327, in step_function  **
+        outputs = model.distribute_strategy.run(run_step, args=(data,))
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2315, in run_step  **
+        outputs = model.predict_step(data)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/training.py", line 2283, in predict_step
+        return self(x, training=False)
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/utils/traceback_utils.py", line 70, in error_handler
+        raise e.with_traceback(filtered_tb) from None
+    File "/Users/kaistudio/.local/share/virtualenvs/server-vWPLkNok/lib/python3.11/site-packages/keras/src/engine/input_spec.py", line 298, in assert_input_compatibility
+        raise ValueError(
+
+    ValueError: Input 0 of layer "sequential" is incompatible with the layer: expected shape=(None, 5, 7), found shape=(None, 5, 6)
+

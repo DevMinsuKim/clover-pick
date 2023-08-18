@@ -19,3 +19,25 @@ export default function NumberBgSelect(number: number) {
 
   return backgroundColor;
 }
+
+export function IndexBgSelect(number: number) {
+  let backgroundColor = "";
+
+  if (number === 0) {
+    backgroundColor = "bg-gray-500";
+  } else if (number === 1) {
+    backgroundColor = "bg-red-500";
+  } else if (number === 2) {
+    backgroundColor = "bg-orange-500";
+  } else if (number === 3) {
+    backgroundColor = "bg-yellow-400";
+  } else if (number === 4) {
+    backgroundColor = "bg-sky-400";
+  } else if (number === 5) {
+    backgroundColor = "bg-purple-400";
+  } else if (number === 6) {
+    backgroundColor = "bg-gray-600";
+  }
+
+  return backgroundColor;
+}

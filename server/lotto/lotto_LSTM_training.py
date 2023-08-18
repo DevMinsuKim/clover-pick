@@ -98,6 +98,7 @@ def generate_lotto():
 
             i += 1
 
+        print(predictions)
         return predictions
 
     except Exception as e:
