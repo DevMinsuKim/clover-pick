@@ -83,15 +83,15 @@ async def read_root():
 
     return EventSourceResponse(generator())
 
-
+@app.get("/api/lotto/all")
+def read_root():
+    return get_round_number_all()
 
 @app.get("/api/lotto/{round_number}")
 def read_root(round_number:int):
     return get_round_number(round_number)
 
-@app.get("/api/lotto/all")
-def read_root():
-    return get_round_number_all()
+
 
 
 @app.get("/api/pension")
@@ -144,12 +144,12 @@ async def read_root():
 
     return EventSourceResponse(generator())
 
+@app.get("/api/pension/all")
+def read_root():
+    return get_round_number_all_pension()
 
 
 @app.get("/api/pension/{round_number}")
 def read_root(round_number:int):
     return get_round_number_pension(round_number)
 
-@app.get("/api/pension/all")
-def read_root():
-    return get_round_number_all_pension()
