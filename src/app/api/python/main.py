@@ -15,8 +15,12 @@ from pension.pension import get_round_number_all_pension, get_round_number_pensi
 
 from pension.pension_LSTM_training import generate_pension, preprocessing_pension
 
-# uvicorn api:app --reload
+import uvicorn
 
+# uvicorn main:app --reload
+
+if __name__ == '__main__':
+    uvicorn.run("main:app", host="0,0,0,0", port="8000", reload=True)
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
