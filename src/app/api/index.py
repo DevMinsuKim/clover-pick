@@ -15,27 +15,25 @@ from pension.pension import get_round_number_all_pension, get_round_number_pensi
 
 from pension.pension_LSTM_training import generate_pension, preprocessing_pension
 
-import uvicorn
-
 # uvicorn main:app --reload
 
-if __name__ == '__main__':
-    uvicorn.run("main:app", host="0,0,0,0", port="8000", reload=True)
+# if __name__ == '__main__':
+#     uvicorn.run("main:app", host="0,0,0,0", port="8000", reload=True)
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
 # CORS 설정
-origins = [
-    "http://localhost:3000",
-]
+# origins = [
+#     "http://localhost:3000",
+# ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 @app.get("/api/lotto")
 async def read_root():
