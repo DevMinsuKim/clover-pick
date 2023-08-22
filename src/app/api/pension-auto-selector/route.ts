@@ -27,14 +27,14 @@ export async function POST(req: Request) {
       .frames()
       .filter((frame) => frame.name() === "ifrm_tab");
 
-    const popupFrames = page2
+    const popupFrame = page2
       .frames()
       .find((frame) => frame.name() === "ifrm_tab");
 
     const checkForPopup = async () => {
       try {
         // 팝업의 특정 요소가 나타나는지 최대 5초간 대기합니다.
-        await popupFrames?.waitForSelector("#lotto720_popup_my_number", {
+        await popupFrame?.waitForSelector("#lotto720_popup_my_number", {
           timeout: 1500,
         }); // '.popup-selector'는 실제 팝업의 선택자로 변경해야 합니다.
         return true;
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const handlePopupIfPresent = async () => {
       if (await checkForPopup()) {
         // 팝업이 있다면 사용자가 팝업을 닫을 때까지 기다립니다.
-        await popupFrames?.waitForFunction(
+        await popupFrame?.waitForFunction(
           "document.querySelector('#lotto720_popup_my_number') === null"
         );
       }
@@ -79,7 +79,8 @@ export async function POST(req: Request) {
 
         if (elementHandle) {
           await elementHandle.click();
-          await page2.waitForTimeout(1000);
+          await page2.waitForTimeout(500);
+          await handlePopupIfPresent();
           break;
         }
       }

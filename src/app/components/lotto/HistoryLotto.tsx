@@ -24,7 +24,6 @@ export default function HistoryLotto() {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/lotto/9`
       );
-      console.log(response);
       return setRoundNumber(response.data);
     } catch (err) {
       setAlertModal(true);

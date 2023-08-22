@@ -78,16 +78,7 @@ def data_file_update():
         print("Exception occurred", e)
 
 def get_round_number_pension(round_number):
-    try:
-        def format_numbers(number):
-            # "조" 키워드 제거
-            number = number.replace("조", "")
-            
-            # 당첨번호를 문자로 분할
-            split_numbers = list(number)
-            
-            return split_numbers
-    
+    try:  
         with open(data_file_path, 'r', encoding='EUC-KR') as file:
             html_code = file.read()
 
@@ -96,27 +87,17 @@ def get_round_number_pension(round_number):
         rows = table.find_all('tr')
 
         results = []
-        for i, row in enumerate(rows[1:]): # 첫 두 행은 제목이므로 무시합니다.
+        for i, row in enumerate(rows[2:]): # 첫 두 행은 제목이므로 무시합니다.
             if i >= round_number:  # 파라미터로 전달된 숫자를 초과하면 반복문을 종료합니다.
                 break
             cells = row.find_all('td')
-            # 년도가 바뀌는 행에서는 셀 갯수가 다르므로 조건을 추가
-            if len(cells) == 11:  # 정상적인 행
-                circuit_numbers = [cells[1].text.strip()]  # 회차 번호
-                winning_numbers = cells[3].text.strip()  # 당첨번호
-            else:  # 년도가 바뀌는 행
-                circuit_numbers = [cells[0].text.strip()]  # 회차 번호
-                winning_numbers = cells[2].text.strip() # 당첨번호
-
-            winning_numbers = format_numbers(winning_numbers)
-            bonus_number = cells[-1].text.strip()  # 보너스 번호
-            bonus_number = format_numbers(bonus_number)
-
+            circuit_numbers = [cell.text.strip() for cell in cells[-19]] #회차 번호
+            winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
+            bonus_number = [cell.text.strip() for cell in cells[-1]]  # 보너스 번호
 
             result = {
                 'circuit': str(circuit_numbers[0]),
-                'number': winning_numbers, 
-                'bonusNumber': bonus_number
+                'number': winning_numbers + bonus_number
             }
             results.append(result)
 
@@ -125,16 +106,7 @@ def get_round_number_pension(round_number):
         logging.error("Exception occurred", exc_info=True)
 
 def get_round_number_all_pension():
-    try:
-        def format_numbers(number):
-            # "조" 키워드 제거
-            number = number.replace("조", "")
-            
-            # 당첨번호를 문자로 분할
-            split_numbers = list(number)
-            
-            return split_numbers
-  
+    try:  
         with open(data_file_path, 'r', encoding='EUC-KR') as file:
             html_code = file.read()
 
@@ -143,27 +115,21 @@ def get_round_number_all_pension():
         rows = table.find_all('tr')
 
         results = []
-        for row in rows[1:]:  # 첫 두 행은 제목이므로 무시합니다.
+        for row in rows[2:]:  # 첫 두 행은 제목이므로 무시합니다.
             cells = row.find_all('td')
-            # 년도가 바뀌는 행에서는 셀 갯수가 다르므로 조건을 추가
-            if len(cells) == 11:  # 정상적인 행
-                circuit_numbers = [cells[1].text.strip()]  # 회차 번호
-                winning_numbers = cells[3].text.strip()  # 당첨번호
-            else:  # 년도가 바뀌는 행
-                circuit_numbers = [cells[0].text.strip()]  # 회차 번호
-                winning_numbers = cells[2].text.strip() # 당첨번호
+            circuit_numbers = [cell.text.strip() for cell in cells[-19]] #회차 번호
+            winning_numbers = [cell.text.strip() for cell in cells[-7:-1]]  # 당첨번호
+            bonus_number = [cell.text.strip() for cell in cells[-1]]  # 보너스 번호
 
-            winning_numbers = format_numbers(winning_numbers)
-            bonus_number = cells[-1].text.strip()  # 보너스 번호
-            bonus_number = format_numbers(bonus_number)
             result = {
                 'circuit': str(circuit_numbers[0]),
-                'number': winning_numbers, 
-                'bonusNumber': bonus_number
+                'number': winning_numbers + bonus_number
             }
             results.append(result)
             
-        print(results)
         return results
     except Exception as e:
         logging.error("Exception occurred", exc_info=True)
+
+
+data_file_update()        
