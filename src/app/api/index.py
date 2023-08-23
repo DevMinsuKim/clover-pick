@@ -15,23 +15,25 @@ from pension.pension import get_round_number_all_pension, get_round_number_pensi
 
 from pension.pension_LSTM_training import generate_pension, preprocessing_pension
 
-# uvicorn api:app --reload
+# uvicorn main:app --reload
 
+# if __name__ == '__main__':
+#     uvicorn.run("main:app", host="0,0,0,0", port="8000", reload=True)
 
 app = FastAPI(docs_url=None, redoc_url=None)
 
 # CORS 설정
-origins = [
-    "http://localhost:3000",
-]
+# origins = [
+#     "http://localhost:3000",
+# ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 @app.get("/api/lotto")
 async def read_root():
@@ -83,15 +85,15 @@ async def read_root():
 
     return EventSourceResponse(generator())
 
-@app.get("/api/lotto/all")
-def read_root():
-    return get_round_number_all()
+
 
 @app.get("/api/lotto/{round_number}")
 def read_root(round_number:int):
     return get_round_number(round_number)
 
-
+@app.get("/api/lotto/all")
+def read_root():
+    return get_round_number_all()
 
 
 @app.get("/api/pension")
@@ -144,12 +146,12 @@ async def read_root():
 
     return EventSourceResponse(generator())
 
-@app.get("/api/pension/all")
-def read_root():
-    return get_round_number_all_pension()
 
 
 @app.get("/api/pension/{round_number}")
 def read_root(round_number:int):
     return get_round_number_pension(round_number)
 
+@app.get("/api/pension/all")
+def read_root():
+    return get_round_number_all_pension()
