@@ -34,6 +34,7 @@ const nextConfig = {
 
     return config;
   },
+  transpilePackages: ["three"],
 };
 
 export default nextConfig;

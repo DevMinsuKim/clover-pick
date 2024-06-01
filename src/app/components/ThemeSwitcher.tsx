@@ -4,24 +4,41 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import SunIcon from "./ui/icons/SunIcon";
 import { Tooltip, Button } from "@nextui-org/react";
+import DarkIcon from "./ui/icons/DarkIcon";
+import SystemIcon from "./ui/icons/SystemIcon";
 
 const menu = [
   {
     id: "light",
-    title: "라이트모드",
-    icon: (color: string) => <SunIcon className={`w-7 h-7 ${color}`} />,
+    title: "라이트 모드",
+    icon: (color: string) => <SunIcon className={`w-6 h-6 ${color}`} />,
   },
   {
     id: "dark",
-    title: "다크모드",
-    icon: (color: string) => <SunIcon className={`w-7 h-7 ${color}`} />,
+    title: "다크 모드",
+    icon: (color: string) => <DarkIcon className={`w-6 h-6 ${color}`} />,
   },
   {
     id: "system",
-    title: "시스템모드",
-    icon: (color: string) => <SunIcon className={`w-7 h-7 ${color}`} />,
+    title: "시스템 모드",
+    icon: (color: string) => <SystemIcon className={`w-6 h-6 ${color}`} />,
   },
 ];
+
+const getColor = (
+  resolvedTheme: string | undefined,
+  theme: string | undefined,
+  id: string
+) => {
+  if (theme === id) {
+    return "text-primary";
+  } else {
+    if (resolvedTheme === id) {
+      return "text-default-600";
+    }
+    return "text-default-300";
+  }
+};
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
@@ -31,27 +48,23 @@ export function ThemeSwitcher() {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    console.log(resolvedTheme, theme);
-    // setMounted(true);
-  }, [resolvedTheme, theme]);
-
-  if (!mounted) return null;
-
-  const getColor = (
-    resolvedTheme: string | undefined,
-    theme: string | undefined,
-    id: string
-  ) => {
-    if (theme === id) {
-      return "text-primary";
-    } else {
-      if (resolvedTheme === id) {
-        return "text-foreground";
-      }
-      return "text-content4";
-    }
-  };
+  if (!mounted)
+    return (
+      <>
+        {menu.map(({ id, title, icon }) => (
+          <Tooltip content={title} key={id} showArrow={true}>
+            <Button
+              className="w-auto h-auto p-0 m-0 min-h-0 min-w-0 bg-transparent"
+              onClick={() => {
+                setTheme(id);
+              }}
+            >
+              {icon("text-foreground")}
+            </Button>
+          </Tooltip>
+        ))}
+      </>
+    );
 
   return (
     <>

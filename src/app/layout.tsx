@@ -39,10 +39,8 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="ko">
       <body className={notoSansKr.className}>
         <Providers>
-          <header>
-            <NavigationBar />
-          </header>
-          <main>{children}</main>
+          <NavigationBar />
+          <main className="container mx-auto flex-grow">{children}</main>
           <footer>
             <Footer />
           </footer>
