@@ -1,9 +1,9 @@
-import { HiOutlineComputerDesktop } from "react-icons/hi2";
+import { CiDesktop } from "react-icons/ci";
 
 type Props = {
   className?: string;
 };
 
 export default function SystemIcon({ className }: Props) {
-  return <HiOutlineComputerDesktop className={className} />;
+  return <CiDesktop className={className} />;
 }

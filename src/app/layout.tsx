@@ -3,7 +3,7 @@ import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Footer from "./components/Footer";
-import NavigationBar from "./components/NavigationBar";
+import NavBar from "./components/NavBar";
 
 const notoSansKr = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -39,8 +39,12 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="ko">
       <body className={notoSansKr.className}>
         <Providers>
-          <NavigationBar />
-          <main className="container mx-auto flex-grow">{children}</main>
+          <header>
+            <NavBar />
+          </header>
+          <main className="container mx-auto max-w-screen-lg flex-grow px-6">
+            {children}
+          </main>
           <footer>
             <Footer />
           </footer>

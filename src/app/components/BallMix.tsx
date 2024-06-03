@@ -3,8 +3,7 @@
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Physics, useSphere } from "@react-three/cannon";
-import React, { MutableRefObject, useEffect, useState } from "react";
-import { Environment, useTexture } from "@react-three/drei";
+import React, { MutableRefObject, useEffect } from "react";
 
 interface MixProps {
   mat?: THREE.Matrix4;
@@ -19,12 +18,12 @@ const baubleMaterial = new THREE.MeshStandardMaterial({});
 
 function getRandomColor(): THREE.Color {
   const pastelColors = [
-    "#FFB3BA",
-    "#FFDFBA",
-    "#FFFFBA",
-    "#BAE1FF",
-    "#D7BAFF",
-    "#BEBEBE",
+    "#fbc400",
+    "#69c8f2",
+    "#ff7272",
+    "#ff7272",
+    "#aaa",
+    "#b0d840",
   ];
   const randomIndex = Math.floor(Math.random() * pastelColors.length);
   return new THREE.Color(pastelColors[randomIndex]);
@@ -35,7 +34,6 @@ function Mix({
   vec = new THREE.Vector3(),
   ...props
 }: MixProps) {
-  const texture = useTexture("/images/test.svg");
   const [ref, api] = useSphere(() => ({
     args: [1],
     mass: 1,
@@ -68,9 +66,8 @@ function Mix({
         const color = getRandomColor();
         ref.current.setColorAt(i, color);
       }
-      // ref.current.instanceColor!.needsUpdate = true;
     }
-  }, []);
+  }, [ref]);
 
   return (
     <instancedMesh
@@ -78,7 +75,6 @@ function Mix({
       castShadow
       receiveShadow
       args={[sphereGeometry, baubleMaterial, count]}
-      // material-map={texture}
     />
   );
 }
@@ -101,29 +97,18 @@ function Pointer() {
 
 export default function BallClump() {
   return (
-    <div className="w-[500px] h-[600px]">
-      <Canvas
-        shadows
-        gl={{ antialias: true }}
-        dpr={[1, 1.5]}
-        camera={{ position: [0, 0, 20], fov: 100, near: 1, far: 100 }}
-      >
-        <ambientLight intensity={0.2} />
-        {/* <color attach="background" args={["#dfdfdf"]} /> */}
-        <spotLight
-          intensity={1}
-          angle={0.2}
-          penumbra={1}
-          position={[30, 30, 30]}
-          castShadow
-          shadow-mapSize={[512, 512]}
-        />
-        <Physics gravity={[0, 2, 0]} iterations={10}>
-          <Pointer />
-          <Mix />
-        </Physics>
-        <Environment files="/images/metal.hdr" />
-      </Canvas>
-    </div>
+    <Canvas
+      shadows
+      gl={{ antialias: true }}
+      dpr={[1, 1.5]}
+      camera={{ position: [0, 0, 70], fov: 40, near: 1, far: 100 }}
+    >
+      <color attach="background" args={["#dfdfdf"]} />
+      <hemisphereLight args={[0xffffff, 0x888888, 5]} />
+      <Physics gravity={[0, 2, 0]} iterations={10}>
+        <Pointer />
+        <Mix />
+      </Physics>
+    </Canvas>
   );
 }

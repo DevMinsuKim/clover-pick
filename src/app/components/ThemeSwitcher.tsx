@@ -2,8 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Tooltip } from "@nextui-org/tooltip";
 import SunIcon from "./ui/icons/SunIcon";
-import { Tooltip, Button } from "@nextui-org/react";
 import DarkIcon from "./ui/icons/DarkIcon";
 import SystemIcon from "./ui/icons/SystemIcon";
 
@@ -11,75 +11,74 @@ const menu = [
   {
     id: "light",
     title: "라이트 모드",
-    icon: (color: string) => <SunIcon className={`w-6 h-6 ${color}`} />,
+    icon: (color: string) => <SunIcon className={`h-6 w-6 ${color}`} />,
   },
   {
     id: "dark",
     title: "다크 모드",
-    icon: (color: string) => <DarkIcon className={`w-6 h-6 ${color}`} />,
+    icon: (color: string) => <DarkIcon className={`h-6 w-6 ${color}`} />,
   },
   {
     id: "system",
     title: "시스템 모드",
-    icon: (color: string) => <SystemIcon className={`w-6 h-6 ${color}`} />,
+    icon: (color: string) => <SystemIcon className={`h-6 w-6 ${color}`} />,
   },
 ];
-
-const getColor = (
-  resolvedTheme: string | undefined,
-  theme: string | undefined,
-  id: string
-) => {
-  if (theme === id) {
-    return "text-primary";
-  } else {
-    if (resolvedTheme === id) {
-      return "text-default-600";
-    }
-    return "text-default-300";
-  }
-};
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, theme, setTheme } = useTheme();
 
+  const getColor = (
+    resolvedTheme: string | undefined,
+    theme: string | undefined,
+    id: string,
+    mounted: boolean,
+  ) => {
+    if (!mounted) {
+      return "text-foreground";
+    }
+
+    if (theme === id) {
+      return "text-primary";
+    }
+
+    if (resolvedTheme === id) {
+      return "text-foreground";
+    }
+
+    return "text-foreground opacity-60";
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted)
-    return (
-      <>
-        {menu.map(({ id, title, icon }) => (
-          <Tooltip content={title} key={id} showArrow={true}>
-            <Button
-              className="w-auto h-auto p-0 m-0 min-h-0 min-w-0 bg-transparent"
-              onClick={() => {
-                setTheme(id);
-              }}
-            >
-              {icon("text-foreground")}
-            </Button>
-          </Tooltip>
-        ))}
-      </>
-    );
-
   return (
-    <>
+    <div className="flex gap-4">
       {menu.map(({ id, title, icon }) => (
-        <Tooltip content={title} key={id} showArrow={true}>
-          <Button
-            className="w-auto h-auto p-0 m-0 min-h-0 min-w-0 bg-transparent"
+        <Tooltip
+          key={id}
+          content={title}
+          showArrow={true}
+          classNames={{
+            base: [
+              "before:bg-content1 before:border before:dark:border-content1",
+            ],
+            content: [
+              "bg-content1 border dark:border-content1 shadow-md text-foreground rounded-lg text-sm",
+            ],
+          }}
+        >
+          <button
             onClick={() => {
               setTheme(id);
             }}
           >
-            {icon(getColor(resolvedTheme, theme, id))}
-          </Button>
+            {icon(getColor(resolvedTheme, theme, id, mounted))}
+          </button>
         </Tooltip>
       ))}
-    </>
+    </div>
   );
 }
