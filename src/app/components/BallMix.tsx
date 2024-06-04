@@ -22,7 +22,7 @@ function getRandomColor(): THREE.Color {
     "#69c8f2",
     "#ff7272",
     "#ff7272",
-    "#aaa",
+    "#aaaaaa",
     "#b0d840",
   ];
   const randomIndex = Math.floor(Math.random() * pastelColors.length);
@@ -54,7 +54,7 @@ function Mix({
               .normalize()
               .multiplyScalar(-50)
               .toArray(),
-            [0, 0, 0]
+            [0, 0, 0],
           );
       }
     }
@@ -90,8 +90,8 @@ function Pointer() {
     api.position.set(
       (state.mouse.x * viewport.width) / 2,
       (state.mouse.y * viewport.height) / 2,
-      0
-    )
+      0,
+    ),
   );
 }
 
@@ -103,8 +103,8 @@ export default function BallClump() {
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 70], fov: 40, near: 1, far: 100 }}
     >
-      <color attach="background" args={["#dfdfdf"]} />
-      <hemisphereLight args={[0xffffff, 0x888888, 5]} />
+      {/* <color attach="background" args={["#dfdfdf"]} /> */}
+      <hemisphereLight args={[0xffffff, 0x888888, 4]} />
       <Physics gravity={[0, 2, 0]} iterations={10}>
         <Pointer />
         <Mix />

@@ -39,7 +39,7 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="ko">
       <body className={notoSansKr.className}>
         <Providers>
-          <header>
+          <header className="sticky top-0 z-50">
             <NavBar />
           </header>
           <main className="container mx-auto max-w-screen-lg flex-grow px-6">
