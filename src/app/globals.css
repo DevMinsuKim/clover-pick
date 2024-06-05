@@ -43,3 +43,7 @@ body {
     Segoe UI Symbol,
     Noto Color Emoji;
 }
+
+.custom-tooltip {
+  @apply rounded-lg bg-gray-100 text-foreground dark:bg-content1 !important;
+}

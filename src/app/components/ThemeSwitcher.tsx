@@ -2,10 +2,11 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Tooltip } from "@nextui-org/tooltip";
 import SunIcon from "./ui/icons/SunIcon";
 import DarkIcon from "./ui/icons/DarkIcon";
 import SystemIcon from "./ui/icons/SystemIcon";
+import { Tooltip } from "react-tooltip";
+// import { Tooltip } from "@nextui-org/tooltip";
 
 const menu = [
   {
@@ -57,28 +58,22 @@ export function ThemeSwitcher() {
   return (
     <div className="flex gap-4">
       {menu.map(({ id, title, icon }) => (
-        <Tooltip
+        <div
+          className="flex"
           key={id}
-          content={title}
-          showArrow={true}
-          classNames={{
-            base: [
-              "before:bg-content1 before:border before:dark:border-content1",
-            ],
-            content: [
-              "bg-content1 border dark:border-content1 shadow-md text-foreground rounded-lg text-sm",
-            ],
-          }}
+          data-tooltip-id="tooltip"
+          data-tooltip-content={title}
         >
           <button
             onClick={() => {
               setTheme(id);
             }}
           >
-            {icon(getColor(resolvedTheme, theme, id, mounted))}
+            {icon(getColor("resolvedTheme", theme, id, mounted))}
           </button>
-        </Tooltip>
+        </div>
       ))}
+      <Tooltip id="tooltip" className="custom-tooltip" />
     </div>
   );
 }

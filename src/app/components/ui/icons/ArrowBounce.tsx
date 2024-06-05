@@ -1,26 +1,30 @@
-// "use client";
+"use client";
 
-// import React from "react";
-// import Lottie from "react-lottie-player";
-// import animationData from "@/public/lotties/arrow_bounce.json";
+import React from "react";
+import animationData from "@/public/lotties/arrow_bounce.json";
+import dynamic from "next/dynamic";
 
-// interface AnimationProps {
-//   loop?: boolean;
-//   play?: boolean;
-//   style?: React.CSSProperties;
-// }
+const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+  ssr: false,
+});
 
-// export default function ArrowBounce({
-//   loop = true,
-//   play = true,
-//   style,
-// }: AnimationProps) {
-//   return (
-//     <Lottie
-//       loop={loop}
-//       animationData={animationData}
-//       play={play}
-//       style={style}
-//     />
-//   );
-// }
+interface AnimationProps {
+  loop?: boolean;
+  play?: boolean;
+  style?: React.CSSProperties;
+}
+
+export default function ArrowBounce({
+  loop = true,
+  play = true,
+  style,
+}: AnimationProps) {
+  return (
+    <LottiePlayer
+      animationData={animationData}
+      loop={loop}
+      play={play}
+      style={style}
+    />
+  );
+}
