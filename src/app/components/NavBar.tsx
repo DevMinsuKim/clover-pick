@@ -32,7 +32,7 @@ export default function NavBar() {
   const pathName = usePathname();
 
   return (
-    <div className="mx-auto flex max-w-screen-lg items-center justify-between bg-background px-6 py-5">
+    <div className="flex items-center justify-between bg-background py-5">
       <Link href="/">
         <CombinationLogo />
       </Link>
@@ -49,9 +49,9 @@ export default function NavBar() {
             </li>
           ))}
         </ul>
-        <ul className="fixed bottom-0 left-0 flex w-full justify-evenly rounded-t-xl border-t bg-content1 py-2 shadow-md dark:border-content1 md:hidden">
+        <ul className="fixed bottom-0 left-0 flex w-full justify-around rounded-t-xl border-t bg-content1 py-2 shadow-md dark:border-content1 md:hidden">
           {menu.map(({ href, title, icon }) => (
-            <li key={title}>
+            <li key={title} className="flex-1">
               <Link
                 href={href}
                 className={`${pathName === href ? "font-bold text-primary" : "text-foreground"} flex flex-col items-center justify-center text-xs transition-opacity hover:opacity-80`}

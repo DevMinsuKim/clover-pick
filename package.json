@@ -11,8 +11,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/tooltip": "^2.0.35",
     "@react-three/cannon": "^6.6.0",
+    "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.7",
     "@svgr/webpack": "^8.1.0",
     "framer-motion": "^11.2.6",

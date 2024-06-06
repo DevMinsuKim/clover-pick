@@ -11,20 +11,20 @@ const LottiePlayer = dynamic(() => import("react-lottie-player"), {
 interface AnimationProps {
   loop?: boolean;
   play?: boolean;
-  style?: React.CSSProperties;
+  className?: string;
 }
 
 export default function ArrowBounce({
   loop = true,
   play = true,
-  style,
+  className,
 }: AnimationProps) {
   return (
     <LottiePlayer
       animationData={animationData}
       loop={loop}
       play={play}
-      style={style}
+      className={className}
     />
   );
 }

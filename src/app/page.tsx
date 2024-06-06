@@ -1,28 +1,38 @@
 import React from "react";
 import BallMix from "./components/BallMix";
 import Image from "next/image";
-import ArrowBounce from "./components/ui/icons/ArrowBounce";
+import ArrowUp from "./components/ui/icons/ArrowUp";
+import UpDown from "./components/effect/UpDown";
 
 export default function Home() {
   return (
-    <section className="relative flex flex-col items-center justify-center">
-      <Image
-        priority
-        className="absolute right-0 top-10 opacity-10 blur-2xl dark:opacity-5"
-        src={"/images/pattern.png"}
-        width={600}
-        height={600}
-        alt="pattern"
-      />
+    <section>
       <div className="relative flex w-full flex-col items-center justify-end md:flex-row">
-        <h2 className="absolute left-0 text-5xl">
+        <h2 className="left-0 mt-28 text-4xl md:absolute md:text-5xl">
           클로버픽 AI가 선택한 번호, <br /> 최고의 행운을 당신에게!
         </h2>
         <div className="relative h-[30rem] w-auto">
-          {/* <BallMix /> */}
-          <div className="absolute bottom-[20%] left-1/2 -translate-x-1/2 transform">
-            <div className="rounded-md bg-content1 p-2">
-              볼을 섞어보세요! <ArrowBounce style={{ width: 32, height: 32 }} />
+          <BallMix />
+          <div className="absolute bottom-[5%] left-1/2 w-full -translate-x-1/2 transform">
+            <div className="flex flex-col items-center justify-center">
+              <Image
+                priority
+                src={"/images/pattern.png"}
+                alt="pattern"
+                width={1920}
+                height={1080}
+                className="absolute opacity-10 dark:opacity-5"
+              />
+              <UpDown>
+                <div className="rounded-full bg-content1 p-3 shadow">
+                  <ArrowUp />
+                </div>
+              </UpDown>
+              <div className="flex items-center justify-center rounded-xl bg-content1 px-3 pb-2 pt-1 shadow">
+                <p>볼을 섞어보세요!</p>
+              </div>
+
+              {/* <ArrowBounce className="h-20 w-20 bg-white fill-white" /> */}
             </div>
           </div>
         </div>

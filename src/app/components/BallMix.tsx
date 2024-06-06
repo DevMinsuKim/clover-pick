@@ -98,10 +98,10 @@ function Pointer() {
 export default function BallClump() {
   return (
     <Canvas
-      shadows
-      gl={{ antialias: true }}
+      gl={{ antialias: true, alpha: true }}
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 70], fov: 40, near: 1, far: 100 }}
+      style={{ background: "transparent" }}
     >
       {/* <color attach="background" args={["#dfdfdf"]} /> */}
       <hemisphereLight args={[0xffffff, 0x888888, 4]} />
