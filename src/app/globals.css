@@ -5,7 +5,7 @@
 :root {
   --color-background: #ffffff;
   --color-foreground: #333333;
-  --color-primary: #03c75a;
+  --color-primary: #17c964;
   --color-content1: #ffffff
     /* --color-secondary: #64748b;
   --color-success: #10b981;
@@ -16,7 +16,7 @@
 .dark {
   --color-background: #121213;
   --color-foreground: #e5e5e5;
-  --color-primary: #3bdd47;
+  --color-primary: #12a150;
   --color-content1: #27272a
     /* --color-secondary: #94a3b8;
   --color-success: #34d399;

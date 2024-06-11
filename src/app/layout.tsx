@@ -5,7 +5,7 @@ import { Providers } from "./providers";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 
-const notoSansKr = Noto_Sans_KR({ subsets: ["latin"] });
+const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
 const titleEn = "CloverPick";
 const titleKr = "클로버픽";
@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="ko">
       <body
-        className={`${notoSansKr.className} container mx-auto w-full min-w-[320px] max-w-screen-xl px-6`}
+        className={`${notoSansKR.className} container mx-auto w-full min-w-[320px] max-w-screen-xl break-keep px-6`}
       >
         <Providers>
           <header className="sticky top-0 z-50">

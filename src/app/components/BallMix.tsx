@@ -16,7 +16,7 @@ const rfs = THREE.MathUtils.randFloatSpread;
 const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 const baubleMaterial = new THREE.MeshStandardMaterial({});
 
-function getRandomColor(): THREE.Color {
+const getRandomColor = (): THREE.Color => {
   const pastelColors = [
     "#fbc400",
     "#69c8f2",
@@ -27,13 +27,13 @@ function getRandomColor(): THREE.Color {
   ];
   const randomIndex = Math.floor(Math.random() * pastelColors.length);
   return new THREE.Color(pastelColors[randomIndex]);
-}
+};
 
-function Mix({
+const Mix = ({
   mat = new THREE.Matrix4(),
   vec = new THREE.Vector3(),
   ...props
-}: MixProps) {
+}: MixProps) => {
   const [ref, api] = useSphere(() => ({
     args: [1],
     mass: 1,
@@ -45,7 +45,7 @@ function Mix({
   useFrame(() => {
     if (ref.current) {
       for (let i = 0; i < count; i++) {
-        (ref.current as THREE.InstancedMesh).getMatrixAt(i, mat);
+        ref.current.getMatrixAt(i, mat);
         api
           .at(i)
           .applyForce(
@@ -77,9 +77,9 @@ function Mix({
       args={[sphereGeometry, baubleMaterial, count]}
     />
   );
-}
+};
 
-function Pointer() {
+const Pointer = () => {
   const viewport = useThree((state) => state.viewport);
   const [, api] = useSphere(() => ({
     type: "Kinematic",
@@ -93,17 +93,11 @@ function Pointer() {
       0,
     ),
   );
-}
+};
 
-export default function BallClump() {
+export default function BallMix() {
   return (
-    <Canvas
-      gl={{ antialias: true, alpha: true }}
-      dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 70], fov: 40, near: 1, far: 100 }}
-      style={{ background: "transparent" }}
-    >
-      {/* <color attach="background" args={["#dfdfdf"]} /> */}
+    <Canvas camera={{ position: [0, 0, 15] }}>
       <hemisphereLight args={[0xffffff, 0x888888, 4]} />
       <Physics gravity={[0, 2, 0]} iterations={10}>
         <Pointer />

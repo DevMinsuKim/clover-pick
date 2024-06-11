@@ -9,6 +9,7 @@ import Link from "next/link";
 import Clover from "./ui/icons/Clover";
 import Six from "./ui/icons/Six";
 import Seven from "./ui/icons/Seven";
+import { ROUTES } from "../constants/routes";
 
 const menu = [
   {
@@ -17,12 +18,12 @@ const menu = [
     icon: <Clover className="h-6 w-6" />,
   },
   {
-    href: "/lotto",
+    href: ROUTES.LOTTO_645,
     title: "로또 6/45",
     icon: <Six className="h-6 w-6" />,
   },
   {
-    href: "/pension",
+    href: ROUTES.PENSION_720,
     title: "연금복권 720+",
     icon: <Seven className="h-6 w-6" />,
   },
