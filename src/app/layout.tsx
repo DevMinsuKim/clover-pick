@@ -38,14 +38,14 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="ko">
       <body
-        className={`${notoSansKR.className} container mx-auto w-full min-w-[320px] max-w-screen-xl break-keep px-6`}
+        className={`${notoSansKR.className} container mx-auto w-full min-w-[320px] max-w-screen-xl break-words px-6`}
       >
         <Providers>
           <header className="sticky top-0 z-50">
             <NavBar />
           </header>
           <main>{children}</main>
-          <footer>
+          <footer className="mb-20">
             <Footer />
           </footer>
         </Providers>

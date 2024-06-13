@@ -50,7 +50,7 @@ export default function NavBar() {
             </li>
           ))}
         </ul>
-        <ul className="fixed bottom-0 left-0 flex w-full justify-around rounded-t-xl border-t bg-content1 py-2 shadow-md dark:border-content1 md:hidden">
+        <ul className="fixed bottom-0 left-0 flex w-full min-w-[320px] justify-around rounded-t-xl border-t bg-content1 py-2 shadow-md dark:border-content1 md:hidden">
           {menu.map(({ href, title, icon }) => (
             <li key={title} className="flex-1">
               <Link
