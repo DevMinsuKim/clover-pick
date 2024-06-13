@@ -11,17 +11,17 @@ import { Tooltip } from "react-tooltip";
 const menu = [
   {
     id: "light",
-    title: "라이트 모드",
+    title: "밝은 테마",
     icon: (color: string) => <SunIcon className={`h-6 w-6 ${color}`} />,
   },
   {
     id: "dark",
-    title: "다크 모드",
+    title: "어두운 테마",
     icon: (color: string) => <DarkIcon className={`h-6 w-6 ${color}`} />,
   },
   {
     id: "system",
-    title: "시스템 모드",
+    title: "기기 테마 사용",
     icon: (color: string) => <SystemIcon className={`h-6 w-6 ${color}`} />,
   },
 ];

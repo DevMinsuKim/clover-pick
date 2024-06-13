@@ -69,8 +69,28 @@ const Mix = ({
     }
   }, [ref]);
 
+  const viewport = useThree((state) => state.viewport);
+
+  const isMobile = window.innerWidth < 768;
+  const responsiveRato = viewport.width / 12;
+
+  // useFrame(() => {
+  //   console.log(window.innerWidth, window.innerHeight);
+  //   ref.current.scale.set(
+  //     window.innerWidth / 1000,
+  //     window.innerHeight / 1000,
+  //     1,
+  //   );
+  //   // ref.current.position.set(
+  //   //   window.innerWidth / 2000,
+  //   //   window.innerHeight / 2000,
+  //   //   0,
+  //   // );
+  // });
+
   return (
     <instancedMesh
+      scale={[isMobile ? 1 : 2, isMobile ? 1 : 2, 1]}
       ref={ref}
       castShadow
       receiveShadow
@@ -95,9 +115,26 @@ const Pointer = () => {
   );
 };
 
+const Responsive = () => {
+  // const { size, setSize } = useThree();
+  // useEffect(() => {
+  //   function handleResize() {
+  //     setSize(window.innerWidth / 2, window.innerHeight / 2);
+  //   }
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, [setSize]);
+  // return null;
+  // const { viewport } = useThree();
+  // console.log(viewport.width, viewport.height);
+  // return null;
+};
+
 export default function BallMix() {
   return (
     <Canvas camera={{ position: [0, 0, 15] }}>
+      <color attach="background" args={["#f0f0f0"]} />
+      {/* <Responsive /> */}
       <hemisphereLight args={[0xffffff, 0x888888, 4]} />
       <Physics gravity={[0, 2, 0]} iterations={10}>
         <Pointer />

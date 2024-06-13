@@ -46,7 +46,7 @@ export default function Home() {
             objectFit="contain"
             className="absolute left-0 top-0 opacity-10 dark:opacity-5"
           /> */}
-          <div className="mt-16 h-full min-h-40 w-full max-w-md bg-red-400 md:min-h-96">
+          <div className="mt-16 h-full min-h-40 w-full max-w-md md:min-h-96">
             <BallMix />
           </div>
         </div>
