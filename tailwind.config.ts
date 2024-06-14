@@ -13,6 +13,7 @@ const config: Config = {
         background: "var(--color-background)",
         foreground: "var(--color-foreground)",
         primary: "var(--color-primary)",
+        divider: "var(--color-divider)",
         content1: "var(--color-content1)",
       },
     },

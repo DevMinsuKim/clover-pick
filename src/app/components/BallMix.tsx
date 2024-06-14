@@ -4,6 +4,8 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Physics, useSphere } from "@react-three/cannon";
 import React, { MutableRefObject, useEffect } from "react";
+import useTouchDevice from "../hooks/useTouchDevice";
+import Loader from "./Loader";
 
 interface MixProps {
   mat?: THREE.Matrix4;
@@ -99,8 +101,22 @@ const Pointer = () => {
 };
 
 export default function BallMix() {
+  const isTouchDevice = useTouchDevice();
+
+  if (isTouchDevice === null) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <Loader className="h-8 w-8 border-2" />
+      </div>
+    );
+  }
+
   return (
-    <Canvas camera={{ position: [0, 0, 20] }}>
+    <Canvas
+      camera={{ position: [0, 0, 20] }}
+      gl={{ alpha: true }}
+      style={{ background: "transparent" }}
+    >
       {/* <color attach="background" args={["#f0f0f0"]} /> */}
       <hemisphereLight args={[0xffffff, 0x888888, 4]} />
       <Physics gravity={[0, 2, 0]} iterations={10}>

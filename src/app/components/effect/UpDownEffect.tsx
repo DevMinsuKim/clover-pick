@@ -8,7 +8,11 @@ const UpDownTransition = {
   repeat: Infinity,
 };
 
-export default function UpDown({ children }: { children: React.ReactNode }) {
+export default function UpDownEffect({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <motion.div
       animate={{

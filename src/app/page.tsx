@@ -1,16 +1,9 @@
 import React from "react";
 import BallMix from "./components/BallMix";
-import Image from "next/image";
-import ArrowUp from "./components/ui/icons/ArrowUp";
-import UpDown from "./components/effect/UpDown";
-import ArrowBounce from "./components/ui/icons/ArrowBounce";
 import Link from "next/link";
 import { ROUTES } from "./constants/routes";
 import Button from "./components/Button";
-
-{
-  /* <ArrowBounce className="h-20 w-20 bg-white fill-white" /> */
-}
+import DeviceActionText from "./components/DeviceActionText";
 
 export default function Home() {
   return (
@@ -47,8 +40,12 @@ export default function Home() {
             className="absolute left-0 top-0 opacity-10 dark:opacity-5"
           /> */}
 
-          <div className="mt-2 h-56 w-full max-w-screen-sm md:h-72">
+          <div className="relative mt-2 h-56 w-full max-w-screen-sm md:h-72">
             <BallMix />
+
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 transform md:bottom-10">
+              <DeviceActionText />
+            </div>
           </div>
         </div>
       </div>
