@@ -39,7 +39,7 @@ next-env.d.ts
 venv/
 
 # bun.lockb file
-bun.lockb
+# bun.lockb
 
 #Python cache directories
 __pycache__/
