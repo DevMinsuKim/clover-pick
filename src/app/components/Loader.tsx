@@ -1,7 +1,11 @@
-export default function Loader({ className = "" }) {
+type Props = {
+  className?: string;
+};
+
+export default function Loader({ className }: Props) {
   return (
     <div
-      className={`border-divider h-full w-full animate-spin rounded-full border-t-primary ${className}`}
+      className={`animate-spin rounded-full border-divider border-t-primary ${className}`}
     />
   );
 }
