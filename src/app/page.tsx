@@ -29,17 +29,6 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center">
-          {/* <Image
-            priority
-            src={"/images/pattern.png"}
-            alt="pattern"
-            width={1920}
-            height={1080}
-            layout="fill"
-            objectFit="contain"
-            className="absolute left-0 top-0 opacity-10 dark:opacity-5"
-          /> */}
-
           <div className="relative mt-2 h-56 w-full max-w-screen-sm md:h-72">
             <BallMix />
 
@@ -51,35 +40,6 @@ export default function Home() {
       </div>
 
       <div>test@@@@@@@@@@</div>
-
-      {/* <div className="relative h-[30rem] w-auto">
-          <BallMix />
-          <div className="absolute bottom-[5%] left-1/2 w-full -translate-x-1/2 transform">
-            <div className="flex flex-col items-center justify-center">
-              <Image
-                priority
-                src={"/images/pattern.png"}
-                alt="pattern"
-                width={1920}
-                height={1080}
-                className="absolute opacity-10 dark:opacity-5"
-              />
-              <UpDown>
-                <div className="rounded-full bg-content1 p-3 shadow">
-                  <ArrowUp />
-                </div>
-              </UpDown>
-              <div className="flex items-center justify-center rounded-xl bg-content1 px-3 pb-2 pt-1 shadow">
-                <p>볼을 섞어보세요!</p>
-              </div>
-
-              
-            </div>
-          </div>
-        </div> */}
-      {/* <div className="w-full bg-red-800">
-        <p className="text-4xl">당첨내역</p>
-      </div> */}
     </section>
   );
 }
