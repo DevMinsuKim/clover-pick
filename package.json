@@ -6,9 +6,7 @@
     "fastapi-dev": "pip3 install -r requirements.txt && FASTAPI_ENV=development python3 -m uvicorn api.index:app --reload",
     "next-dev": "next dev",
     "dev": "concurrently \"bun run next-dev\" \"bun run fastapi-dev\"",
-    "fastapi-prod": "pip3 install -r requirements.txt && FASTAPI_ENV=production python3 -m uvicorn api.index:app",
-    "next-prod": "next start",
-    "start": "concurrently \"bun run next-prod\" \"bun run fastapi-prod\"",
+    "start": "next start",
     "build": "next build",
     "lint": "next lint"
   },

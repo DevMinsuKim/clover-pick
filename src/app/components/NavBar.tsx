@@ -34,7 +34,7 @@ export default function NavBar() {
 
   return (
     <div className="flex items-center justify-between bg-background py-5">
-      <Link href="/">
+      <Link href="/" aria-label="logo">
         <CombinationLogo />
       </Link>
       <nav>

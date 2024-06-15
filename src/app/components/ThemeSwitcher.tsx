@@ -65,6 +65,7 @@ export function ThemeSwitcher() {
           data-tooltip-content={title}
         >
           <button
+            aria-label={title}
             onClick={() => {
               setTheme(id);
             }}
