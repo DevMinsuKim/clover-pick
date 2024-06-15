@@ -15,6 +15,7 @@
     "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.7",
     "@svgr/webpack": "^8.1.0",
+    "@vercel/speed-insights": "^1.0.12",
     "framer-motion": "^11.2.6",
     "next": "^14.2.3",
     "next-themes": "^0.3.0",

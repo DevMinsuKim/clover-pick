@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -44,7 +45,10 @@ export default function RootLayout({
           <header className="sticky top-0 z-50">
             <NavBar />
           </header>
-          <main>{children}</main>
+          <main>
+            {children}
+            <SpeedInsights />
+          </main>
           <footer>
             <Footer />
           </footer>
