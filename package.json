@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn api.index:app --reload",
+    "fastapi-dev": "pip3 install -r requirements.txt && FASTAPI_ENV=development python3 -m uvicorn api.index:app --reload",
     "next-dev": "next dev",
-    "dev": "concurrently \"bun next-dev\" \"bun fastapi-dev\"",
+    "dev": "concurrently \"bun run next-dev\" \"bun run fastapi-dev\"",
+    "fastapi-prod": "pip3 install -r requirements.txt && FASTAPI_ENV=production python3 -m uvicorn api.index:app",
+    "next-prod": "next start",
+    "start": "concurrently \"bun run next-prod\" \"bun run fastapi-prod\"",
     "build": "next build",
-    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -15,6 +17,7 @@
     "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.7",
     "@svgr/webpack": "^8.1.0",
+    "@vercel/postgres": "^0.8.0",
     "@vercel/speed-insights": "^1.0.12",
     "framer-motion": "^11.2.6",
     "next": "^14.2.3",
