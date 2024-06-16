@@ -8,23 +8,14 @@
   --color-primary: #17c964;
   --color-divider: #e4e4e7;
   --color-content1: #ffffff;
-
-  /* --color-secondary: #64748b;
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444; */
 }
 
 .dark {
   --color-background: #121213;
   --color-foreground: #e5e5e5;
-  --color-primary: #12a150;
+  --color-primary: #0f9e4d;
   --color-divider: #27272a;
   --color-content1: #27272a;
-  /* --color-secondary: #94a3b8;
-  --color-success: #34d399;
-  --color-warning: #fbbf24;
-  --color-danger: #f87171; */
 }
 
 body {

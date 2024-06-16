@@ -3,6 +3,7 @@
 import React from "react";
 import Button from "./components/Button";
 import { useRouter } from "next/navigation";
+import NotFoundAni from "./components/NotFoundAni";
 
 export default function NotFound() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function NotFound() {
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center text-center">
+      <NotFoundAni className="max-w-lg" />
       <strong className="text-2xl sm:text-3xl">
         찾으시는 페이지가 없습니다.
       </strong>
