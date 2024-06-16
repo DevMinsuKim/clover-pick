@@ -2,17 +2,23 @@
   "crons": [
     {
       "path": "/api/lotto/data/update",
-      "schedule": "40 8 * * *"
+      "schedule": "55 8 * * *"
     },
     {
       "path": "/api/pension/data/update",
-      "schedule": "40 8 * * *"
+      "schedule": "55 8 * * *"
     }
   ],
 
   "functions": {
     "api/**": {
-      "excludeFiles": "{.next,*.cache,node_modules,public,app}/**"
+      "excludeFiles": [
+        ".next/**",
+        "*.cache/**",
+        "node_modules/**",
+        "public/**",
+        "app/**"
+      ]
     }
   }
 }
