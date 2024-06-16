@@ -1,14 +1,17 @@
+import os
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from fastapi import HTTPException
 import requests
 import pandas as pd
 from sqlalchemy import create_engine
 
-from api.config import get_env_variables
+load_dotenv('.env.development.local')
+
+lotto_data_api_url = os.getenv('LOTTO_DATA_API_URL')
+db_url = os.getenv('POSTGRES_URL_PSYCOPG2')
 
 def lotto_data_update():
-    lotto_data_api_url, db_url = get_env_variables()
-
     try:
         response = requests.get(lotto_data_api_url)
         response.raise_for_status()
@@ -29,7 +32,7 @@ def lotto_data_update():
 
         df = pd.DataFrame(rows, columns=headers)
         
-        df['추첨일'] = pd.to_datetime(df['추첨일'], format='%Y.%m.%d')
+        df['추첨일'] = pd.to_datetime(df['추첨일'], format='%Y.%m.%d').dt.strftime('%Y-%m-%d')
         
         money_columns = ['1등 당첨금액', '2등 당첨금액', '3등 당첨금액', '4등 당첨금액', '5등 당첨금액']
         count_columns = ['1등 당첨자수', '2등 당첨자수', '3등 당첨자수', '4등 당첨자수', '5등 당첨자수']
@@ -68,7 +71,7 @@ def lotto_data_update():
         if not new_data.empty:
             new_data.to_sql('lotto', con=engine, if_exists='append', index=False)
         
-        return {"message": "Excel file downloaded and processed successfully."}
+        return {"message": "success"}
 
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Failed to download the file: {e}")

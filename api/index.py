@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from api.lotto.index import lotto_data_update
+from api.pension.index import pension_data_update
 
 app = FastAPI()
 
@@ -9,5 +10,5 @@ def update_lotto_data():
     return lotto_data_update()
 
 @app.get("/api/pension/data/update")
-def pension_data_update():
-    return {"message": "Hello World"}
+def update_pension_data():
+    return pension_data_update()
