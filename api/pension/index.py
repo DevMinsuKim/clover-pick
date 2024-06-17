@@ -17,7 +17,7 @@ def pension_data_update():
         response.raise_for_status()
       
         file_content = response.content
-        soup = BeautifulSoup(file_content, 'lxml')
+        soup = BeautifulSoup(file_content, 'html.parser')
 
         for tag in soup.find_all('td', {'bgcolor': '#ccffff'}):
             tag.decompose()

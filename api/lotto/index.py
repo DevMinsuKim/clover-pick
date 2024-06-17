@@ -17,7 +17,7 @@ def lotto_data_update():
         response.raise_for_status()
       
         file_content = response.content
-        soup = BeautifulSoup(file_content, 'lxml')
+        soup = BeautifulSoup(file_content, 'html.parser')
         table = soup.find('table', {'border': '1'})
             
         headers = ["회차", "추첨일", "1등 당첨자수", "1등 당첨금액", "2등 당첨자수", "2등 당첨금액", "3등 당첨자수", "3등 당첨금액", "4등 당첨자수", "4등 당첨금액", "5등 당첨자수", "5등 당첨금액", "당첨번호 1", "당첨번호 2", "당첨번호 3", "당첨번호 4", "당첨번호 5", "당첨번호 6", "보너스 번호"]
