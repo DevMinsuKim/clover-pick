@@ -2,11 +2,10 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import SunIcon from "./ui/icons/SunIcon";
-import DarkIcon from "./ui/icons/DarkIcon";
-import SystemIcon from "./ui/icons/SystemIcon";
+import SunIcon from "../ui/icons/SunIcon";
+import DarkIcon from "../ui/icons/DarkIcon";
+import SystemIcon from "../ui/icons/SystemIcon";
 import { Tooltip } from "react-tooltip";
-// import { Tooltip } from "@nextui-org/tooltip";
 
 const menu = [
   {
@@ -28,7 +27,7 @@ const menu = [
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme, theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   const getColor = (
     resolvedTheme: string | undefined,

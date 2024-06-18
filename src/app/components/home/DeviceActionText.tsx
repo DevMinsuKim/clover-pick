@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import UpDownEffect from "./effect/UpDownEffect";
-import ArrowUp from "./ui/icons/ArrowUp";
-import useTouchDevice from "../hooks/useTouchDevice";
-import Loader from "./Loader";
+import UpDownEffect from "../effect/UpDownEffect";
+import ArrowUp from "../ui/icons/ArrowUp";
+import useTouchDevice from "../../hooks/useTouchDevice";
 
 export default function DeviceActionText() {
   const isTouchDevice = useTouchDevice();

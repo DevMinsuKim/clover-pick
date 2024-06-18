@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
-import Footer from "./components/Footer";
-import NavBar from "./components/NavBar";
+import { ThemeProvider } from "./providers/ThemeProvider";
+import Footer from "./components/common/Footer";
+import NavBar from "./components/common/NavBar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import QueryProvider from "./providers/QueryClientProvider";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -41,18 +42,20 @@ export default function RootLayout({
       <body
         className={`${notoSansKR.className} container mx-auto w-full min-w-[320px] max-w-screen-xl break-keep px-6`}
       >
-        <Providers>
-          <header className="sticky top-0 z-50">
-            <NavBar />
-          </header>
-          <main>
-            {children}
-            <SpeedInsights />
-          </main>
-          <footer>
-            <Footer />
-          </footer>
-        </Providers>
+        <ThemeProvider>
+          <QueryProvider>
+            <header className="sticky top-0 z-50">
+              <NavBar />
+            </header>
+            <main>
+              {children}
+              <SpeedInsights />
+            </main>
+            <footer>
+              <Footer />
+            </footer>
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
