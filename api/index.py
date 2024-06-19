@@ -1,14 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from api.routers.lotto import router as lotto_router
+from api.routers.pension import router as pension_router
 
-from api.lotto.index import lotto_data_update
-from api.pension.index import pension_data_update
 
 app = FastAPI()
 
-@app.get("/api/lotto/data/update")
-def update_lotto_data():
-    return lotto_data_update()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://lotto-website.vercel.app/"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.get("/api/pension/data/update")
-def update_pension_data():
-    return pension_data_update()
+app.include_router(lotto_router, prefix="/api", tags=["lotto"])
+app.include_router(pension_router, prefix="/api", tags=["pension"])

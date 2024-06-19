@@ -1,19 +1,14 @@
-import os
-from bs4 import BeautifulSoup
-from dotenv import load_dotenv
-from fastapi import HTTPException
 import requests
+from bs4 import BeautifulSoup
 import pandas as pd
 from sqlalchemy import create_engine
+from fastapi import HTTPException
+from api.utils.settings import Settings
+from sqlalchemy.orm import Session
 
-load_dotenv('.env.development.local')
-
-pension_data_api_url = os.getenv('PENSION_DATA_API_URL')
-db_url = os.getenv('POSTGRES_URL_PSYCOPG2')
-
-def pension_data_update():
+def pension_data_update(db: Session):
     try:
-        response = requests.get(pension_data_api_url)
+        response = requests.get(Settings.PENSION_DATA_API_URL)
         response.raise_for_status()
       
         file_content = response.content
@@ -50,21 +45,18 @@ def pension_data_update():
 
         df_filtered.columns = ['draw_number', 'draw_date', 'first_prize', 'bonus_prize']
 
-        engine = create_engine(db_url)
-
-        with engine.connect() as connection:
-            existing_data = pd.read_sql("SELECT draw_number FROM pension", connection)
-
+        existing_data = pd.read_sql("SELECT draw_number FROM pension", db.connection())
         existing_draw_numbers = set(existing_data['draw_number'])
         new_data = df_filtered[~df_filtered['draw_number'].isin(existing_draw_numbers)]
 
         if not new_data.empty:
-            new_data.to_sql('pension', con=engine, if_exists='append', index=False)
+            new_data.to_sql('pension', con=db.connection(), if_exists='append', index=False)
+            db.commit()
 
-        return({"message": "success"})
+        return {"message": "성공적으로 업데이트 되었습니다."}
 
     except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"Failed to download the file: {e}")
+        raise HTTPException(status_code=500, detail=f"파일을 다운로드하는데 실패했습니다: {e}")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+        raise HTTPException(status_code=500, detail=f"오류가 발생했습니다: {e}")

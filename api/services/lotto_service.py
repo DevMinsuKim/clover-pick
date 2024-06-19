@@ -1,19 +1,61 @@
+import json
 import os
-from bs4 import BeautifulSoup
-from dotenv import load_dotenv
-from fastapi import HTTPException
+import openai
 import requests
+from bs4 import BeautifulSoup
 import pandas as pd
-from sqlalchemy import create_engine
+from fastapi import HTTPException
+from sqlalchemy import text
+from api.utils.settings import Settings
+from sqlalchemy.orm import Session
+from openai import OpenAI
 
-load_dotenv('.env.development.local')
+def get_lotto_numbers(count: int, db: Session):
+    if count > 5:
+        raise ValueError("Invalid value")
+    
+    client = OpenAI(
+        api_key=os.environ['OPENAI_API_KEY'],
+    )
 
-lotto_data_api_url = os.getenv('LOTTO_DATA_API_URL')
-db_url = os.getenv('POSTGRES_URL_PSYCOPG2')
+    prompt = f"Predict {count} sets of 6 winning numbers from 1 to 45 in JSON format with key 'winning_numbers'."
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo-0125",
+        response_format={ "type": "json_object" },
+        messages=[
+            {"role": "system", "content": "You are a useful secretary designed to analyze lotto numbers and print them out in JSON."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=150
+    )
 
-def lotto_data_update():
+    response_data = json.loads(response.choices[0].message.content)
+
+    if count == 1 and isinstance(response_data['winning_numbers'], list):
+        response_data['winning_numbers'] = [response_data['winning_numbers']]
+
+    for numbers in response_data['winning_numbers']:
+        if len(numbers) == 6:
+            query = text("""
+                INSERT INTO created_lotto (winning_number1, winning_number2, winning_number3, winning_number4, winning_number5, winning_number6)
+                VALUES (:number1, :number2, :number3, :number4, :number5, :number6)
+            """)
+            db.execute(query, {
+                'number1': numbers[0],
+                'number2': numbers[1],
+                'number3': numbers[2],
+                'number4': numbers[3],
+                'number5': numbers[4],
+                'number6': numbers[5]
+            })
+    
+    db.commit()
+
+    return response_data
+
+def lotto_data_update(db: Session):
     try:
-        response = requests.get(lotto_data_api_url)
+        response = requests.get(Settings.LOTTO_DATA_API_URL)
         response.raise_for_status()
       
         file_content = response.content
@@ -59,22 +101,19 @@ def lotto_data_update():
             'winning_number_5', 'winning_number_6', 'bonus_number'
         ]
 
-        engine = create_engine(db_url)
-
-        with engine.connect() as connection:
-            existing_data = pd.read_sql("SELECT draw_number FROM lotto", connection)
-        
+        existing_data = pd.read_sql("SELECT draw_number FROM lotto", db.connection())
         existing_draw_numbers = set(existing_data['draw_number'])
 
         new_data = df[~df['draw_number'].isin(existing_draw_numbers)]
 
         if not new_data.empty:
-            new_data.to_sql('lotto', con=engine, if_exists='append', index=False)
+            new_data.to_sql('lotto', con=db.connection(), if_exists='append', index=False)
+            db.commit() 
         
-        return {"message": "success"}
+        return {"message": "성공적으로 업데이트 되었습니다."}
 
     except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"Failed to download the file: {e}")
+        raise HTTPException(status_code=500, detail=f"파일을 다운로드하는데 실패했습니다: {e}")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+        raise HTTPException(status_code=500, detail=f"오류가 발생했습니다: {e}")
