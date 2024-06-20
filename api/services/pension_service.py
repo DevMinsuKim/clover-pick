@@ -41,22 +41,14 @@ def pension_data_update(db: Session):
             }
             new_data.append(record)
 
-        existing_draw_numbers = set()
-        result = db.execute(text("SELECT draw_number FROM pension"))
-        while True:
-            batch = result.fetchmany(1000)
-            if not batch:
-                break
-            for row in batch:
-                existing_draw_numbers.add(row[0])
-
+        existing_draw_numbers = {lotto.draw_number for lotto in db.query(Pension.draw_number).all()}
         filtered_new_data = [record for record in new_data if record['draw_number'] not in existing_draw_numbers]
 
         if filtered_new_data:
             db.bulk_insert_mappings(Pension, filtered_new_data)
             db.commit()
 
-        return {"message": "성공적으로 업데이트 되었습니다."}
+        return {"message": "성공"}
 
     except requests.exceptions.RequestException as e:
         logger.logger.error(f"파일을 다운로드하는데 실패했습니다: {e}")

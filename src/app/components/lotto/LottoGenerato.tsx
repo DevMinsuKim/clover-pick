@@ -2,12 +2,11 @@
 
 import React, { ChangeEvent, useState } from "react";
 import Button from "../common/Button";
-import useLottoNumbers from "../../hooks/useLottoNumbers";
+import useLottoGenerator from "../../hooks/useLottoNumbers";
 
 export default function GetLottoNumbers() {
   const [selected, setSelected] = useState(1);
-  const { mutate, data, error, isError, isPending, isSuccess } =
-    useLottoNumbers();
+  const { mutate, data, error, isError, isPending } = useLottoGenerator();
 
   const handleClick = () => {
     mutate({ count: selected });

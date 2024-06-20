@@ -2,18 +2,34 @@ import json
 import os
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from bs4 import BeautifulSoup
 from fastapi import HTTPException, logger
-from sqlalchemy import text
+from sqlalchemy import desc
+from api.model.created_lotto import CreatedLotto
 from api.model.lotto import Lotto
 from api.utils.settings import Settings
 from sqlalchemy.orm import Session
 from openai import OpenAI, OpenAIError
 
-def get_lotto_numbers(count: int, db: Session):
+def lotto(db: Session):
+    return "test!!!!"
+def lotto_generator(count: int, db: Session):
     if count > 5:
-        raise ValueError("Invalid value: count must be 5 or less.")
+        logger.logger.error(f"요청된 로또 번호 수가 5개를 초과했습니다: {count}")
+        raise HTTPException(status_code=400, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+    
+    KST = timezone(timedelta(hours=9))
+    
+    now = datetime.now(KST)
+    saturday_8pm = now.replace(hour=20, minute=0, second=0, microsecond=0)
+    sunday_6am = now.replace(hour=6, minute=0, second=0, microsecond=0)
+    
+    if now.weekday() == 5 and now >= saturday_8pm:
+        logger.logger.error(f"로또 판매 기간 동안 POST 요청은 차단됩니다: {count}")
+        raise HTTPException(status_code=403, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+    if now.weekday() == 6 and now < sunday_6am:
+        raise HTTPException(status_code=403, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
     
     try:
         client = OpenAI(
@@ -36,22 +52,26 @@ def get_lotto_numbers(count: int, db: Session):
         if count == 1 and isinstance(response_data['winning_numbers'], list):
             response_data['winning_numbers'] = [response_data['winning_numbers']]
 
+        recent_draw = db.query(Lotto).order_by(desc(Lotto.draw_number)).first()
+        recent_draw_number = recent_draw.draw_number if recent_draw else 0
+        new_draw_number = recent_draw_number + 1
+
+        records = []
         for numbers in response_data['winning_numbers']:
             if len(numbers) == 6:
-                query = text("""
-                    INSERT INTO created_lotto (winning_number1, winning_number2, winning_number3, winning_number4, winning_number5, winning_number6)
-                    VALUES (:number1, :number2, :number3, :number4, :number5, :number6)
-                """)
-                db.execute(query, {
-                    'number1': numbers[0],
-                    'number2': numbers[1],
-                    'number3': numbers[2],
-                    'number4': numbers[3],
-                    'number5': numbers[4],
-                    'number6': numbers[5]
+                records.append({
+                    'draw_number': new_draw_number,
+                    'winning_number1': numbers[0],
+                    'winning_number2': numbers[1],
+                    'winning_number3': numbers[2],
+                    'winning_number4': numbers[3],
+                    'winning_number5': numbers[4],
+                    'winning_number6': numbers[5]
                 })
-        
-        db.commit()
+
+        if records:
+            db.bulk_insert_mappings(CreatedLotto, records)
+            db.commit()
 
         return response_data
 
@@ -108,15 +128,7 @@ def lotto_data_update(db: Session):
             }
             new_data.append(record)
 
-        existing_draw_numbers = set()
-        result = db.execute(text("SELECT draw_number FROM lotto"))
-        while True:
-            batch = result.fetchmany(1000)
-            if not batch:
-                break
-            for row in batch:
-                existing_draw_numbers.add(row[0])
-
+        existing_draw_numbers = {lotto.draw_number for lotto in db.query(Lotto.draw_number).all()}
         filtered_new_data = [record for record in new_data if record['draw_number'] not in existing_draw_numbers]
 
         if filtered_new_data:

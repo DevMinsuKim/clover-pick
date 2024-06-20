@@ -7,5 +7,5 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 @router.get("/pension/data/update")
-def update_pension_data(db: Session = Depends(get_db)):
+def pension_data_update_(db: Session = Depends(get_db)):
     return pension_data_update(db)

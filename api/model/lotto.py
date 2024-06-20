@@ -1,8 +1,14 @@
-from sqlalchemy import Column, Integer, BigInteger, Date
+from sqlalchemy import TIMESTAMP, Column, Integer, BigInteger, Date, func
 from sqlalchemy.ext.declarative import declarative_base
+from pydantic import BaseModel
 
 Base = declarative_base()
 
+# /lotto/generator 모델
+class LottoCount(BaseModel):
+    count: int
+
+# 테이블 모델
 class Lotto(Base):
     __tablename__ = 'lotto'
 
@@ -25,3 +31,4 @@ class Lotto(Base):
     winning_number_5 = Column(Integer, nullable=False)
     winning_number_6 = Column(Integer, nullable=False)
     bonus_number = Column(Integer, nullable=False)
+    created = Column(TIMESTAMP(timezone=True), nullable=False, default=func.now())
