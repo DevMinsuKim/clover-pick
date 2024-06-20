@@ -4,12 +4,13 @@ import React, { ChangeEvent, useState } from "react";
 import Button from "../common/Button";
 import useLottoNumbers from "../../hooks/useLottoNumbers";
 
-export default function LottoPick() {
+export default function GetLottoNumbers() {
   const [selected, setSelected] = useState(1);
-  const { mutate, data, error, isError, isPending } = useLottoNumbers();
+  const { mutate, data, error, isError, isPending, isSuccess } =
+    useLottoNumbers();
 
   const handleClick = () => {
-    mutate({ numSets: selected });
+    mutate({ count: selected });
   };
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -21,7 +22,14 @@ export default function LottoPick() {
       {isError && <p>{error.message}</p>}
       {isPending && <p>로딩중...</p>}
       {!data && <p>0,0,0,0,0,0</p>}
-      {data && <div>{data.numbers} 번 입니다.</div>}
+
+      {data && (
+        <ul>
+          {data?.winning_numbers.map((item, index) => (
+            <li key={index}>{item.join(", ")}</li>
+          ))}
+        </ul>
+      )}
       <div className="flex">
         <label htmlFor="options">번호 선택해주세요</label>
         <select

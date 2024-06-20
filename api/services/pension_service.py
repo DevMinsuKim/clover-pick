@@ -1,10 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-from sqlalchemy import create_engine
-from fastapi import HTTPException
+from fastapi import HTTPException, logger
+from sqlalchemy import text
+from api.model.pension import Pension
 from api.utils.settings import Settings
 from sqlalchemy.orm import Session
+from datetime import datetime
 
 def pension_data_update(db: Session):
     try:
@@ -30,33 +31,37 @@ def pension_data_update(db: Session):
             if len(row_data) == 10:
                 rows.append(row_data)
 
-        full_headers = ["회차", "추첨일", "1등", "2등", "3등", "4등", "5등", "6등", "7등", "보너스"]
-        df_full = pd.DataFrame(rows, columns=full_headers)
+        new_data = []
+        for row in rows:
+            record = {
+                'draw_number': int(row[0]),
+                'draw_date': datetime.strptime(row[1], '%Y%m%d').strftime('%Y-%m-%d'),
+                'first_prize': int(row[2].replace('조', '')),
+                'bonus_prize': int(row[9].replace('조', ''))
+            }
+            new_data.append(record)
 
-        df_filtered = df_full[["회차", "추첨일", "1등", "보너스"]]
+        existing_draw_numbers = set()
+        result = db.execute(text("SELECT draw_number FROM pension"))
+        while True:
+            batch = result.fetchmany(1000)
+            if not batch:
+                break
+            for row in batch:
+                existing_draw_numbers.add(row[0])
 
-        df_filtered.loc[:, '추첨일'] = pd.to_datetime(df_filtered['추첨일'], format='%Y%m%d').dt.strftime('%Y-%m-%d')
+        filtered_new_data = [record for record in new_data if record['draw_number'] not in existing_draw_numbers]
 
-        columns = ['1등', '보너스']
-        for col in columns:
-            df_filtered.loc[:, col] = df_filtered[col].str.replace('조', '').astype(int)
-
-        df_filtered = df_filtered.astype({'회차': int})
-
-        df_filtered.columns = ['draw_number', 'draw_date', 'first_prize', 'bonus_prize']
-
-        existing_data = pd.read_sql("SELECT draw_number FROM pension", db.connection())
-        existing_draw_numbers = set(existing_data['draw_number'])
-        new_data = df_filtered[~df_filtered['draw_number'].isin(existing_draw_numbers)]
-
-        if not new_data.empty:
-            new_data.to_sql('pension', con=db.connection(), if_exists='append', index=False)
+        if filtered_new_data:
+            db.bulk_insert_mappings(Pension, filtered_new_data)
             db.commit()
 
         return {"message": "성공적으로 업데이트 되었습니다."}
 
     except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"파일을 다운로드하는데 실패했습니다: {e}")
+        logger.logger.error(f"파일을 다운로드하는데 실패했습니다: {e}")
+        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"오류가 발생했습니다: {e}")
+        logger.logger.error(f"오류가 발생했습니다: {e}")
+        raise HTTPException(status_code=500, detail="예기치 않은 오류가 발생했습니다. 나중에 다시 시도하십시오.")

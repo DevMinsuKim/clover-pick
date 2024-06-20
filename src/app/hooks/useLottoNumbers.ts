@@ -1,24 +1,26 @@
 "use client";
 
-import { UseMutationResult, useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+import axios, { isAxiosError } from "axios";
 
 interface LottoNumbers {
-  numbers: number;
+  winning_numbers: number[][];
 }
 
-interface NumSets {
-  numSets: number;
+interface LottoCount {
+  count: number;
 }
 
 const fetchLottoNumbers = async ({
-  numSets,
-}: NumSets): Promise<LottoNumbers> => {
+  count,
+}: LottoCount): Promise<LottoNumbers> => {
   try {
-    const { data } = await axios.post<LottoNumbers>("/api/lotto", { numSets });
+    const { data } = await axios.post<LottoNumbers>("/api/lotto/numbers", {
+      count,
+    });
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       throw new Error(
         error.response?.data?.message || "서버에서 에러가 발생했습니다.",
       );
