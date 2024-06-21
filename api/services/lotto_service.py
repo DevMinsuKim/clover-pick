@@ -13,11 +13,18 @@ from sqlalchemy.orm import Session
 from openai import OpenAI, OpenAIError
 
 def lotto(db: Session):
-    return "test!!!!"
+    recent_draw = db.query(Lotto).order_by(desc(Lotto.draw_number)).first()
+    recent_draw_number = recent_draw.draw_number if recent_draw else 0
+    new_draw_number = recent_draw_number + 1
+
+    return {
+        "draw_number": new_draw_number
+    }
+
 def lotto_generator(count: int, db: Session):
     if count > 5:
         logger.logger.error(f"요청된 로또 번호 수가 5개를 초과했습니다: {count}")
-        raise HTTPException(status_code=400, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=400, detail="요청을 처리하는 동안 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
     
     KST = timezone(timedelta(hours=9))
     
@@ -27,9 +34,9 @@ def lotto_generator(count: int, db: Session):
     
     if now.weekday() == 5 and now >= saturday_8pm:
         logger.logger.error(f"로또 판매 기간 동안 POST 요청은 차단됩니다: {count}")
-        raise HTTPException(status_code=403, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=403, detail="요청을 처리하는 동안 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
     if now.weekday() == 6 and now < sunday_6am:
-        raise HTTPException(status_code=403, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=403, detail="요청을 처리하는 동안 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
     
     try:
         client = OpenAI(
@@ -77,15 +84,15 @@ def lotto_generator(count: int, db: Session):
 
     except OpenAIError as e:
         logger.logger.error(f"OpenAI API 에러: {e}")
-        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
 
     except json.JSONDecodeError:
         logger.logger.error("OpenAI API에서 JSON 응답을 디코딩하지 못했습니다")
-        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
 
     except Exception as e:
         logger.logger.error(f"오류가 발생했습니다: {e}")
-        raise HTTPException(status_code=500, detail="예기치 않은 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=500, detail="예기치 않은 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
 
 def lotto_data_update(db: Session):
     try:
@@ -139,8 +146,8 @@ def lotto_data_update(db: Session):
 
     except requests.exceptions.RequestException as e:
         logger.logger.error(f"파일을 다운로드하는데 실패했습니다: {e}")
-        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
 
     except Exception as e:
         logger.logger.error(f"오류가 발생했습니다: {e}")
-        raise HTTPException(status_code=500, detail="예기치 않은 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=500, detail="예기치 않은 오류가 발생했습니다.\n나중에 다시 시도하십시오.")

@@ -1,10 +1,10 @@
 import React from "react";
-import LottoGenerato from "../components/lotto/LottoGenerato";
+import LottoGenerator from "../components/lotto/LottoGenerator";
 
-export default function page() {
+export default function Page() {
   return (
-    <section className="flex flex-col">
-      ?회차 번호 뽑기 <LottoGenerato />
+    <section>
+      <LottoGenerator />
     </section>
   );
 }

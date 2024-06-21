@@ -13,7 +13,7 @@ export default function NotFound() {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center text-center">
+    <div className="flex h-[calc(100vh-64px)] w-full flex-col items-center justify-center text-center">
       <NotFoundAni className="max-w-lg" />
       <strong className="text-2xl sm:text-3xl">
         찾으시는 페이지가 없습니다.

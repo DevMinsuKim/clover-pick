@@ -52,8 +52,8 @@ def pension_data_update(db: Session):
 
     except requests.exceptions.RequestException as e:
         logger.logger.error(f"파일을 다운로드하는데 실패했습니다: {e}")
-        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=500, detail="요청을 처리하는 동안 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
 
     except Exception as e:
         logger.logger.error(f"오류가 발생했습니다: {e}")
-        raise HTTPException(status_code=500, detail="예기치 않은 오류가 발생했습니다. 나중에 다시 시도하십시오.")
+        raise HTTPException(status_code=500, detail="예기치 않은 오류가 발생했습니다.\n나중에 다시 시도하십시오.")

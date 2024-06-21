@@ -5,17 +5,23 @@
 :root {
   --color-background: #ffffff;
   --color-foreground: #333333;
-  --color-primary: #17c964;
+  --color-primary: #2dc346;
+  --color-primary1: #165c21;
+  --color-primary-hover: #2ab541;
   --color-divider: #e4e4e7;
   --color-content1: #ffffff;
+  --color-content1-hover: #f4f4f5;
 }
 
 .dark {
   --color-background: #121213;
   --color-foreground: #e5e5e5;
-  --color-primary: #0f9e4d;
+  --color-primary: #2dc346;
+  --color-primary1: rgb(27, 114, 42);
+  --color-primary-hover: rgba(45, 195, 70, 0.8);
   --color-divider: #27272a;
   --color-content1: #27272a;
+  --color-content1-hover: #3f3f46;
 }
 
 body {
