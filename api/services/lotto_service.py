@@ -1,5 +1,6 @@
 import json
 import os
+import random
 import re
 import requests
 from datetime import datetime, timedelta, timezone
@@ -13,13 +14,20 @@ from sqlalchemy.orm import Session
 from openai import OpenAI, OpenAIError
 
 def lotto(db: Session):
-    recent_draw = db.query(Lotto).order_by(desc(Lotto.draw_number)).first()
-    recent_draw_number = recent_draw.draw_number if recent_draw else 0
-    new_draw_number = recent_draw_number + 1
+    try:
+        if random.choice([True, False]):
+            raise Exception("강제 오류 발생")
 
-    return {
-        "draw_number": new_draw_number
-    }
+        recent_draw = db.query(Lotto).order_by(desc(Lotto.draw_number)).first()
+        recent_draw_number = recent_draw.draw_number if recent_draw else 0
+        new_draw_number = recent_draw_number + 1
+
+        return {
+            "draw_number": new_draw_number
+        }
+    except Exception as e:
+            logger.logger.error(f"오류가 발생했습니다: {e}")
+            raise HTTPException(status_code=502, detail="예기치 않은 오류가 발생했습니다.\n나중에 다시 시도하십시오.")
 
 def lotto_generator(count: int, db: Session):
     if count > 5:
@@ -58,6 +66,8 @@ def lotto_generator(count: int, db: Session):
 
         if count == 1 and isinstance(response_data['winning_numbers'], list):
             response_data['winning_numbers'] = [response_data['winning_numbers']]
+
+        response_data['winning_numbers'] = [sorted(numbers) for numbers in response_data['winning_numbers']]
 
         recent_draw = db.query(Lotto).order_by(desc(Lotto.draw_number)).first()
         recent_draw_number = recent_draw.draw_number if recent_draw else 0

@@ -1,9 +1,9 @@
 import React from "react";
-import BallMix from "./components/home/BallMix";
+import BallMix from "@/components/home/BallMix";
 import Link from "next/link";
-import { ROUTES } from "./constants/routes";
-import Button from "./components/common/Button";
-import DeviceActionText from "./components/home/DeviceActionText";
+import DeviceActionText from "@/components/home/DeviceActionText";
+import Button from "@/components/common/Button";
+import { ROUTES } from "@/constants/routes";
 
 export default function Home() {
   return (

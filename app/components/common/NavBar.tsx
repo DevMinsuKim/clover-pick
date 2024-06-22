@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { ThemeSwitcher } from "./ThemeSwitcher";
-import CombinationLogo from "../ui/icons/CombinationLogo";
+import { ThemeSwitcher } from "@/components/common/ThemeSwitcher";
+import CombinationLogo from "@/components/ui/icons/CombinationLogo";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Clover from "../ui/icons/Clover";
-import Six from "../ui/icons/Six";
-import Seven from "../ui/icons/Seven";
-import { ROUTES } from "../../constants/routes";
+import Clover from "@/components/ui/icons/Clover";
+import Six from "@/components/ui/icons/Six";
+import Seven from "@/components/ui/icons/Seven";
+import { ROUTES } from "@/constants/routes";
 
 const menu = [
   {

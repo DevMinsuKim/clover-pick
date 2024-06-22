@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "./providers/ThemeProvider";
-import Footer from "./components/common/Footer";
-import NavBar from "./components/common/NavBar";
+import "@/globals.css";
+import { ThemeProvider } from "@/providers/ThemeProvider";
+import Footer from "@/components/common/Footer";
+import NavBar from "@/components/common/NavBar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import QueryProvider from "./providers/QueryClientProvider";
+import QueryProvider from "@/providers/QueryClientProvider";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 

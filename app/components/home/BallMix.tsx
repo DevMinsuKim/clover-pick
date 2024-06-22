@@ -4,8 +4,8 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Physics, useSphere } from "@react-three/cannon";
 import React, { MutableRefObject, useEffect } from "react";
-import useTouchDevice from "../../hooks/useTouchDevice";
-import Loader from "../common/Loader";
+import useTouchDevice from "@/hooks/useTouchDevice";
+import Loader from "@/components/common/Loader";
 
 interface MixProps {
   mat?: THREE.Matrix4;

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import animationData from "@/public/lotties/not_foundAni.json";
+import animationData from "public/lotties/not_foundAni.json";
 import LottiePlayer from "react-lottie-player";
 
 interface AnimationProps {

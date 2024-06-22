@@ -2,9 +2,9 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import SunIcon from "../ui/icons/SunIcon";
-import DarkIcon from "../ui/icons/DarkIcon";
-import SystemIcon from "../ui/icons/SystemIcon";
+import SunIcon from "@/components/ui/icons/SunIcon";
+import DarkIcon from "@/components/ui/icons/DarkIcon";
+import SystemIcon from "@/components/ui/icons/SystemIcon";
 import { Tooltip } from "react-tooltip";
 
 const menu = [
