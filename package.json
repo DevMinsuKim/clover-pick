@@ -11,16 +11,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.15.1",
     "@react-three/cannon": "^6.6.0",
     "@react-three/drei": "^9.106.0",
     "@react-three/fiber": "^8.16.7",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.45.1",
-    "@vercel/postgres": "^0.8.0",
     "@vercel/speed-insights": "^1.0.12",
     "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.12",
     "framer-motion": "^11.2.6",
+    "iconv-lite": "^0.6.3",
     "next": "^14.2.3",
     "next-themes": "^0.3.0",
     "react": "^18",
@@ -44,6 +45,7 @@
     "prettier": "^3.3.0",
     "prettier-plugin-tailwindcss": "^0.6.1",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "prisma": "^5.15.1"
   }
 }

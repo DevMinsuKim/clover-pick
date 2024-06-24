@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model created_lotto {
+  id              Int      @id @default(autoincrement())
+  draw_number     Int
+  winning_number1 Int
+  winning_number2 Int
+  winning_number3 Int
+  winning_number4 Int
+  winning_number5 Int
+  winning_number6 Int
+  created         DateTime @db.Timestamptz(6)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model lotto {
+  draw_number          Int      @id @unique(map: "unique_draw_number")
+  draw_date            DateTime @db.Date
+  first_prize_winners  Int
+  first_prize_amount   BigInt
+  second_prize_winners Int
+  second_prize_amount  BigInt
+  third_prize_winners  Int
+  third_prize_amount   BigInt
+  fourth_prize_winners Int
+  fourth_prize_amount  BigInt
+  fifth_prize_winners  Int
+  fifth_prize_amount   BigInt
+  winning_number_1     Int
+  winning_number_2     Int
+  winning_number_3     Int
+  winning_number_4     Int
+  winning_number_5     Int
+  winning_number_6     Int
+  bonus_number         Int
+  created              DateTime @default(now()) @db.Timestamptz(6)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model pension {
+  draw_number Int      @id
+  draw_date   DateTime @db.Date
+  first_prize Int
+  bonus_prize Int
+  created     DateTime @default(now()) @db.Timestamptz(6)
+}
