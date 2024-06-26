@@ -46,9 +46,9 @@ model lotto {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model pension {
-  draw_number Int      @id
-  draw_date   DateTime @db.Date
-  first_prize Int
-  bonus_prize Int
-  created     DateTime @default(now()) @db.Timestamptz(6)
+  draw_number    Int      @id
+  draw_date      DateTime @db.Date
+  winning_number Int
+  bonus_number   String   @db.VarChar(6)
+  created        DateTime @default(now()) @db.Timestamptz(6)
 }
