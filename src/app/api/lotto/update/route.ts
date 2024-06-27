@@ -7,7 +7,9 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const url = process.env.LOTTO_DATA_API_URL;
+    // const url = process.env.LOTTO_DATA_API_URL;
+
+    const url = "";
 
     if (!url) {
       throw new Error("LOTTO_DATA_API_URL 값이 올바르지 않습니다.");

@@ -55,7 +55,11 @@ export default function LottoGenerator() {
   };
 
   useEffect(() => {
-    // throw new Error("에러 발생@@@@@@@@@@@@@@");
+    // if (Math.random() < 0.5) {
+    //   // Sentry.captureException("This is a test error");
+    //   throw new Error("This is a test error 에러 테스트 발생");
+    // }
+
     if (generatedLottoNumbers) {
       setCurrentLottoNumbers(generatedLottoNumbers.winning_numbers);
     }

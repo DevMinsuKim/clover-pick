@@ -34,7 +34,7 @@ export default function NavBar() {
   return (
     <div className="flex items-center justify-between bg-background py-5">
       <Link href="/" aria-label="CloverPick Logo">
-        <CombinationLogo />
+        <CombinationLogo className="h-6 w-32" />
       </Link>
       <nav>
         <ul className="hidden gap-4 md:flex">
