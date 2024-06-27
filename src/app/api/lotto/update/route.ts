@@ -86,6 +86,6 @@ export async function GET() {
     });
   } catch (error) {
     Sentry.captureException(error);
-    return NextResponse.json({ message: false }, { status: 500 });
+    return NextResponse.json({ message: error }, { status: 500 });
   }
 }
