@@ -76,16 +76,12 @@ export async function GET() {
       });
     }
 
-    return NextResponse.json({
-      message: {
-        url: url,
-        response: response,
-        decodedData: decodedData,
-        data: data,
-      },
-    });
+    console.log(data);
+
+    return NextResponse.json({ message: true });
   } catch (error) {
+    console.log(error);
     Sentry.captureException(error);
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json({ message: false }, { status: 500 });
   }
 }
