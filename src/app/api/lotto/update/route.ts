@@ -9,19 +9,13 @@ export async function GET() {
   try {
     const url = process.env.LOTTO_DATA_API_URL;
 
-    console.log("url", url);
-
     if (!url) {
       throw new Error("LOTTO_DATA_API_URL 값이 올바르지 않습니다.");
     }
 
     const response = await axios.get(url, { responseType: "arraybuffer" });
 
-    console.log("response", response);
-
     const decodedData = iconv.decode(Buffer.from(response.data), "EUC-KR");
-
-    console.log("decodedData", decodedData);
 
     const $ = cheerio.load(decodedData);
 
@@ -75,8 +69,6 @@ export async function GET() {
       };
     });
 
-    console.log("data", data);
-
     if (data.length > 0) {
       await prisma.lotto.createMany({
         data,
@@ -84,7 +76,14 @@ export async function GET() {
       });
     }
 
-    return NextResponse.json({ message: true });
+    return NextResponse.json({
+      message: {
+        url: url,
+        response: response,
+        decodedData: decodedData,
+        data: data,
+      },
+    });
   } catch (error) {
     Sentry.captureException(error);
     return NextResponse.json({ message: false }, { status: 500 });
