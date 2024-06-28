@@ -1,8 +1,8 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
 import Button from "@/components/common/Button";
 import CombinationLogo from "@/components/ui/icons/CombinationLogo";
-import * as Sentry from "@sentry/nextjs";
 import { Noto_Sans_KR } from "next/font/google";
 import { useEffect } from "react";
 
