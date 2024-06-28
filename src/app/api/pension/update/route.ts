@@ -5,6 +5,8 @@ import * as Sentry from "@sentry/nextjs";
 import prisma from "@/lib/prisma";
 import iconv from "iconv-lite";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const url = process.env.PENSION_DATA_API_URL;

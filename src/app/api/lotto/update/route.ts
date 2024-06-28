@@ -5,6 +5,8 @@ import * as Sentry from "@sentry/nextjs";
 import iconv from "iconv-lite";
 import prisma from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const url = process.env.LOTTO_DATA_API_URL;
@@ -76,16 +78,9 @@ export async function GET() {
       });
     }
 
-    return NextResponse.json({
-      message: {
-        url: url,
-        response: response,
-        decodedData: decodedData,
-        data: data,
-      },
-    });
+    return NextResponse.json({ message: true });
   } catch (error) {
     Sentry.captureException(error);
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json({ message: false }, { status: 500 });
   }
 }
