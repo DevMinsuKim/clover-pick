@@ -1,5 +1,6 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
 import useLotto from "@/hooks/useLotto";
 import useLottoGenerator from "@/hooks/useLottoGenerator";
 import React, { useEffect, useState } from "react";
@@ -7,6 +8,10 @@ import Button from "../common/Button";
 import Loader from "../common/Loader";
 
 export default function LottoGenerator() {
+  // if (true) {
+  //   throw new Error("Bad Requesㄴㄴㅇㅁㅇㅁㅈ");
+  // }
+
   const {
     data: lottoData,
     error: lottoError,
@@ -57,7 +62,7 @@ export default function LottoGenerator() {
   useEffect(() => {
     // if (Math.random() < 0.5) {
     //   // Sentry.captureException("This is a test error");
-    //   throw new Error("This is a test error 에러 테스트 발생");
+    //   throw new Error("테스트 에러 발생@@@@");
     // }
 
     if (generatedLottoNumbers) {
