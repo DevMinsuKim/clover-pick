@@ -66,7 +66,7 @@ export default withSentryConfig(nextConfig, {
 
   unstable_sentryWebpackPluginOptions: {
     sourcemaps: {
-      filesToDeleteAfterUpload: ["./.next/**/*.map"],
+      filesToDeleteAfterUpload: ["./.next/static/**/*.map"],
     },
   },
 });
