@@ -1,10 +1,11 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
 import Button from "@/components/common/Button";
 import CombinationLogo from "@/components/ui/icons/CombinationLogo";
-import * as Sentry from "@sentry/nextjs";
 import { Noto_Sans_KR } from "next/font/google";
 import { useEffect } from "react";
+import { getErrorMessage } from "@/utils/errorMessages";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -23,6 +24,8 @@ export default function GlobalError({
     }
   }, [error]);
 
+  const { title, description } = getErrorMessage(error);
+
   return (
     <html suppressHydrationWarning lang="ko">
       <body
@@ -35,17 +38,16 @@ export default function GlobalError({
           <CombinationLogo />
         </div>
 
-        <h2 className="mb-7 text-center text-2xl font-extrabold sm:text-4xl">
-          잠시 후 다시 시도해 주세요!
-        </h2>
-        <div className="mb-9 text-center sm:text-lg">
-          <p>지금 서비스에 연결할 수 없습니다.</p>
-          <p>
-            현재 문제를 해결하기 위해
-            <br className="sm:hidden" /> 최선을 다하고 있습니다.
-          </p>
-          <p>잠시 후 다시 시도해 주세요.</p>
-        </div>
+        {title && (
+          <h2 className="mb-7 whitespace-pre-line text-center text-2xl font-extrabold sm:text-4xl">
+            {title}
+          </h2>
+        )}
+        {description && (
+          <div className="mb-9 whitespace-pre-line text-center sm:text-lg">
+            <p>{description}</p>
+          </div>
+        )}
 
         <Button onClick={() => handleReload()}>다시 시도하기</Button>
       </body>

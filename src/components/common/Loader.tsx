@@ -4,8 +4,10 @@ type Props = {
 
 export default function Loader({ className }: Props) {
   return (
-    <div
-      className={`animate-spin rounded-full border-divider border-t-primary ${className}`}
-    />
+    <div className="flex flex-col items-center justify-center">
+      <div
+        className={`h-8 w-8 animate-spin rounded-full border-2 border-divider border-t-primary ${className}`}
+      />
+    </div>
   );
 }
