@@ -38,22 +38,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="ko">
+    <html suppressHydrationWarning lang="ko" className="h-full">
       <body
-        className={`${notoSansKR.className} container mx-auto w-full min-w-[320px] max-w-screen-xl break-keep px-6`}
+        className={`${notoSansKR.className} container mx-auto h-full w-full min-w-[320px] max-w-screen-xl break-keep px-6`}
       >
         <ThemeProvider>
           <QueryProvider>
-            <header className="sticky top-0 z-50">
-              <NavBar />
-            </header>
-            <main>
-              {children}
-              <SpeedInsights />
-            </main>
-            <footer>
-              <Footer />
-            </footer>
+            <div className="flex h-full flex-col">
+              <header className="sticky top-0 z-50">
+                <NavBar />
+              </header>
+              <main className="flex-grow">
+                {children}
+                <SpeedInsights />
+              </main>
+              <footer>
+                <Footer />
+              </footer>
+            </div>
           </QueryProvider>
         </ThemeProvider>
       </body>

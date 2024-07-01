@@ -36,7 +36,7 @@ export function ThemeSwitcher() {
     mounted: boolean,
   ) => {
     if (!mounted) {
-      return "text-foreground";
+      return "text-foreground opacity-60";
     }
 
     if (theme === id) {

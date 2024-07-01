@@ -1,18 +1,22 @@
 "use client";
 
-import useLotto from "@/hooks/useLotto";
+import * as Sentry from "@sentry/nextjs";
 import useLottoGenerator from "@/hooks/useLottoGenerator";
 import React, { useEffect, useState } from "react";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
 
 export default function LottoGenerator() {
-  const {
-    data: lottoData,
-    error: lottoError,
-    isLoading: isLottoLoading,
-    refetch: refetchLotto,
-  } = useLotto();
+  // if (true) {
+  //   throw new Error("Bad Requesㄴㄴㅇㅁㅇㅁㅈ");
+  // }
+
+  // const {
+  //   data: lottoData,
+  //   error: lottoError,
+  //   isLoading: isLottoLoading,
+  //   refetch: refetchLotto,
+  // } = useLotto();
 
   const {
     mutate,
@@ -57,7 +61,7 @@ export default function LottoGenerator() {
   useEffect(() => {
     // if (Math.random() < 0.5) {
     //   // Sentry.captureException("This is a test error");
-    //   throw new Error("This is a test error 에러 테스트 발생");
+    //   throw new Error("테스트 에러 발생@@@@");
     // }
 
     if (generatedLottoNumbers) {
@@ -82,7 +86,7 @@ export default function LottoGenerator() {
 
   return (
     <div className="mt-20 flex flex-col items-center justify-center">
-      {true && (
+      {/* {true && (
         <div>
           {"예기치 않은 오류가 발생했습니다.\n나중에 다시 시도하십시오."
             .split("\n")
@@ -106,7 +110,7 @@ export default function LottoGenerator() {
           <strong>{isLottoLoading ? 0 : lottoData?.draw_number} </strong>
           회차 <br /> 로또 6/45 번호 추첨
         </p>
-      )}
+      )} */}
 
       <div className="mt-8 w-full max-w-lg rounded-xl border bg-content1 text-center shadow-md dark:border-none">
         <div className="px-3">
