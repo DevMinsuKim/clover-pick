@@ -12,11 +12,6 @@ export const getErrorMessage = (error: Error) => {
         title: "요청 시간이 초과되었습니다. ",
         description: "잠시 후 다시 시도해 주세요.",
       };
-    case errorMessage.includes("Authentication"):
-      return {
-        title: "로그인이 필요합니다.",
-        description: "로그인 후 다시 시도해 주세요.",
-      };
     case errorMessage.includes("Authorization"):
       return {
         title: "현재 페이지에 접근할 수 있는 권한이 없습니다.",
@@ -35,7 +30,7 @@ export const getErrorMessage = (error: Error) => {
       };
     default:
       return {
-        title: "일시적인 오류가 발생했습니다!",
+        title: "이용에 불편을 드려 죄송합니다.",
         description:
           "현재 문제를 해결하기 위해 최선을 다하고 있습니다.\n 잠시 후 다시 시도해 주세요.",
       };

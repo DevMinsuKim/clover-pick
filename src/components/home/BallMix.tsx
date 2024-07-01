@@ -106,7 +106,7 @@ export default function BallMix() {
   if (isTouchDevice === null) {
     return (
       <div className="flex h-full w-full items-center justify-center">
-        <Loader className="h-8 w-8 border-4" />
+        <Loader />
       </div>
     );
   }
