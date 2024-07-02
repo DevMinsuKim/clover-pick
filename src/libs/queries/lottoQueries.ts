@@ -16,17 +16,20 @@ interface LottoRepeat {
 export const getDrawLottoNumber = queryOptions({
   queryKey: ["lotto"],
   queryFn: async () => {
-    // const { data } = await axiosInstance.get<Lotto>("/api/lotto");
-    // return data;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/lotto`);
-    const data: Lotto = await response.json();
+    const { data } = await axiosInstance.get<Lotto>("/api/lotto");
     return data;
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/lotto`);
+    // const data: Lotto = await response.json();
+    // return data;
   },
 });
 
 export const createLottoNumbers = async (repeat: LottoRepeat) => {
-  const { data } = await axiosInstance.post<LottoGeneratorNumbers>("/lotto", {
-    repeat,
-  });
+  const { data } = await axiosInstance.post<LottoGeneratorNumbers>(
+    "/api/lotto",
+    {
+      repeat,
+    },
+  );
   return data;
 };
