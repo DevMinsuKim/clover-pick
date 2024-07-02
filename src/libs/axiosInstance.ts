@@ -2,11 +2,14 @@ import { isServer } from "@tanstack/react-query";
 import axios from "axios";
 
 function getBaseURL() {
+  const vercelEnv = process.env.VERCEL_ENV;
   if (!isServer) {
     return "";
   }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
+  if (vercelEnv === "production") {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  } else if (vercelEnv === "preview") {
+    return `https://${process.env.VERCEL_BRANCH_URL}`;
   }
   return "http://localhost:3000";
 }
