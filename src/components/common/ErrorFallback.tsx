@@ -1,22 +1,15 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
-import React, { useEffect } from "react";
+import React from "react";
 import { FallbackProps } from "react-error-boundary";
 import Button from "./Button";
-import { getErrorMessage } from "@/utils/errorMessages";
+import { errorHandler } from "@/utils/errorHandler";
 
 export default function ErrorFallback({
   error,
   resetErrorBoundary,
 }: FallbackProps) {
-  useEffect(() => {
-    if (error) {
-      console.error(error);
-      Sentry.captureException(error);
-    }
-  }, [error]);
-  const { title, description } = getErrorMessage(error);
+  const { title, description } = errorHandler(error);
 
   return (
     <div className="my-2 flex w-full flex-col items-center justify-center rounded-xl border bg-content1 px-2 py-4 shadow-md dark:border-none">

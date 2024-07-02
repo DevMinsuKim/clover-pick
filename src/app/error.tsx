@@ -1,9 +1,7 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import Button from "@/components/common/Button";
-import { useEffect } from "react";
-import { getErrorMessage } from "@/utils/errorMessages";
+import { errorHandler } from "@/utils/errorHandler";
 
 export default function Error({
   error,
@@ -12,13 +10,7 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    if (error) {
-      Sentry.captureException(error);
-    }
-  }, [error]);
-
-  const { title, description } = getErrorMessage(error);
+  const { title, description } = errorHandler(error);
 
   return (
     <div className={`flex h-full flex-col items-center justify-center`}>

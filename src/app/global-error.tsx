@@ -1,11 +1,9 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import Button from "@/components/common/Button";
 import CombinationLogo from "@/components/ui/icons/CombinationLogo";
 import { Noto_Sans_KR } from "next/font/google";
-import { useEffect } from "react";
-import { getErrorMessage } from "@/utils/errorMessages";
+import { errorHandler } from "@/utils/errorHandler";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -18,13 +16,7 @@ export default function GlobalError({
     window.location.reload();
   };
 
-  useEffect(() => {
-    if (error) {
-      Sentry.captureException(error);
-    }
-  }, [error]);
-
-  const { title, description } = getErrorMessage(error);
+  const { title, description } = errorHandler(error);
 
   return (
     <html suppressHydrationWarning lang="ko">
