@@ -1,15 +1,32 @@
 import { queryOptions } from "@tanstack/react-query";
 import axiosInstance from "../axiosInstance";
-import axios from "axios";
 
-interface lotto {
+interface Lotto {
   draw_number: number;
+}
+
+interface LottoGeneratorNumbers {
+  winning_numbers: number[][];
+}
+
+interface LottoRepeat {
+  repeat: number;
 }
 
 export const getDrawLottoNumber = queryOptions({
   queryKey: ["lotto"],
   queryFn: async () => {
-    const response = await axiosInstance.get<lotto>("/lotto");
-    return response.data;
+    // const { data } = await axiosInstance.get<Lotto>("/api/lotto");
+    // return data;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/lotto`);
+    const data: Lotto = await response.json();
+    return data;
   },
 });
+
+export const createLottoNumbers = async (repeat: LottoRepeat) => {
+  const { data } = await axiosInstance.post<LottoGeneratorNumbers>("/lotto", {
+    repeat,
+  });
+  return data;
+};
