@@ -14,12 +14,12 @@ export default function ErrorFallback({
   return (
     <div className="my-2 flex w-full flex-col items-center justify-center rounded-xl border bg-content1 px-2 py-4 shadow-md dark:border-none">
       {title && (
-        <h2 className="mb-2 whitespace-pre-line text-center font-extrabold sm:text-lg">
+        <h2 className="mb-2 whitespace-pre-wrap break-words font-extrabold sm:text-lg">
           {title}
         </h2>
       )}
       {description && (
-        <div className="mb-4 whitespace-pre-line text-center text-sm sm:text-base">
+        <div className="mb-4 whitespace-pre-wrap break-words text-sm sm:text-base">
           <p>{description}</p>
         </div>
       )}

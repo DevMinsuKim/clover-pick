@@ -17,6 +17,7 @@ const config: Config = {
         divider: "var(--color-divider)",
         content1: "var(--color-content1)",
         content1Hover: "var(--color-content1-hover)",
+        default: "var(--color-default)",
       },
     },
   },

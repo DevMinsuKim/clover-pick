@@ -2,12 +2,12 @@ import * as Sentry from "@sentry/nextjs";
 import { isAxiosError } from "axios";
 import { errorMessage } from "./errorMessages";
 
-interface PropsType {
+interface errorHandlerProps {
   title: string;
   description: string;
 }
 
-export const errorHandler = (error: Error): PropsType => {
+export const errorHandler = (error: Error): errorHandlerProps => {
   if (error) {
     Sentry.captureException(error);
 
@@ -27,14 +27,14 @@ export const errorHandler = (error: Error): PropsType => {
         return {
           title: "서버에서 오류가 발생했습니다.",
           description:
-            "현재 문제를 해결하기 위해 최선을 다하고 있습니다.\n 잠시 후 다시 시도해 주세요.",
+            "현재 문제를 해결하기 위해 최선을 다하고 있습니다.\n잠시 후 다시 시도해 주세요.",
         };
       }
     } else {
       return {
         title: "이용에 불편을 드려 죄송합니다.",
         description:
-          "현재 문제를 해결하기 위해 최선을 다하고 있습니다.\n 잠시 후 다시 시도해 주세요.",
+          "현재 문제를 해결하기 위해 최선을 다하고 있습니다.\n잠시 후 다시 시도해 주세요.",
       };
     }
   } else {
@@ -42,7 +42,7 @@ export const errorHandler = (error: Error): PropsType => {
     return {
       title: "이용에 불편을 드려 죄송합니다.",
       description:
-        "현재 문제를 해결하기 위해 최선을 다하고 있습니다.\n 잠시 후 다시 시도해 주세요.",
+        "현재 문제를 해결하기 위해 최선을 다하고 있습니다.\n잠시 후 다시 시도해 주세요.",
     };
   }
 };

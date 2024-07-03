@@ -9,7 +9,6 @@ export default function DeferredComponent({
 }) {
   const [isDeferred, setIsDeferred] = useState(false);
   useEffect(() => {
-    // 150ms 지난 후 children Render
     const timeoutId = setTimeout(() => {
       setIsDeferred(true);
     }, 150);

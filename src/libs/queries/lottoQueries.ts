@@ -18,18 +18,13 @@ export const getDrawLottoNumber = queryOptions({
   queryFn: async () => {
     const { data } = await axiosInstance.get<Lotto>("/api/lotto");
     return data;
-    // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/lotto`);
-    // const data: Lotto = await response.json();
-    // return data;
   },
 });
 
 export const createLottoNumbers = async (repeat: LottoRepeat) => {
   const { data } = await axiosInstance.post<LottoGeneratorNumbers>(
     "/api/lotto",
-    {
-      repeat,
-    },
+    repeat,
   );
   return data;
 };

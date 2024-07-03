@@ -1,7 +1,7 @@
 import React from "react";
 import DeferredComponent from "../common/DeferredComponent";
 
-export default function GetDrawLottoNumberSkeleton() {
+export default function DrawLottoNumberSkeleton() {
   return (
     <DeferredComponent>
       <div className="mx-auto mt-10 flex w-52 animate-pulse flex-col items-center justify-center sm:w-72">

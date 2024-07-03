@@ -1,44 +1,79 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import useLottoGenerator from "@/hooks/useLottoGenerator";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
+import { useMutation } from "@tanstack/react-query";
+import { createLottoNumbers } from "@/libs/queries/lottoQueries";
+import { useErrorModal } from "@/providers/ErrorModalProvider";
+import Clipboard from "../ui/icons/Clipboard";
+import { Tooltip } from "react-tooltip";
+import ClipboardCheck from "../ui/icons/ClipboardCheck";
 
 export default function LottoGenerator() {
-  // if (true) {
-  //   throw new Error("Bad Requesㄴㄴㅇㅁㅇㅁㅈ");
-  // }
-
-  // const {
-  //   data: lottoData,
-  //   error: lottoError,
-  //   isLoading: isLottoLoading,
-  //   refetch: refetchLotto,
-  // } = useLotto();
+  const { showError } = useErrorModal();
 
   const {
     mutate,
-    data: generatedLottoNumbers,
-    error: generatedLottoError,
-    isError: isGeneratedLottoError,
-    isPending: isGeneratedLottoPending,
-  } = useLottoGenerator();
+    data: lottoData,
+    isPending,
+  } = useMutation({
+    mutationFn: createLottoNumbers,
+    onError: (error) => {
+      Sentry.captureException(error);
+      showError({
+        title: "로또 번호 생성 중 오류가 발생했습니다.",
+        description: "잠시 후 다시 시도해 주세요.",
+        btnText: "확인",
+      });
+    },
+  });
 
-  const [lottoCount, setLottoCount] = useState(1);
+  const [repeatLotto, setRepeatLotto] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentLottoNumbers, setCurrentLottoNumbers] = useState([
     [0, 0, 0, 0, 0, 0],
   ]);
   const dropDownData = [1, 2, 3, 4, 5];
+  const [isCopied, setIsCopied] = useState(false);
+  const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleClick = () => {
-    mutate({ count: lottoCount });
+  const handleCopy = async () => {
+    if (lottoData) {
+      try {
+        const formattedData = lottoData.winning_numbers
+          .map((numbers, index) => `${index + 1}. [${numbers.join(", ")}]`)
+          .join("\n");
+
+        await navigator.clipboard.writeText(formattedData);
+
+        setIsCopied(true);
+
+        if (copyTimeoutRef.current) {
+          clearTimeout(copyTimeoutRef.current);
+        }
+
+        copyTimeoutRef.current = setTimeout(() => {
+          setIsCopied(false);
+        }, 1500);
+      } catch (error) {
+        Sentry.captureException(error);
+        showError({
+          title: "로또 번호 복사 중 오류가 발생했습니다.",
+          description: "잠시 후 다시 시도해 주세요.",
+          btnText: "확인",
+        });
+      }
+    }
+  };
+
+  const handleCreateNumbers = () => {
+    mutate({ repeat: repeatLotto });
   };
 
   const dropdownChangeHandler = (item: number) => {
-    setLottoCount(item);
+    setRepeatLotto(item);
     setIsDropdownOpen(!isDropdownOpen);
   };
 
@@ -59,15 +94,10 @@ export default function LottoGenerator() {
   };
 
   useEffect(() => {
-    // if (Math.random() < 0.5) {
-    //   // Sentry.captureException("This is a test error");
-    //   throw new Error("테스트 에러 발생@@@@");
-    // }
-
-    if (generatedLottoNumbers) {
-      setCurrentLottoNumbers(generatedLottoNumbers.winning_numbers);
+    if (lottoData) {
+      setCurrentLottoNumbers(lottoData.winning_numbers);
     }
-  }, [generatedLottoNumbers]);
+  }, [lottoData]);
 
   const renderLottoNumbers = (numbers: number[][]) => {
     return numbers.map((item, index) => (
@@ -75,7 +105,7 @@ export default function LottoGenerator() {
         {item.map((subItem, subIndex) => (
           <div
             key={subIndex}
-            className={`${lottoNumberBg(subItem)} mt-3 flex h-16 w-16 items-center justify-center rounded-full p-4 text-3xl font-bold`}
+            className={`${lottoNumberBg(subItem)} mt-3 flex h-9 w-9 items-center justify-center rounded-full p-2 text-sm font-bold text-white sm:h-16 sm:w-16 sm:text-3xl`}
           >
             <span>{subItem}</span>
           </div>
@@ -86,34 +116,8 @@ export default function LottoGenerator() {
 
   return (
     <div className="mt-20 flex flex-col items-center justify-center">
-      {/* {true && (
-        <div>
-          {"예기치 않은 오류가 발생했습니다.\n나중에 다시 시도하십시오."
-            .split("\n")
-            .map((line, index) => (
-              <p className="text-center" key={index}>
-                {line}
-              </p>
-            ))}
-          <Button
-            onClick={() => {
-              refetchLotto();
-            }}
-          >
-            다시 시도
-          </Button>
-        </div>
-      )}
-
-      {!lottoError && (
-        <p className="text-center text-2xl font-extrabold sm:text-4xl">
-          <strong>{isLottoLoading ? 0 : lottoData?.draw_number} </strong>
-          회차 <br /> 로또 6/45 번호 추첨
-        </p>
-      )} */}
-
       <div className="mt-8 w-full max-w-lg rounded-xl border bg-content1 text-center shadow-md dark:border-none">
-        <div className="px-3">
+        <div className="px-5">
           <p className="mt-7 font-bold">로또 번호 생성 횟수를 선택하세요.</p>
           <div className="relative mb-7 mt-3 w-full max-w-lg text-left">
             <div>
@@ -122,7 +126,7 @@ export default function LottoGenerator() {
                 type="button"
                 className="inline-flex w-full justify-between rounded-md border bg-white px-4 py-2 text-sm font-medium text-foreground hover:bg-content1Hover focus:ring-primary dark:border-none dark:bg-black dark:hover:bg-content1Hover"
               >
-                {lottoCount}
+                {repeatLotto}
                 <svg
                   className={`-mr-1 ml-2 h-5 w-5 transition-transform duration-200 ${isDropdownOpen ? "rotate-180 transform" : ""}`}
                   xmlns="http://www.w3.org/2000/svg"
@@ -157,31 +161,52 @@ export default function LottoGenerator() {
               </div>
             )}
           </div>
-
-          {/* {isGeneratedLottoError && <p>{generatedLottoError.message}</p>} */}
-          {true && <p>에러 발생</p>}
           <ul>{renderLottoNumbers(currentLottoNumbers)}</ul>
         </div>
 
-        <div className="mb-3 mt-7 h-[2px] w-full bg-content1Hover" />
+        <div className="mb-3 mt-7 h-[1px] w-full bg-content1Hover" />
 
-        <Button
-          className={`mb-3 text-sm sm:text-base ${isGeneratedLottoPending && "brightness-75 hover:bg-primary"}`}
-          disabled={isGeneratedLottoPending}
-          onClick={() => {
-            handleClick();
-          }}
+        <div
+          className={`mb-3 flex items-center justify-center ${lottoData && "justify-between px-5"}`}
         >
-          <div className="flex items-center gap-2">
-            <div>
-              {isGeneratedLottoPending ? "추첨 중..." : "번호 추첨하기"}
+          <Button
+            className={`text-sm sm:text-base ${
+              isPending &&
+              "cursor-progress brightness-90 hover:bg-primary dark:brightness-75"
+            }`}
+            disabled={isPending}
+            onClick={() => {
+              handleCreateNumbers();
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <div>{isPending ? "추첨 중..." : "번호 추첨하기"}</div>
+              {isPending && (
+                <Loader className="h-[1rem] w-[1rem] border-primary1 border-t-white" />
+              )}
             </div>
-            {isGeneratedLottoPending && (
-              <Loader className="h-4 w-4 border-4 border-primary1 border-t-white" />
-            )}
-          </div>
-        </Button>
+          </Button>
+
+          {lottoData && (
+            <button
+              data-tooltip-id="tooltip"
+              data-tooltip-content={isCopied ? "복사 완료" : "번호 복사"}
+              onClick={() => {
+                handleCopy();
+              }}
+            >
+              <div className="flex items-center justify-center rounded-full border bg-background p-3 hover:bg-content1Hover dark:border-none dark:hover:bg-content1Hover">
+                {isCopied ? (
+                  <ClipboardCheck className="h-4 w-4 sm:h-5 sm:w-5" />
+                ) : (
+                  <Clipboard className="h-4 w-4 sm:h-5 sm:w-5" />
+                )}
+              </div>
+            </button>
+          )}
+        </div>
       </div>
+      <Tooltip id="tooltip" className="custom-tooltip" />
     </div>
   );
 }

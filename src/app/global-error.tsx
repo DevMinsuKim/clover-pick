@@ -31,12 +31,12 @@ export default function GlobalError({
         </div>
 
         {title && (
-          <h2 className="mb-7 whitespace-pre-line text-center text-2xl font-extrabold sm:text-4xl">
+          <h2 className="mb-7 whitespace-pre-wrap break-words text-center text-2xl font-extrabold sm:text-4xl">
             {title}
           </h2>
         )}
         {description && (
-          <div className="mb-9 whitespace-pre-line text-center sm:text-lg">
+          <div className="mb-9 whitespace-pre-wrap break-words text-center sm:text-lg">
             <p>{description}</p>
           </div>
         )}

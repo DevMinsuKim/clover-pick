@@ -11,6 +11,7 @@
   --color-divider: #e4e4e7;
   --color-content1: #ffffff;
   --color-content1-hover: #f4f4f5;
+  --color-default: #d4d4d8;
 }
 
 .dark {
@@ -22,6 +23,7 @@
   --color-divider: #27272a;
   --color-content1: #27272a;
   --color-content1-hover: #3f3f46;
+  --color-default: #3f3f46;
 }
 
 body {
@@ -30,5 +32,5 @@ body {
 }
 
 .custom-tooltip {
-  @apply rounded-lg bg-gray-100 text-foreground dark:bg-content1 !important;
+  @apply rounded-lg bg-gray-100 text-foreground dark:bg-black !important;
 }
