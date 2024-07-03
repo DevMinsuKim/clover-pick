@@ -1,7 +1,18 @@
+import { isServer } from "@tanstack/react-query";
 import axios from "axios";
 
+function getBaseURL() {
+  if (!isServer) {
+    return "";
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  return "http://localhost:3000";
+}
+
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: getBaseURL(),
   headers: {
     "Content-Type": "application/json",
   },

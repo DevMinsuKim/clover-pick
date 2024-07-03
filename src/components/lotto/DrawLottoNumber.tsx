@@ -2,10 +2,9 @@
 
 import { getDrawLottoNumber } from "@/libs/queries/lottoQueries";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import GetDrawLottoNumberSkeleton from "@/components/lotto/GetDrawLottoNumberSkeleton";
 import React from "react";
 
-export default function GetDrawLottoNumber() {
+export default function DrawLottoNumber() {
   const { data } = useSuspenseQuery(getDrawLottoNumber);
 
   return (

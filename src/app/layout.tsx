@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import QueryProvider from "@/providers/QueryClientProvider";
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
+import { ErrorModalProvider } from "@/providers/ErrorModalProvider";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -44,18 +45,20 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <QueryProvider>
-            <div className="flex h-full flex-col">
-              <header className="sticky top-0 z-50">
-                <NavBar />
-              </header>
-              <main className="flex-grow">
-                {children}
-                <SpeedInsights />
-              </main>
-              <footer>
-                <Footer />
-              </footer>
-            </div>
+            <ErrorModalProvider>
+              <div className="flex h-full flex-col">
+                <header className="sticky top-0 z-10">
+                  <NavBar />
+                </header>
+                <main className="flex-grow">
+                  {children}
+                  <SpeedInsights />
+                </main>
+                <footer>
+                  <Footer />
+                </footer>
+              </div>
+            </ErrorModalProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>
