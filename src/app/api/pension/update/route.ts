@@ -1,11 +1,11 @@
+export const dynamic = "force-dynamic";
+
 import axios from "axios";
 import { NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import * as Sentry from "@sentry/nextjs";
 import prisma from "@/libs/prisma";
 import iconv from "iconv-lite";
-
-export const dynamic2 = "force-dynamic";
 
 export async function GET() {
   try {
