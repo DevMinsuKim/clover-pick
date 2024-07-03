@@ -5,7 +5,7 @@ import * as Sentry from "@sentry/nextjs";
 import iconv from "iconv-lite";
 import prisma from "@/libs/prisma";
 
-export const dynamic = "force-dynamic";
+export const dynamic1 = "force-dynamic";
 
 export async function GET() {
   try {
