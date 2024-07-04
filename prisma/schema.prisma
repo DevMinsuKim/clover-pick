@@ -52,3 +52,19 @@ model pension {
   bonus_number   String   @db.VarChar(6)
   created        DateTime @default(now()) @db.Timestamptz(6)
 }
+
+model winning_lotto {
+  id              Int      @id @default(autoincrement())
+  draw_number     Int
+  ranking         Int
+  winning_number1 Int
+  winning_number2 Int
+  winning_number3 Int
+  winning_number4 Int
+  winning_number5 Int
+  winning_number6 Int
+  winning_created DateTime @db.Timestamptz(6)
+  created         DateTime @default(now()) @db.Timestamptz(6)
+
+   @@unique([draw_number, ranking, winning_number1, winning_number2, winning_number3, winning_number4, winning_number5, winning_number6, winning_created])
+}

@@ -78,6 +78,74 @@ export async function GET() {
       });
     }
 
+    const latestLotto = data[0];
+
+    const winningData = [];
+    const userLottos = await prisma.created_lotto.findMany({
+      where: { draw_number: latestLotto.draw_number },
+    });
+
+    for (const userLotto of userLottos) {
+      const userNumbers = [
+        userLotto.winning_number1,
+        userLotto.winning_number2,
+        userLotto.winning_number3,
+        userLotto.winning_number4,
+        userLotto.winning_number5,
+        userLotto.winning_number6,
+      ];
+
+      const winningNumbers = [
+        latestLotto.winning_number_1,
+        latestLotto.winning_number_2,
+        latestLotto.winning_number_3,
+        latestLotto.winning_number_4,
+        latestLotto.winning_number_5,
+        latestLotto.winning_number_6,
+      ];
+
+      const bonusNumber = latestLotto.bonus_number;
+
+      const matchCount = userNumbers.filter((num) =>
+        winningNumbers.includes(num),
+      ).length;
+
+      let ranking = 0;
+
+      if (matchCount === 6) {
+        ranking = 1; // 1등: 6개 번호 일치
+      } else if (matchCount === 5 && userNumbers.includes(bonusNumber)) {
+        ranking = 2; // 2등: 5개 번호 일치 + 보너스 번호 일치
+      } else if (matchCount === 5) {
+        ranking = 3; // 3등: 5개 번호 일치
+      } else if (matchCount === 4) {
+        ranking = 4; // 4등: 4개 번호 일치
+      } else if (matchCount === 3) {
+        ranking = 5; // 5등: 3개 번호 일치
+      }
+
+      if (ranking > 0) {
+        winningData.push({
+          draw_number: latestLotto.draw_number,
+          ranking,
+          winning_number1: userLotto.winning_number1,
+          winning_number2: userLotto.winning_number2,
+          winning_number3: userLotto.winning_number3,
+          winning_number4: userLotto.winning_number4,
+          winning_number5: userLotto.winning_number5,
+          winning_number6: userLotto.winning_number6,
+          winning_created: userLotto.created,
+        });
+      }
+    }
+
+    if (winningData.length > 0) {
+      await prisma.winning_lotto.createMany({
+        data: winningData,
+        skipDuplicates: true,
+      });
+    }
+
     return NextResponse.json({ message: true });
   } catch (error) {
     Sentry.captureException(error);

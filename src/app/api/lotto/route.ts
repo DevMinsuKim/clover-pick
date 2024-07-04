@@ -19,7 +19,10 @@ export async function GET() {
       return Response.json({ error: { code: "1000" } }, { status: 404 });
     }
 
-    return NextResponse.json(lastDrawNumber, { status: 200 });
+    return NextResponse.json(
+      { draw_number: lastDrawNumber.draw_number + 1 },
+      { status: 200 },
+    );
   } catch (error) {
     Sentry.captureException(error);
     return Response.json({ error: { code: "2000" } }, { status: 500 });
@@ -59,12 +62,12 @@ export async function POST(req: NextRequest) {
 
     if (lastDrawNumber == null) {
       Sentry.captureMessage("로또 회차 데이터가 존재하지 않습니다.", "error");
-      return Response.json({ error: { code: "2000" } }, { status: 500 });
+      return Response.json({ error: { code: "1000" } }, { status: 404 });
     }
 
     const lottoNumbersDB = lottoNumbers.winning_numbers.map((number) => {
       return {
-        draw_number: lastDrawNumber.draw_number,
+        draw_number: lastDrawNumber.draw_number + 1,
         winning_number1: number[0],
         winning_number2: number[1],
         winning_number3: number[2],

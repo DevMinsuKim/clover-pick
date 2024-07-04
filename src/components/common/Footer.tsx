@@ -1,5 +1,12 @@
-"use client";
-
 export default function Footer() {
-  return <div className="mb-20 bg-red-900">Footer</div>;
+  const year = new Date().getFullYear();
+  return (
+    <div className="flex flex-col items-center justify-center border-t-[1px] border-divider pb-20 pt-3 sm:pb-5">
+      <div className="max-w-screen-xl px-6">
+        <p className="text-content3 w-full text-center text-xs sm:text-sm">
+          Copyright © {year} CloverPick. All rights reserved
+        </p>
+      </div>
+    </div>
+  );
 }

@@ -41,16 +41,16 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="ko" className="h-full">
       <body
-        className={`${notoSansKR.className} container mx-auto h-full w-full min-w-[320px] max-w-screen-xl break-keep px-6`}
+        className={`${notoSansKR.className} mx-auto h-full w-full min-w-[320px] break-keep`}
       >
         <ThemeProvider>
           <QueryProvider>
             <ErrorModalProvider>
-              <div className="flex h-full flex-col">
-                <header className="sticky top-0 z-10">
+              <div className="flex h-full w-full flex-col">
+                <header className="sticky top-0 z-10 mx-auto w-full max-w-screen-xl px-6">
                   <NavBar />
                 </header>
-                <main className="flex-grow">
+                <main className="mx-auto max-w-screen-xl flex-grow px-6">
                   {children}
                   <SpeedInsights />
                 </main>

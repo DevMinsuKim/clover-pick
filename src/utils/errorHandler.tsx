@@ -11,9 +11,9 @@ export const errorHandler = (error: Error): errorHandlerProps => {
   if (error) {
     Sentry.captureException(error);
 
-    if (process.env.NODE_ENV === "development") {
-      console.error(error);
-    }
+    // if (process.env.NODE_ENV === "development") {
+    //   console.error(error);
+    // }
 
     if (isAxiosError(error)) {
       if (error.response?.data?.error?.code) {

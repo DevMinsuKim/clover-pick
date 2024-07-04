@@ -6,6 +6,7 @@ import { ROUTES } from "@/constants/routes";
 import DeviceActionText from "@/components/home/DeviceActionText";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorFallback from "@/components/common/ErrorFallback";
+import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 
 export default function Home() {
   return (
@@ -31,17 +32,17 @@ export default function Home() {
 
       <div className="flex justify-center">
         <div className="relative mt-2 h-56 w-full max-w-screen-sm md:h-72">
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <ErrorHandlingWrapper
+            fallbackComponent={ErrorFallback}
+            suspenseFallback={null}
+          >
             <BallMix />
-
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 transform md:bottom-10">
               <DeviceActionText />
             </div>
-          </ErrorBoundary>
+          </ErrorHandlingWrapper>
         </div>
       </div>
-
-      <div>test@@@@@@@@@@</div>
     </section>
   );
 }

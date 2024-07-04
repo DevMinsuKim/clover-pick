@@ -1,17 +1,11 @@
 "use client";
 
-import { getDrawLottoNumber } from "@/libs/queries/lottoQueries";
+import { getLottoInfo } from "@/libs/queries/lottoQueries";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function DrawLottoNumber() {
-  const { data } = useSuspenseQuery(getDrawLottoNumber);
+  const { data } = useSuspenseQuery(getLottoInfo);
 
-  return (
-    <div className="mt-10 flex flex-col items-center justify-center">
-      <p className="text-center text-2xl font-extrabold sm:text-4xl">
-        {data?.draw_number} 회차 <br /> 로또 6/45 번호 추첨
-      </p>
-    </div>
-  );
+  return <>{data?.draw_number} </>;
 }

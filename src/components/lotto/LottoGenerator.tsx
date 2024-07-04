@@ -105,9 +105,14 @@ export default function LottoGenerator() {
         {item.map((subItem, subIndex) => (
           <div
             key={subIndex}
-            className={`${lottoNumberBg(subItem)} mt-3 flex h-9 w-9 items-center justify-center rounded-full p-2 text-sm font-bold text-white sm:h-16 sm:w-16 sm:text-3xl`}
+            className={`${lottoNumberBg(subItem)} mt-3 flex h-9 w-9 items-center justify-center rounded-full p-2 sm:h-16 sm:w-16`}
           >
-            <span>{subItem}</span>
+            <p
+              className="text-sm font-bold text-white sm:text-3xl"
+              style={{ textShadow: "0px 0px 3px rgba(73, 57, 0, .8)" }}
+            >
+              {subItem}
+            </p>
           </div>
         ))}
       </div>

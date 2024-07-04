@@ -12,7 +12,7 @@ export default function ErrorFallback({
   const { title, description } = errorHandler(error);
 
   return (
-    <div className="my-2 flex w-full flex-col items-center justify-center rounded-xl border bg-content1 px-2 py-4 shadow-md dark:border-none">
+    <div className="my-2 flex w-full flex-col items-center justify-center rounded-xl border bg-content1 px-2 py-4 text-center shadow-md dark:border-none">
       {title && (
         <h2 className="mb-2 whitespace-pre-wrap break-words font-extrabold sm:text-lg">
           {title}
