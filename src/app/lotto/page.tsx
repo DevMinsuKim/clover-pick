@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import LottoGenerator from "@/components/lotto/LottoGenerator";
 import React from "react";
 import ErrorFallback from "@/components/common/ErrorFallback";
