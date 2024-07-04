@@ -9,7 +9,7 @@ export default function ErrorFallback({
   error,
   resetErrorBoundary,
 }: FallbackProps) {
-  const { title, description } = errorHandler(error);
+  const { title, description, btnText } = errorHandler(error);
 
   return (
     <div className="my-2 flex w-full flex-col items-center justify-center rounded-xl border bg-content1 px-2 py-4 text-center shadow-md dark:border-none">
@@ -24,7 +24,7 @@ export default function ErrorFallback({
         </div>
       )}
 
-      <Button onClick={() => resetErrorBoundary()}>다시 시도하기</Button>
+      <Button onClick={() => resetErrorBoundary()}>{btnText}</Button>
     </div>
   );
 }

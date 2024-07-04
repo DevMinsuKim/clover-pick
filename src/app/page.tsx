@@ -20,12 +20,12 @@ export default function Home() {
       <div className="mt-16 flex w-full flex-col items-center gap-5 md:flex-row md:justify-center">
         <div className="w-full max-w-sm md:w-auto">
           <Link href={ROUTES.LOTTO_645}>
-            <Button className="w-full">로또 6/45 번호 추첨하기</Button>
+            <Button className="w-full">로또 6/45 번호 생성하기</Button>
           </Link>
         </div>
         <div className="w-full max-w-sm md:w-auto">
           <Link href={ROUTES.LOTTO_645}>
-            <Button className="w-full">연금복권 720+ 번호 추첨하기</Button>
+            <Button className="w-full">연금복권 720+ 번호 생성하기</Button>
           </Link>
         </div>
       </div>

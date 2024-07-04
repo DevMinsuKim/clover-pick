@@ -16,7 +16,7 @@ export default function GlobalError({
     window.location.reload();
   };
 
-  const { title, description } = errorHandler(error);
+  const { title, description, btnText } = errorHandler(error);
 
   return (
     <html suppressHydrationWarning lang="ko">
@@ -41,7 +41,7 @@ export default function GlobalError({
           </div>
         )}
 
-        <Button onClick={() => handleReload()}>다시 시도하기</Button>
+        <Button onClick={() => handleReload()}>{btnText}</Button>
       </body>
     </html>
   );

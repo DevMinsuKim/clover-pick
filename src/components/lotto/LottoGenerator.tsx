@@ -10,6 +10,7 @@ import { useErrorModal } from "@/providers/ErrorModalProvider";
 import Clipboard from "../ui/icons/Clipboard";
 import { Tooltip } from "react-tooltip";
 import ClipboardCheck from "../ui/icons/ClipboardCheck";
+import { errorMessage } from "@/utils/errorMessages";
 
 export default function LottoGenerator() {
   const { showError } = useErrorModal();
@@ -22,10 +23,11 @@ export default function LottoGenerator() {
     mutationFn: createLottoNumbers,
     onError: (error) => {
       Sentry.captureException(error);
+      const { title, description, btnText } = errorMessage("1");
       showError({
-        title: "로또 번호 생성 중 오류가 발생했습니다.",
-        description: "잠시 후 다시 시도해 주세요.",
-        btnText: "확인",
+        title: title,
+        description: description,
+        btnText: btnText,
       });
     },
   });
@@ -59,17 +61,35 @@ export default function LottoGenerator() {
         }, 1500);
       } catch (error) {
         Sentry.captureException(error);
+        const { title, description, btnText } = errorMessage("2");
         showError({
-          title: "로또 번호 복사 중 오류가 발생했습니다.",
-          description: "잠시 후 다시 시도해 주세요.",
-          btnText: "확인",
+          title: title,
+          description: description,
+          btnText: btnText,
         });
       }
     }
   };
 
   const handleCreateNumbers = () => {
-    mutate({ repeat: repeatLotto });
+    const now = new Date();
+    const options = { timeZone: "Asia/Seoul", hour12: false };
+    const seoulTime = new Date(now.toLocaleString("en-US", options));
+
+    const day = seoulTime.getDay();
+    const hours = seoulTime.getHours();
+
+    if (day === 6 && hours >= 20 && hours < 22) {
+      Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "info");
+      const { title, description, btnText } = errorMessage("3");
+      showError({
+        title: title,
+        description: description,
+        btnText: btnText,
+      });
+    } else {
+      mutate({ repeat: repeatLotto });
+    }
   };
 
   const dropdownChangeHandler = (item: number) => {
@@ -185,7 +205,7 @@ export default function LottoGenerator() {
             }}
           >
             <div className="flex items-center gap-2">
-              <div>{isPending ? "추첨 중..." : "번호 추첨하기"}</div>
+              <div>{isPending ? "생성 중..." : "번호 생성하기"}</div>
               {isPending && (
                 <Loader className="h-[1rem] w-[1rem] border-primary1 border-t-white" />
               )}

@@ -31,6 +31,18 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const now = new Date();
+    const options = { timeZone: "Asia/Seoul", hour12: false };
+    const seoulTime = new Date(now.toLocaleString("en-US", options));
+
+    const day = seoulTime.getDay();
+    const hours = seoulTime.getHours();
+
+    if (day === 6 && hours >= 20 && hours < 22) {
+      Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "warning");
+      return Response.json({ error: { code: "1102" } }, { status: 400 });
+    }
+
     const { repeat } = await req.json();
 
     if (repeat > 5) {

@@ -14,6 +14,7 @@ import DrawLottoNumber from "@/components/lotto/DrawLottoNumber";
 import LottoGenerationHistory from "@/components/lotto/LottoGenerationHistory";
 import LottoGenerationHistorySkeleton from "@/components/lotto/LottoGenerationHistorySkeleton";
 import LottoGeneratorWinning from "@/components/lotto/LottoGeneratorWinning";
+import LottoInfo from "@/components/lotto/LottoInfo";
 
 export default async function Page() {
   const queryClient = getQueryClient();
@@ -39,7 +40,7 @@ export default async function Page() {
             </ErrorHandlingWrapper>
             회차
           </p>
-          <p>로또 6/45 번호 추첨</p>
+          <p>로또 6/45 번호 생성</p>
         </div>
       </div>
 
@@ -64,7 +65,7 @@ export default async function Page() {
 
       <div className="mt-20 sm:mt-40">
         <p className="mb-4 text-lg font-bold sm:text-2xl">
-          추첨한 로또 번호 당첨 내역
+          생성한 로또 번호 당첨 내역
         </p>
         <ErrorHandlingWrapper
           fallbackComponent={ErrorFallback}
@@ -72,6 +73,10 @@ export default async function Page() {
         >
           <LottoGeneratorWinning />
         </ErrorHandlingWrapper>
+      </div>
+
+      <div className="my-20 sm:my-40">
+        <LottoInfo />
       </div>
     </section>
   );

@@ -19,6 +19,8 @@ const config: Config = {
         content1Hover: "var(--color-content1-hover)",
         content2: "var(--color-content2)",
         content3: "var(--color-content3)",
+        content4: "var(--color-content4)",
+        content4Hover: "var(--color-content4-hover)",
       },
     },
   },

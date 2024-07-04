@@ -13,6 +13,8 @@
   --color-content1-hover: #f4f4f5;
   --color-content2: #d4d4d8;
   --color-content3: #71717a;
+  --color-content4: #f4f4f5;
+  --color-content4-hover: #ffffff;
 }
 
 .dark {
@@ -26,6 +28,8 @@
   --color-content1-hover: #3f3f46;
   --color-content2: #3f3f46;
   --color-content3: #a1a1aa;
+  --color-content4: #27272a;
+  --color-content4-hover: #3f3f46;
 }
 
 body {

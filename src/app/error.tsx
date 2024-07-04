@@ -10,10 +10,10 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const { title, description } = errorHandler(error);
+  const { title, description, btnText } = errorHandler(error);
 
   return (
-    <div className={`flex h-full flex-col items-center justify-center`}>
+    <div className={`flex min-h-screen flex-col items-center justify-center`}>
       {title && (
         <h2 className="mb-7 whitespace-pre-wrap break-words text-center text-2xl font-extrabold sm:text-4xl">
           {title}
@@ -25,7 +25,7 @@ export default function Error({
         </div>
       )}
 
-      <Button onClick={() => reset()}>다시 시도하기</Button>
+      <Button onClick={() => reset()}>{btnText}</Button>
     </div>
   );
 }
