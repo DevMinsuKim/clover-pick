@@ -1,40 +1,16 @@
 "use client";
 
 import { getLottoWinning } from "@/libs/queries/lottoQueries";
+import { formatDate } from "@/utils/formatDate";
+import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function LottoGeneratorWinning() {
-  const { data } = useSuspenseQuery(getLottoWinning);
-
-  const lottoNumberBg = (number: number) => {
-    if (number === 0) {
-      return "bg-[#aaaaaa]";
-    } else if (number <= 10) {
-      return "bg-[#fbc400]";
-    } else if (number <= 20) {
-      return "bg-[#69c8f2]";
-    } else if (number <= 30) {
-      return "bg-[#ff7272]";
-    } else if (number <= 40) {
-      return "bg-[#aaaaaa]";
-    } else if (number <= 45) {
-      return "bg-[#b0d840]";
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-
-    return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
-  };
+  const { data, error, isFetching } = useSuspenseQuery(getLottoWinning);
+  if (error && !isFetching) {
+    throw error;
+  }
 
   if (!data || data.length === 0) {
     return (

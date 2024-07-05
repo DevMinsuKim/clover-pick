@@ -16,6 +16,7 @@ import LottoGenerationHistory from "@/components/lotto/LottoGenerationHistory";
 import LottoGenerationHistorySkeleton from "@/components/lotto/LottoGenerationHistorySkeleton";
 import LottoGeneratorWinning from "@/components/lotto/LottoGeneratorWinning";
 import LottoInfo from "@/components/lotto/LottoInfo";
+import LottoGeneratorWinningSkeleton from "@/components/lotto/LottoGeneratorWinningSkeleton";
 
 export default async function Page() {
   const queryClient = getQueryClient();
@@ -27,22 +28,22 @@ export default async function Page() {
   ]);
 
   return (
-    <section>
+    <section className="mx-auto w-full max-w-screen-xl px-6">
       <div className="mt-10 flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center text-center text-2xl font-extrabold sm:text-4xl">
-          <p className="flex items-center">
-            <ErrorHandlingWrapper
-              fallbackComponent={ErrorFallback}
-              suspenseFallback={<DrawLottoNumberSkeleton />}
-            >
+        <ErrorHandlingWrapper
+          fallbackComponent={ErrorFallback}
+          suspenseFallback={<DrawLottoNumberSkeleton />}
+        >
+          <div className="flex flex-col items-center text-center text-2xl font-extrabold sm:text-4xl">
+            <p className="flex items-center">
               <HydrationBoundary state={dehydrate(queryClient)}>
                 <DrawLottoNumber />
               </HydrationBoundary>
-            </ErrorHandlingWrapper>
-            회차
-          </p>
-          <p>로또 6/45 번호 생성</p>
-        </div>
+              회차
+            </p>
+            <p>로또 6/45 번호 생성</p>
+          </div>
+        </ErrorHandlingWrapper>
       </div>
 
       <ErrorHandlingWrapper
@@ -60,7 +61,9 @@ export default async function Page() {
           fallbackComponent={ErrorFallback}
           suspenseFallback={<LottoGenerationHistorySkeleton />}
         >
-          <LottoGenerationHistory />
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <LottoGenerationHistory />
+          </HydrationBoundary>
         </ErrorHandlingWrapper>
       </div>
 
@@ -70,9 +73,11 @@ export default async function Page() {
         </p>
         <ErrorHandlingWrapper
           fallbackComponent={ErrorFallback}
-          suspenseFallback={<div>loading...</div>}
+          suspenseFallback={<LottoGeneratorWinningSkeleton />}
         >
-          <LottoGeneratorWinning />
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <LottoGeneratorWinning />
+          </HydrationBoundary>
         </ErrorHandlingWrapper>
       </div>
 

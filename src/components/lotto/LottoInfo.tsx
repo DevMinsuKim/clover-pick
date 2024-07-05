@@ -17,10 +17,9 @@ export default function LottoInfo() {
       <div className="bg-content4 rounded-bl-xl rounded-br-xl rounded-tr-xl p-3">
         <strong>로또 번호 생성 가능 시간 안내</strong>
         <p className="mb-8 mt-1">
-          로또 번호 생성은 매주 토요일 저녁 8시에 마감됩니다.
-          <br /> 다음 회차 번호 생성은 매주 토요일 밤 10시 부터 이용 가능합니다.
-          <br />
-          많은 이용 바랍니다!
+          로또 번호 생성은 매주 토요일 저녁 8시에 마감됩니다. <br />
+          다음 회차 번호 생성은 토요일 밤 10시 이후부터 가능합니다. <br />
+          서비스 이용에 착오 없으시길 바라며, 많은 이용 부탁드립니다!
         </p>
 
         <strong>로또 번호 생성 안내</strong>

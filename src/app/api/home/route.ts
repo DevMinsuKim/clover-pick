@@ -5,9 +5,11 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
+    const lottoCreateCount = await prisma.created_lotto.count();
+
     const lottoCreateListData = await prisma.created_lotto.findMany({
       orderBy: { id: "desc" },
-      take: 18,
+      take: 5,
       select: {
         draw_number: true,
         winning_number1: true,
@@ -25,15 +27,17 @@ export async function GET() {
       created: convertToKoreaTime(new Date(item.created)),
     }));
 
-    if (lottoCreateList == null) {
-      Sentry.captureMessage(
-        "로또 번호 생성 내역 데이터가 존재하지 않습니다.",
-        "error",
-      );
-      return Response.json({ error: { code: "1000" } }, { status: 404 });
+    if (lottoCreateCount == null || lottoCreateList == null) {
+      Sentry.captureMessage("데이터 생성 중 오류가 발생했습니다.", "error");
+      return NextResponse.json({ error: { code: "1000" } }, { status: 404 });
     }
 
-    return NextResponse.json(lottoCreateList, { status: 200 });
+    const responseData = {
+      lottoCreateCount,
+      lottoCreateList,
+    };
+
+    return NextResponse.json(responseData, { status: 200 });
   } catch (error) {
     Sentry.captureException(error);
     return Response.json({ error: { code: "2000" } }, { status: 500 });

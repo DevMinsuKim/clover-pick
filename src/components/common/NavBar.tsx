@@ -32,7 +32,7 @@ export default function NavBar() {
   const pathName = usePathname();
 
   return (
-    <div className="flex items-center justify-between bg-background py-5">
+    <div className="mx-auto flex max-w-screen-xl items-center justify-between bg-background py-5">
       <Link href="/" aria-label="CloverPick Logo">
         <CombinationLogo className="h-6 w-32" />
       </Link>
