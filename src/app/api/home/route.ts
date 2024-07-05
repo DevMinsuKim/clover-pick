@@ -7,6 +7,8 @@ export async function GET() {
   try {
     const lottoCreateCount = await prisma.created_lotto.count();
 
+    const lottoWinningCount = await prisma.winning_lotto.count();
+
     const lottoCreateListData = await prisma.created_lotto.findMany({
       orderBy: { id: "desc" },
       take: 5,
@@ -27,13 +29,18 @@ export async function GET() {
       created: convertToKoreaTime(new Date(item.created)),
     }));
 
-    if (lottoCreateCount == null || lottoCreateList == null) {
+    if (
+      lottoCreateCount == null ||
+      lottoCreateList == null ||
+      lottoWinningCount == null
+    ) {
       Sentry.captureMessage("데이터 생성 중 오류가 발생했습니다.", "error");
       return NextResponse.json({ error: { code: "1000" } }, { status: 404 });
     }
 
     const responseData = {
       lottoCreateCount,
+      lottoWinningCount,
       lottoCreateList,
     };
 

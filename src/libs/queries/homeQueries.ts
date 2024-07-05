@@ -3,6 +3,7 @@ import axiosInstance from "../axiosInstance";
 
 interface Home {
   lottoCreateCount: number;
+  lottoWinningCount: number;
   lottoCreateList: {
     draw_number: number;
     winning_number1: number;

@@ -149,7 +149,7 @@ export default function LottoGenerator() {
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 type="button"
-                className="inline-flex w-full justify-between rounded-md border bg-white px-4 py-2 text-sm font-medium text-foreground hover:bg-content1Hover focus:ring-primary dark:border-none dark:bg-black dark:hover:bg-content1Hover"
+                className="inline-flex w-full justify-between rounded-md border bg-white px-4 py-2 text-sm font-medium text-foreground shadow hover:bg-content1Hover focus:ring-primary dark:border-none dark:bg-black dark:hover:bg-content1Hover"
               >
                 {repeatLotto}
                 <svg
@@ -168,7 +168,7 @@ export default function LottoGenerator() {
               </button>
             </div>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-full origin-top-right rounded-md border bg-white dark:border-none dark:bg-black">
+              <div className="absolute right-0 mt-2 w-full origin-top-right rounded-md border bg-white shadow dark:border-none dark:bg-black">
                 <div className="p-2">
                   {dropDownData.map((item, index) => {
                     return (
@@ -220,7 +220,7 @@ export default function LottoGenerator() {
                 handleCopy();
               }}
             >
-              <div className="flex items-center justify-center rounded-full border bg-background p-3 hover:bg-content1Hover dark:border-none dark:hover:bg-content1Hover">
+              <div className="flex items-center justify-center rounded-full border bg-background p-3 shadow hover:bg-content1Hover dark:border-none dark:hover:bg-content1Hover">
                 {isCopied ? (
                   <ClipboardCheck className="h-4 w-4 sm:h-5 sm:w-5" />
                 ) : (

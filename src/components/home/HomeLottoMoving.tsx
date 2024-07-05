@@ -31,7 +31,7 @@ export default function HomeLottoMoving() {
             return (
               <div
                 key={index}
-                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 first:ml-10 dark:border-none"
+                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow first:ml-10 dark:border-none"
               >
                 <p className="font-bold">{item.draw_number} 회</p>
 
