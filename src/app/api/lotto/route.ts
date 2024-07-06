@@ -53,16 +53,21 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: { code: "1101" } }, { status: 400 });
     }
 
-    const { object: lottoNumbers } = await generateObject({
+    const { object: data } = await generateObject({
       model: openai("gpt-4o"),
-      system:
-        "You are a useful secretary designed to analyze lotto numbers and print them out in JSON",
-      prompt: `Predict ${repeat} sets of 6 winning numbers from 1 to 45 in JSON format with key 'winning_numbers'`,
+      system: "You're a lotto number prediction system",
+      prompt: `Predict ${repeat} sets of 6 winning numbers from 1 to 45`,
       schema: z.object({
-        winning_numbers: z.array(
-          z.array(z.number().int().min(1).max(45)).length(6),
+        lottoNumbers: z.array(
+          z.object({
+            numbers: z.array(z.number().min(1).max(45)).length(6),
+          }),
         ),
       }),
+    });
+
+    data.lottoNumbers.forEach((obj) => {
+      obj.numbers.sort((a, b) => a - b);
     });
 
     const lastDrawNumber = await prisma.lotto.findFirst({
@@ -77,15 +82,15 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: { code: "1000" } }, { status: 404 });
     }
 
-    const lottoNumbersDB = lottoNumbers.winning_numbers.map((number) => {
+    const lottoNumbersDB = data.lottoNumbers.map((item) => {
       return {
         draw_number: lastDrawNumber.draw_number + 1,
-        winning_number1: number[0],
-        winning_number2: number[1],
-        winning_number3: number[2],
-        winning_number4: number[3],
-        winning_number5: number[4],
-        winning_number6: number[5],
+        winning_number1: item.numbers[0],
+        winning_number2: item.numbers[1],
+        winning_number3: item.numbers[2],
+        winning_number4: item.numbers[3],
+        winning_number5: item.numbers[4],
+        winning_number6: item.numbers[5],
       };
     });
 
@@ -93,7 +98,7 @@ export async function POST(req: NextRequest) {
       data: lottoNumbersDB,
     });
 
-    return NextResponse.json(lottoNumbers, { status: 200 });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     Sentry.captureException(error);
     return Response.json({ error: { code: "2000" } }, { status: 500 });

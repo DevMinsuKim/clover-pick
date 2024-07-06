@@ -5,32 +5,26 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
 import { useMutation } from "@tanstack/react-query";
-import { createLottoNumbers } from "@/libs/queries/lottoQueries";
+import { createPensionNumbers } from "@/libs/queries/pensionQueries";
 import { useErrorModal } from "@/providers/ErrorModalProvider";
 import Clipboard from "../ui/icons/Clipboard";
 import { Tooltip } from "react-tooltip";
 import ClipboardCheck from "../ui/icons/ClipboardCheck";
 import { errorMessage } from "@/utils/errorMessages";
-import { lottoNumberBg } from "@/utils/lottoNumberBg";
+import { pensionNumberBg } from "@/utils/pensionNumberBg";
 
-interface LottoGeneratorNumbers {
-  lottoNumbers: {
-    numbers: number[];
-  }[];
-}
-
-export default function LottoGenerator() {
+export default function PensionGenerator() {
   const { showError } = useErrorModal();
 
   const {
     mutate,
-    data: lottoData,
+    data: pensionData,
     isPending,
   } = useMutation({
-    mutationFn: createLottoNumbers,
+    mutationFn: createPensionNumbers,
     onError: (error) => {
       Sentry.captureException(error);
-      const { title, description, btnText } = errorMessage("1");
+      const { title, description, btnText } = errorMessage("4");
       showError({
         title: title,
         description: description,
@@ -39,21 +33,21 @@ export default function LottoGenerator() {
     },
   });
 
-  const [repeatLotto, setRepeatLotto] = useState(1);
+  const [repeatPension, setRepeatPension] = useState(1);
+  const [isAllGroup, setIsAllGroup] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentLottoNumbers, setCurrentLottoNumbers] =
-    useState<LottoGeneratorNumbers>({
-      lottoNumbers: [{ numbers: [0, 0, 0, 0, 0, 0] }],
-    });
+  const [currentPensionNumbers, setCurrentPensionNumbers] = useState([
+    [0, 0, 0, 0, 0, 0],
+  ]);
   const dropDownData = [1, 2, 3, 4, 5];
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleCopy = async () => {
-    if (lottoData) {
+    if (pensionData) {
       try {
-        const formattedData = lottoData.lottoNumbers
-          .map((item, index) => `${index + 1}. [${item.numbers.join(", ")}]`)
+        const formattedData = pensionData.winning_numbers
+          .map((numbers, index) => `${index + 1}. [${numbers.join(", ")}]`)
           .join("\n");
 
         await navigator.clipboard.writeText(formattedData);
@@ -69,7 +63,7 @@ export default function LottoGenerator() {
         }, 1500);
       } catch (error) {
         Sentry.captureException(error);
-        const { title, description, btnText } = errorMessage("2");
+        const { title, description, btnText } = errorMessage("5");
         showError({
           title: title,
           description: description,
@@ -77,6 +71,10 @@ export default function LottoGenerator() {
         });
       }
     }
+  };
+
+  const handleAllGroup = () => {
+    setIsAllGroup(!isAllGroup);
   };
 
   const handleCreateNumbers = () => {
@@ -87,37 +85,37 @@ export default function LottoGenerator() {
     const day = seoulTime.getDay();
     const hours = seoulTime.getHours();
 
-    if (day === 6 && hours >= 20 && hours < 22) {
-      Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "info");
-      const { title, description, btnText } = errorMessage("3");
+    if (day === 4 && hours >= 17 && hours < 24) {
+      Sentry.captureMessage("연금복권 번호 생성 시간이 아닙니다.", "info");
+      const { title, description, btnText } = errorMessage("6");
       showError({
         title: title,
         description: description,
         btnText: btnText,
       });
     } else {
+      mutate({ repeat: repeatPension, isAllGroup: isAllGroup });
     }
-    mutate({ repeat: repeatLotto });
   };
 
   const dropdownChangeHandler = (item: number) => {
-    setRepeatLotto(item);
+    setRepeatPension(item);
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   useEffect(() => {
-    if (lottoData) {
-      setCurrentLottoNumbers(lottoData);
+    if (pensionData) {
+      setCurrentPensionNumbers(pensionData.winning_numbers);
     }
-  }, [lottoData]);
+  }, [pensionData]);
 
-  const renderLottoNumbers = (data: LottoGeneratorNumbers) => {
-    return data.lottoNumbers.map((item, index) => (
-      <div key={index} className="mt-3 flex justify-between">
-        {item.numbers.map((subItem, subIndex) => (
+  const renderPensionNumbers = (numbers: number[][]) => {
+    return numbers.map((item, index) => (
+      <div key={index} className="flex justify-between">
+        {item.map((subItem, subIndex) => (
           <div
             key={subIndex}
-            className={`${lottoNumberBg(subItem)} flex h-9 w-9 items-center justify-center rounded-full p-2 sm:h-16 sm:w-16`}
+            className={`${pensionNumberBg(subItem)} mt-3 flex h-9 w-9 items-center justify-center rounded-full p-2 sm:h-16 sm:w-16`}
           >
             <p
               className="text-sm font-bold text-white sm:text-3xl"
@@ -135,15 +133,18 @@ export default function LottoGenerator() {
     <div className="flex flex-col items-center justify-center">
       <div className="mt-8 w-full max-w-lg rounded-xl border bg-content1 text-center shadow-md dark:border-none">
         <div className="px-5">
-          <p className="mt-7 font-bold">로또 번호 생성 횟수를 선택하세요.</p>
+          <p className="mt-7 font-bold">
+            연금복권 번호 생성 횟수를 선택하세요.
+          </p>
           <div className="relative mb-7 mt-3 w-full max-w-lg text-left">
             <div>
               <button
+                disabled={isAllGroup}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 type="button"
-                className="inline-flex w-full justify-between rounded-md border bg-white px-4 py-2 text-sm font-medium text-foreground shadow hover:bg-content1Hover focus:ring-primary dark:border-none dark:bg-black dark:hover:bg-content1Hover"
+                className="inline-flex w-full justify-between rounded-md border bg-white px-4 py-2 text-sm font-medium text-foreground shadow hover:bg-content1Hover focus:ring-primary disabled:opacity-40 disabled:hover:bg-white dark:border-none dark:bg-black dark:hover:bg-content1Hover disabled:hover:dark:bg-black"
               >
-                {repeatLotto}
+                {repeatPension}
                 <svg
                   className={`-mr-1 ml-2 h-5 w-5 transition-transform duration-200 ${isDropdownOpen ? "rotate-180 transform" : ""}`}
                   xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +161,7 @@ export default function LottoGenerator() {
               </button>
             </div>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-full origin-top-right rounded-md border bg-white shadow dark:border-none dark:bg-black">
+              <div className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md border bg-white shadow dark:border-none dark:bg-black">
                 <div className="p-2">
                   {dropDownData.map((item, index) => {
                     return (
@@ -178,13 +179,44 @@ export default function LottoGenerator() {
               </div>
             )}
           </div>
-          <ul>{renderLottoNumbers(currentLottoNumbers)}</ul>
+
+          <div className="mb-6 rounded-xl border bg-background p-4 text-left shadow dark:border-none">
+            <p className="font-bold">모든 조를 선택하시겠습니까?</p>
+            <p className="text-xs sm:text-sm">
+              - 모든 조를 선택하시면 1등과 2등 동시 당첨될 수 있습니다.
+            </p>
+            <p className="text-xs sm:text-sm">
+              - 이 기능을 원하시면 아래 버튼을 눌러 활성화하시고, 번호 생성하기
+              버튼을 클릭해주세요.
+            </p>
+            <p className="text-xs sm:text-sm">
+              - 단, 해당 회차에서 당첨될 경우 1등과 2등 동시 당첨될 수 있다는
+              것이며, 선택한다고 무조건 당첨되거나 당첨 확률이 증가하는 것은
+              아닙니다.
+            </p>
+            <div
+              className={`${
+                isAllGroup ? "bg-primary" : "bg-gray-300"
+              } mt-4 flex h-6 w-10 cursor-pointer items-center rounded-full p-1`}
+              onClick={() => {
+                handleAllGroup();
+              }}
+            >
+              <div
+                className={`h-5 w-5 transform rounded-full bg-white shadow-md ${
+                  isAllGroup ? "translate-x-3" : ""
+                } transition`}
+              />
+            </div>
+          </div>
+
+          <ul>{renderPensionNumbers(currentPensionNumbers)}</ul>
         </div>
 
         <div className="mb-3 mt-7 h-[1px] w-full bg-content1Hover" />
 
         <div
-          className={`mb-3 flex items-center justify-center ${lottoData && "justify-between px-5"}`}
+          className={`mb-3 flex items-center justify-center ${pensionData && "justify-between px-5"}`}
         >
           <Button
             className={`text-sm sm:text-base ${
@@ -204,7 +236,7 @@ export default function LottoGenerator() {
             </div>
           </Button>
 
-          {lottoData && (
+          {pensionData && (
             <button
               data-tooltip-id="tooltip"
               data-tooltip-content={isCopied ? "복사 완료" : "번호 복사"}

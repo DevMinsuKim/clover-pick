@@ -38,7 +38,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="w-full max-w-sm md:w-auto">
-            <Link href={ROUTES.LOTTO_645}>
+            <Link href={ROUTES.PENSION_720}>
               <Button className="w-full">연금복권 720+ 번호 생성하기</Button>
             </Link>
           </div>
@@ -95,7 +95,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="w-full max-w-sm md:w-auto">
-              <Link href={ROUTES.LOTTO_645}>
+              <Link href={ROUTES.PENSION_720}>
                 <Button className="w-full">연금복권 720+ 번호 생성하기</Button>
               </Link>
             </div>

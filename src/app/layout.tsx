@@ -46,7 +46,7 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <ErrorModalProvider>
-              <header className="sticky top-0 z-10 mx-auto w-full bg-background px-6">
+              <header className="sticky top-0 z-20 mx-auto w-full bg-background px-6">
                 <NavBar />
               </header>
               <main className="min-h-screen flex-grow">

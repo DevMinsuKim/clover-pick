@@ -20,6 +20,14 @@ model created_lotto {
   created         DateTime @default(now()) @db.Timestamptz(6)
 }
 
+model created_pension {
+  id              Int      @id @default(autoincrement())
+  draw_number     Int
+  winning_number Int
+  bonus_number   String   @db.VarChar(6)
+  created         DateTime @default(now()) @db.Timestamptz(6)
+}
+
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model lotto {
   draw_number          Int      @id @unique(map: "unique_draw_number")

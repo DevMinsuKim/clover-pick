@@ -29,14 +29,16 @@ interface getLottoWinning {
 }
 
 interface LottoGeneratorNumbers {
-  winning_numbers: number[][];
+  lottoNumbers: {
+    numbers: number[];
+  }[];
 }
 
 interface LottoRepeat {
   repeat: number;
 }
 
-export const getLottoInfo = queryOptions({
+export const getLotto = queryOptions({
   queryKey: ["lotto"],
   queryFn: async () => {
     const { data } = await axiosInstance.get<Lotto>("/api/lotto");

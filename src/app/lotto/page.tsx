@@ -1,17 +1,18 @@
 export const dynamic = "force-dynamic";
+
 import LottoGenerator from "@/components/lotto/LottoGenerator";
 import React from "react";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import {
-  getLottoInfo,
+  getLotto,
   getLottoHistory,
   getLottoWinning,
 } from "@/libs/queries/lottoQueries";
 import { getQueryClient } from "@/libs/getQueryClient";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
-import DrawLottoNumberSkeleton from "@/components/lotto/DrawLottoNumberSkeleton";
-import DrawLottoNumber from "@/components/lotto/DrawLottoNumber";
+import LottoDrawNumberSkeleton from "@/components/lotto/LottoDrawNumberSkeleton";
+import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
 import LottoGenerationHistory from "@/components/lotto/LottoGenerationHistory";
 import LottoGenerationHistorySkeleton from "@/components/lotto/LottoGenerationHistorySkeleton";
 import LottoGeneratorWinning from "@/components/lotto/LottoGeneratorWinning";
@@ -22,22 +23,22 @@ export default async function Page() {
   const queryClient = getQueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(getLottoInfo),
+    queryClient.prefetchQuery(getLotto),
     queryClient.prefetchQuery(getLottoHistory),
     queryClient.prefetchQuery(getLottoWinning),
   ]);
 
   return (
     <section className="mx-auto w-full max-w-screen-xl px-6">
-      <div className="mt-10 flex flex-col items-center justify-center">
+      <div className="mb-20 mt-10 flex flex-col items-center justify-center">
         <ErrorHandlingWrapper
           fallbackComponent={ErrorFallback}
-          suspenseFallback={<DrawLottoNumberSkeleton />}
+          suspenseFallback={<LottoDrawNumberSkeleton />}
         >
           <div className="flex flex-col items-center text-center text-2xl font-extrabold sm:text-4xl">
             <p className="flex items-center">
               <HydrationBoundary state={dehydrate(queryClient)}>
-                <DrawLottoNumber />
+                <LottoDrawNumber />
               </HydrationBoundary>
               회차
             </p>
