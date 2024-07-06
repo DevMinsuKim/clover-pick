@@ -16,12 +16,12 @@ export default function LottoGenerationHistory() {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {data.map((item, index) => {
         const winningNumbers = [
-          item.winning_number1,
-          item.winning_number2,
-          item.winning_number3,
-          item.winning_number4,
-          item.winning_number5,
-          item.winning_number6,
+          item.number1,
+          item.number2,
+          item.number3,
+          item.number4,
+          item.number5,
+          item.number6,
         ];
 
         return (

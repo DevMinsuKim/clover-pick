@@ -19,13 +19,13 @@ export default function HomeLottoMoving() {
       <Marquee autoFill={true} pauseOnHover={true}>
         <div className="flex gap-10">
           {data.lottoCreateList.map((item, index) => {
-            const winningNumbers = [
-              item.winning_number1,
-              item.winning_number2,
-              item.winning_number3,
-              item.winning_number4,
-              item.winning_number5,
-              item.winning_number6,
+            const numbers = [
+              item.number1,
+              item.number2,
+              item.number3,
+              item.number4,
+              item.number5,
+              item.number6,
             ];
 
             return (
@@ -36,7 +36,7 @@ export default function HomeLottoMoving() {
                 <p className="font-bold">{item.draw_number} 회</p>
 
                 <div className="flex">
-                  {winningNumbers.map((number, numIndex) => (
+                  {numbers.map((number, numIndex) => (
                     <div
                       key={numIndex}
                       className={`${lottoNumberBg(number)} mx-1 flex h-9 w-9 items-center justify-center gap-2 rounded-full`}

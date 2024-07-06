@@ -10,12 +10,12 @@ export async function GET() {
       take: 18,
       select: {
         draw_number: true,
-        winning_number1: true,
-        winning_number2: true,
-        winning_number3: true,
-        winning_number4: true,
-        winning_number5: true,
-        winning_number6: true,
+        number1: true,
+        number2: true,
+        number3: true,
+        number4: true,
+        number5: true,
+        number6: true,
         created: true,
       },
     });

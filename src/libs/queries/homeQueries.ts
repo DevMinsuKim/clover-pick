@@ -6,12 +6,12 @@ interface Home {
   lottoWinningCount: number;
   lottoCreateList: {
     draw_number: number;
-    winning_number1: number;
-    winning_number2: number;
-    winning_number3: number;
-    winning_number4: number;
-    winning_number5: number;
-    winning_number6: number;
+    number1: number;
+    number2: number;
+    number3: number;
+    number4: number;
+    number5: number;
+    number6: number;
     created: string;
   }[];
 }

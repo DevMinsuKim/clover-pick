@@ -96,8 +96,8 @@ export default function LottoGenerator() {
         btnText: btnText,
       });
     } else {
+      mutate({ repeat: repeatLotto });
     }
-    mutate({ repeat: repeatLotto });
   };
 
   const dropdownChangeHandler = (item: number) => {

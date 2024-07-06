@@ -9,23 +9,23 @@ datasource db {
 }
 
 model created_lotto {
-  id              Int      @id @default(autoincrement())
-  draw_number     Int
-  winning_number1 Int
-  winning_number2 Int
-  winning_number3 Int
-  winning_number4 Int
-  winning_number5 Int
-  winning_number6 Int
-  created         DateTime @default(now()) @db.Timestamptz(6)
+  id          Int      @id @default(autoincrement())
+  draw_number Int
+  number1     Int
+  number2     Int
+  number3     Int
+  number4     Int
+  number5     Int
+  number6     Int
+  created     DateTime @default(now()) @db.Timestamptz(6)
 }
 
 model created_pension {
-  id              Int      @id @default(autoincrement())
-  draw_number     Int
+  id             Int      @id @default(autoincrement())
+  draw_number    Int
   winning_number Int
   bonus_number   String   @db.VarChar(6)
-  created         DateTime @default(now()) @db.Timestamptz(6)
+  created        DateTime @default(now()) @db.Timestamptz(6)
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -74,5 +74,5 @@ model winning_lotto {
   winning_created DateTime @db.Timestamptz(6)
   created         DateTime @default(now()) @db.Timestamptz(6)
 
-   @@unique([draw_number, ranking, winning_number1, winning_number2, winning_number3, winning_number4, winning_number5, winning_number6, winning_created])
+  @@unique([draw_number, ranking, winning_number1, winning_number2, winning_number3, winning_number4, winning_number5, winning_number6, winning_created])
 }
