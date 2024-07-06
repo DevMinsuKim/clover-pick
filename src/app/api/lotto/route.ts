@@ -85,12 +85,12 @@ export async function POST(req: NextRequest) {
     const lottoNumbersDB = data.lottoNumbers.map((item) => {
       return {
         draw_number: lastDrawNumber.draw_number + 1,
-        winning_number1: item.numbers[0],
-        winning_number2: item.numbers[1],
-        winning_number3: item.numbers[2],
-        winning_number4: item.numbers[3],
-        winning_number5: item.numbers[4],
-        winning_number6: item.numbers[5],
+        number1: item.numbers[0],
+        number2: item.numbers[1],
+        number3: item.numbers[2],
+        number4: item.numbers[3],
+        number5: item.numbers[4],
+        number6: item.numbers[5],
       };
     });
 

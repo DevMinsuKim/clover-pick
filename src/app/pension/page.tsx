@@ -16,7 +16,7 @@ export default async function page() {
 
   return (
     <section className="mx-auto w-full max-w-screen-xl px-6">
-      {/* <div className="mb-20 mt-10 flex flex-col items-center justify-center">
+      <div className="mb-20 mt-10 flex flex-col items-center justify-center">
         <ErrorHandlingWrapper
           fallbackComponent={ErrorFallback}
           suspenseFallback={<PensionDrawNumberSkeleton />}
@@ -38,7 +38,7 @@ export default async function page() {
         suspenseFallback={null}
       >
         <PensionGenerator />
-      </ErrorHandlingWrapper> */}
+      </ErrorHandlingWrapper>
     </section>
   );
 }

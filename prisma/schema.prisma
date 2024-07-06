@@ -21,11 +21,10 @@ model created_lotto {
 }
 
 model created_pension {
-  id             Int      @id @default(autoincrement())
-  draw_number    Int
-  winning_number Int
-  bonus_number   String   @db.VarChar(6)
-  created        DateTime @default(now()) @db.Timestamptz(6)
+  id          Int      @id @default(autoincrement())
+  draw_number Int
+  number      Int
+  created     DateTime @default(now()) @db.Timestamptz(6)
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments

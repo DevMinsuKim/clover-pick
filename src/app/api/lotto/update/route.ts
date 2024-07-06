@@ -87,12 +87,12 @@ export async function GET() {
 
     for (const userLotto of userLottos) {
       const userNumbers = [
-        userLotto.winning_number1,
-        userLotto.winning_number2,
-        userLotto.winning_number3,
-        userLotto.winning_number4,
-        userLotto.winning_number5,
-        userLotto.winning_number6,
+        userLotto.number1,
+        userLotto.number2,
+        userLotto.number3,
+        userLotto.number4,
+        userLotto.number5,
+        userLotto.number6,
       ];
 
       const winningNumbers = [
@@ -128,12 +128,12 @@ export async function GET() {
         winningData.push({
           draw_number: latestLotto.draw_number,
           ranking,
-          winning_number1: userLotto.winning_number1,
-          winning_number2: userLotto.winning_number2,
-          winning_number3: userLotto.winning_number3,
-          winning_number4: userLotto.winning_number4,
-          winning_number5: userLotto.winning_number5,
-          winning_number6: userLotto.winning_number6,
+          winning_number1: userLotto.number1,
+          winning_number2: userLotto.number2,
+          winning_number3: userLotto.number3,
+          winning_number4: userLotto.number4,
+          winning_number5: userLotto.number5,
+          winning_number6: userLotto.number6,
           winning_created: userLotto.created,
         });
       }
