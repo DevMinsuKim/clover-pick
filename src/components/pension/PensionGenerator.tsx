@@ -113,13 +113,13 @@ export default function PensionGenerator() {
   }, [pensionData]);
 
   const renderPensionNumbers = (numbers: { number: string }[]) => {
-    const NumberInt = numbers.map((item) => {
+    const numberInt = numbers.map((item) => {
       return {
         number: item.number.split(""),
       };
     });
 
-    return NumberInt.map((number, index) => (
+    return numberInt.map((number, index) => (
       <div key={index} className="mt-4 flex items-center justify-between">
         {number.number.map((subNumber, subIndex) => (
           <>
@@ -204,7 +204,7 @@ export default function PensionGenerator() {
             </p>
             <div
               className={`${
-                isAllGroup ? "bg-primary" : "bg-gray-300"
+                isAllGroup ? "bg-primary" : "bg-gray-300 dark:bg-gray-500"
               } mt-4 flex h-6 w-10 cursor-pointer items-center rounded-full p-1`}
               onClick={() => {
                 handleAllGroup();

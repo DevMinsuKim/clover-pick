@@ -82,6 +82,7 @@ export async function GET() {
 
     const winningData = [];
     const userLottos = await prisma.created_lotto.findMany({
+      orderBy: { id: "desc" },
       where: { draw_number: latestLotto.draw_number },
     });
 

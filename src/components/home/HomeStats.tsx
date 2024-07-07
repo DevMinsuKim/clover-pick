@@ -52,8 +52,8 @@ export default function HomeStats() {
       <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-3 py-10 text-center md:grid-cols-2 lg:grid-cols-4">
         <Card count={data.lottoCreateCount} label="생성된 로또 6/45" />
         <Card count={data.lottoWinningCount} label="당첨된 로또 6/45" />
-        <Card count={0} label="생성된 연금복권 720+" />
-        <Card count={0} label="당첨된 연금복권 720+" />
+        <Card count={data.pensionCreateCount} label="생성된 연금복권 720+" />
+        <Card count={data.pensionWinningCount} label="당첨된 연금복권 720+" />
       </div>
     </div>
   );

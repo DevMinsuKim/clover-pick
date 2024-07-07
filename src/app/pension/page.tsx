@@ -4,15 +4,28 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 import PensionDrawNumber from "@/components/pension/PensionDrawNumber";
 import PensionDrawNumberSkeleton from "@/components/pension/PensionDrawNumberSkeleton";
+import PensionGenerationHistory from "@/components/pension/PensionGenerationHistory";
+import PensionGenerationHistorySkeleton from "@/components/pension/PensionGenerationHistorySkeleton";
 import PensionGenerator from "@/components/pension/PensionGenerator";
+import PensionGeneratorWinning from "@/components/pension/PensionGeneratorWinning";
+import PensionGeneratorWinningSkeleton from "@/components/pension/PensionGeneratorWinningSkeleton";
+import PensionInfo from "@/components/pension/PensionInfo";
 import { getQueryClient } from "@/libs/getQueryClient";
-import { getPension } from "@/libs/queries/pensionQueries";
+import {
+  getPension,
+  getPensionHistory,
+  getPensionWinning,
+} from "@/libs/queries/pensionQueries";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function page() {
   const queryClient = getQueryClient();
 
-  await Promise.all([queryClient.prefetchQuery(getPension)]);
+  await Promise.all([
+    queryClient.prefetchQuery(getPension),
+    queryClient.prefetchQuery(getPensionHistory),
+    queryClient.prefetchQuery(getPensionWinning),
+  ]);
 
   return (
     <section className="mx-auto w-full max-w-screen-xl px-6">
@@ -39,6 +52,38 @@ export default async function page() {
       >
         <PensionGenerator />
       </ErrorHandlingWrapper>
+
+      <div className="mt-20 sm:mt-40">
+        <p className="mb-4 text-lg font-bold sm:text-2xl">
+          연금복권 번호 생성 목록
+        </p>
+        <ErrorHandlingWrapper
+          fallbackComponent={ErrorFallback}
+          suspenseFallback={<PensionGenerationHistorySkeleton />}
+        >
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <PensionGenerationHistory />
+          </HydrationBoundary>
+        </ErrorHandlingWrapper>
+      </div>
+
+      <div className="mt-20 sm:mt-40">
+        <p className="mb-4 text-lg font-bold sm:text-2xl">
+          생성한 연금복권 번호 당첨 내역
+        </p>
+        <ErrorHandlingWrapper
+          fallbackComponent={ErrorFallback}
+          suspenseFallback={<PensionGeneratorWinningSkeleton />}
+        >
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <PensionGeneratorWinning />
+          </HydrationBoundary>
+        </ErrorHandlingWrapper>
+      </div>
+
+      <div className="my-20 sm:my-40">
+        <PensionInfo />
+      </div>
     </section>
   );
 }

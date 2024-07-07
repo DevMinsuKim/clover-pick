@@ -22,8 +22,12 @@ const config: Config = {
         content4: "var(--color-content4)",
         content4Hover: "var(--color-content4-hover)",
       },
+      screens: {
+        xs: "375px",
+      },
     },
   },
+
   darkMode: "class",
 };
 export default config;

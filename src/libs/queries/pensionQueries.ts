@@ -7,24 +7,14 @@ interface Pension {
 
 interface PensionHistory {
   draw_number: number;
-  winning_number1: number;
-  winning_number2: number;
-  winning_number3: number;
-  winning_number4: number;
-  winning_number5: number;
-  winning_number6: number;
+  number: string;
   created: string;
 }
 
 interface getPensionWinning {
   draw_number: number;
   ranking: number;
-  winning_number1: number;
-  winning_number2: number;
-  winning_number3: number;
-  winning_number4: number;
-  winning_number5: number;
-  winning_number6: number;
+  winning_number: string;
   winning_created: string;
 }
 

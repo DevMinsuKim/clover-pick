@@ -63,6 +63,56 @@ export async function GET() {
       });
     }
 
+    const latestPension = data[0];
+
+    const winningData = [];
+    const userPensions = await prisma.created_pension.findMany({
+      orderBy: { id: "desc" },
+      where: { draw_number: latestPension.draw_number },
+    });
+
+    for (const userPension of userPensions) {
+      const userNumber = userPension.number;
+      const winningNumber = latestPension.winning_number;
+      const bonusNumber = latestPension.bonus_number;
+
+      let ranking = 0;
+
+      if (userNumber === winningNumber) {
+        ranking = 1; // 1등
+      } else if (userNumber.slice(-6) === winningNumber.slice(-6)) {
+        ranking = 2; // 2등
+      } else if (userNumber.slice(-5) === winningNumber.slice(-5)) {
+        ranking = 3; // 3등
+      } else if (userNumber.slice(-4) === winningNumber.slice(-4)) {
+        ranking = 4; // 4등
+      } else if (userNumber.slice(-3) === winningNumber.slice(-3)) {
+        ranking = 5; // 5등
+      } else if (userNumber.slice(-2) === winningNumber.slice(-2)) {
+        ranking = 6; // 6등
+      } else if (userNumber.slice(-1) === winningNumber.slice(-1)) {
+        ranking = 7; // 7등
+      } else if (userNumber.slice(-6) === bonusNumber.slice(-6)) {
+        ranking = 8; // 보너스 등위
+      }
+
+      if (ranking > 0) {
+        winningData.push({
+          draw_number: latestPension.draw_number,
+          ranking,
+          winning_number: userPension.number,
+          winning_created: userPension.created,
+        });
+      }
+    }
+
+    if (winningData.length > 0) {
+      await prisma.winning_pension.createMany({
+        data: winningData,
+        skipDuplicates: true,
+      });
+    }
+
     return NextResponse.json({ message: true });
   } catch (error) {
     Sentry.captureException(error);

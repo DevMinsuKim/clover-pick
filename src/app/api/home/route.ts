@@ -9,6 +9,10 @@ export async function GET() {
 
     const lottoWinningCount = await prisma.winning_lotto.count();
 
+    const pensionCreateCount = await prisma.created_pension.count();
+
+    const pensionWinningCount = await prisma.winning_pension.count();
+
     const lottoCreateListData = await prisma.created_lotto.findMany({
       orderBy: { id: "desc" },
       take: 5,
@@ -24,6 +28,16 @@ export async function GET() {
       },
     });
 
+    const pensionCreateListData = await prisma.created_pension.findMany({
+      orderBy: { id: "desc" },
+      take: 5,
+      select: {
+        draw_number: true,
+        number: true,
+        created: true,
+      },
+    });
+
     const lottoCreateList = lottoCreateListData.map((item) => ({
       ...item,
       created: convertToKoreaTime(new Date(item.created)),
@@ -32,7 +46,10 @@ export async function GET() {
     if (
       lottoCreateCount == null ||
       lottoCreateList == null ||
-      lottoWinningCount == null
+      pensionCreateCount == null ||
+      pensionWinningCount == null ||
+      lottoWinningCount == null ||
+      pensionCreateListData == null
     ) {
       Sentry.captureMessage("데이터 생성 중 오류가 발생했습니다.", "error");
       return NextResponse.json({ error: { code: "1000" } }, { status: 404 });
@@ -41,7 +58,10 @@ export async function GET() {
     const responseData = {
       lottoCreateCount,
       lottoWinningCount,
+      pensionCreateCount,
+      pensionWinningCount,
       lottoCreateList,
+      pensionCreateListData,
     };
 
     return NextResponse.json(responseData, { status: 200 });

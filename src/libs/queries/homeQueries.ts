@@ -4,6 +4,8 @@ import axiosInstance from "../axiosInstance";
 interface Home {
   lottoCreateCount: number;
   lottoWinningCount: number;
+  pensionCreateCount: number;
+  pensionWinningCount: number;
   lottoCreateList: {
     draw_number: number;
     number1: number;
@@ -12,6 +14,11 @@ interface Home {
     number4: number;
     number5: number;
     number6: number;
+    created: string;
+  }[];
+  pensionCreateListData: {
+    draw_number: number;
+    number: string;
     created: string;
   }[];
 }
