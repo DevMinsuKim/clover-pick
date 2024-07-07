@@ -7,6 +7,8 @@ import QueryProvider from "@/providers/QueryClientProvider";
 import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
 import { ErrorModalProvider } from "@/providers/ErrorModalProvider";
+import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
+import GoogleAdsense from "@/components/common/GoogleAdsense";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -60,6 +62,11 @@ export default function RootLayout({
           </QueryProvider>
         </ThemeProvider>
       </body>
+      <GoogleTagManager
+        gtmId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? ""}
+      />
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ?? ""} />
+      <GoogleAdsense pId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? ""} />
     </html>
   );
 }
