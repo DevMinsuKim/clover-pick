@@ -59,42 +59,29 @@ export async function POST(req: NextRequest) {
     let pensionNumbers;
 
     if (isAllGroup) {
-      console.log("1111");
-      const result = await generateObject({
-        model: openai("gpt-4o"),
-        system: "Generate pension lottery numbers in JSON.",
-        prompt: `Generate 5 sets of 7-digit numbers.
-  - First digit: 1 to 5 in order
-  - Next 6 digits: random numbers between 0 and 9, same for each set
-  - Ensure the entire 7-digit number is unique in each set
-    `,
-        schema: z.object({
-          winning_numbers: z.array(
-            z
-              .string()
-              .regex(/^[1-5][0-9]{6}$/)
-              .length(7),
-          ),
-        }),
-      });
-      pensionNumbers = result.object;
+      const uniqueNumbers = [];
+      const remainingDigits = Math.floor(Math.random() * 1000000)
+        .toString()
+        .padStart(6, "0");
+
+      for (let i = 1; i <= 5; i++) {
+        const number = `${i}${remainingDigits}`;
+        uniqueNumbers.push({ number });
+      }
+      pensionNumbers = uniqueNumbers;
     } else {
-      const { object: data } = await generateObject({
-        model: openai("gpt-4o"),
-        system: "lotto",
-        prompt: `${repeat}`,
-        schema: z.object({
-          data: z.array(
-            z.object({
-              winning_numbers: z
-                .string()
-                .describe("Name of a fictional person"),
-            }),
-          ),
-        }),
-      });
-      console.log(data);
-      pensionNumbers = data;
+      const uniqueNumbers = new Set();
+
+      while (uniqueNumbers.size < repeat) {
+        const firstDigit = Math.floor(Math.random() * 5) + 1;
+        const remainingDigits = Math.floor(Math.random() * 1000000)
+          .toString()
+          .padStart(6, "0");
+        const number = `${firstDigit}${remainingDigits}`;
+
+        uniqueNumbers.add(number);
+      }
+      pensionNumbers = Array.from(uniqueNumbers).map((number) => ({ number }));
     }
 
     const lastDrawNumber = await prisma.pension.findFirst({
@@ -112,23 +99,15 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: { code: "1000" } }, { status: 404 });
     }
 
-    // const pensionNumbersDB = pensionNumbers.winning_numbers.map((number) => {
-    //   return {
-    //     draw_number: lastDrawNumber.draw_number + 1,
-    //     winning_number1: number[0],
-    //     winning_number2: number[1],
-    //     winning_number3: number[2],
-    //     winning_number4: number[3],
-    //     winning_number5: number[4],
-    //     winning_number6: number[5],
-    //   };
-    // });
+    const pensionNumbersDB = pensionNumbers.map((item) => ({
+      ...item,
+      draw_number: lastDrawNumber.draw_number + 1,
+      number: String(item.number),
+    }));
 
-    // console.log(pensionNumbersDB);
-
-    // await prisma.created_pension.createMany({
-    //   data: pensionNumbersDB,
-    // });
+    await prisma.created_pension.createMany({
+      data: pensionNumbersDB,
+    });
 
     return NextResponse.json(pensionNumbers, { status: 200 });
   } catch (error) {

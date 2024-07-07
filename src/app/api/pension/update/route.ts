@@ -51,7 +51,7 @@ export async function GET() {
       return {
         draw_number: parseInt(row[0], 10),
         draw_date: new Date(formatDate(row[1])),
-        winning_number: parseInt(row[2].replace("조", ""), 10),
+        winning_number: row[2].replace("조", ""),
         bonus_number: row[9],
       };
     });

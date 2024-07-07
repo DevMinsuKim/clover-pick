@@ -35,7 +35,8 @@ export default function LottoGenerationHistory() {
               {winningNumbers.map((number, numIndex) => (
                 <div
                   key={numIndex}
-                  className={`${lottoNumberBg(number)} mx-1 flex h-9 w-9 items-center justify-center gap-2 rounded-full`}
+                  className={`mx-1 flex h-9 w-9 items-center justify-center gap-2 rounded-full`}
+                  style={{ backgroundColor: lottoNumberBg(number) }}
                 >
                   <p
                     className="text-white"

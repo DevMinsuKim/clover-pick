@@ -36,9 +36,9 @@ export default function PensionGenerator() {
   const [repeatPension, setRepeatPension] = useState(1);
   const [isAllGroup, setIsAllGroup] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentPensionNumbers, setCurrentPensionNumbers] = useState([
-    [0, 0, 0, 0, 0, 0],
-  ]);
+  const [currentPensionNumbers, setCurrentPensionNumbers] = useState<
+    { number: string }[]
+  >([{ number: "0000000" }]);
   const dropDownData = [1, 2, 3, 4, 5];
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -46,12 +46,15 @@ export default function PensionGenerator() {
   const handleCopy = async () => {
     if (pensionData) {
       try {
-        const formattedData = pensionData.winning_numbers
-          .map((numbers, index) => `${index + 1}. [${numbers.join(", ")}]`)
+        const formattedData = currentPensionNumbers
+          .map(({ number }, index) => {
+            const trillionPart = number.charAt(0);
+            const remainingPart = number.slice(1);
+            return `${index + 1}. [${trillionPart}조 ${remainingPart}]`;
+          })
           .join("\n");
 
         await navigator.clipboard.writeText(formattedData);
-
         setIsCopied(true);
 
         if (copyTimeoutRef.current) {
@@ -105,25 +108,30 @@ export default function PensionGenerator() {
 
   useEffect(() => {
     if (pensionData) {
-      setCurrentPensionNumbers(pensionData.winning_numbers);
+      setCurrentPensionNumbers(pensionData);
     }
   }, [pensionData]);
 
-  const renderPensionNumbers = (numbers: number[][]) => {
-    return numbers.map((item, index) => (
-      <div key={index} className="flex justify-between">
-        {item.map((subItem, subIndex) => (
-          <div
-            key={subIndex}
-            className={`${pensionNumberBg(subItem)} mt-3 flex h-9 w-9 items-center justify-center rounded-full p-2 sm:h-16 sm:w-16`}
-          >
-            <p
-              className="text-sm font-bold text-white sm:text-3xl"
-              style={{ textShadow: "0px 0px 3px rgba(73, 57, 0, .8)" }}
+  const renderPensionNumbers = (numbers: { number: string }[]) => {
+    const NumberInt = numbers.map((item) => {
+      return {
+        number: item.number.split(""),
+      };
+    });
+
+    return NumberInt.map((number, index) => (
+      <div key={index} className="mt-4 flex items-center justify-between">
+        {number.number.map((subNumber, subIndex) => (
+          <>
+            <span
+              key={subIndex}
+              className={`h-8 w-8 rounded-full border-2 border-[#ffffff] text-base font-bold sm:h-11 sm:w-11 sm:text-3xl`}
+              style={{ borderColor: pensionNumberBg(subIndex) }}
             >
-              {subItem}
-            </p>
-          </div>
+              {subNumber}
+            </span>
+            {subIndex === 0 && <span className="text-sm sm:text-xl">조</span>}
+          </>
         ))}
       </div>
     ));

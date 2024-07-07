@@ -117,7 +117,8 @@ export default function LottoGenerator() {
         {item.numbers.map((subItem, subIndex) => (
           <div
             key={subIndex}
-            className={`${lottoNumberBg(subItem)} flex h-9 w-9 items-center justify-center rounded-full p-2 sm:h-16 sm:w-16`}
+            className={`flex h-9 w-9 items-center justify-center rounded-full p-2 sm:h-16 sm:w-16`}
+            style={{ backgroundColor: lottoNumberBg(subItem) }}
           >
             <p
               className="text-sm font-bold text-white sm:text-3xl"

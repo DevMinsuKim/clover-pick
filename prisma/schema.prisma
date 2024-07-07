@@ -23,7 +23,7 @@ model created_lotto {
 model created_pension {
   id          Int      @id @default(autoincrement())
   draw_number Int
-  number      Int
+  number      String   @db.VarChar(7)
   created     DateTime @default(now()) @db.Timestamptz(6)
 }
 
@@ -55,7 +55,7 @@ model lotto {
 model pension {
   draw_number    Int      @id
   draw_date      DateTime @db.Date
-  winning_number Int
+  winning_number String   @db.VarChar(7)
   bonus_number   String   @db.VarChar(6)
   created        DateTime @default(now()) @db.Timestamptz(6)
 }

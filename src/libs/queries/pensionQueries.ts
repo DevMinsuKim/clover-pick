@@ -29,7 +29,7 @@ interface getPensionWinning {
 }
 
 interface PensionGeneratorNumbers {
-  winning_numbers: number[][];
+  number: string;
 }
 
 interface CreatePension {
@@ -69,7 +69,7 @@ export const createPensionNumbers = async ({
   repeat,
   isAllGroup,
 }: CreatePension) => {
-  const { data } = await axiosInstance.post<PensionGeneratorNumbers>(
+  const { data } = await axiosInstance.post<PensionGeneratorNumbers[]>(
     "/api/pension",
     { repeat, isAllGroup },
   );
