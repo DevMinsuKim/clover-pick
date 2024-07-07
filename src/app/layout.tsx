@@ -20,23 +20,23 @@ export const metadata: Metadata = {
     default: titleKr,
     template: `%s | ${titleKr}`,
   },
-  description: `당첨의 기회를 높이다, ${titleKr}`,
+  description: `AI를 활용해 로또 및 연금복권의 당첨 기회를 높이다, ${titleKr}`,
   keywords: [
     "로또",
     "로또 번호 생성",
     "로또 당첨 번호 조회",
     "AI 로또 번호",
+    "AI 연금복권 번호",
     "복권",
+    "연금",
+    "연금복권",
+    "연금복권 번호 생성",
+    "연금복권 당첨 번호 조회",
     titleKr,
     titleEn,
   ],
   icons: {
     icon: "/favicon.ico",
-  },
-  verification: {
-    other: {
-      "naver-site-verification": "7af7c3feb15185793ff7a1efd9e21286668e2950",
-    },
   },
 };
 

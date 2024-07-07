@@ -13,7 +13,9 @@ export default function NotFound() {
   };
 
   return (
-    <div className="flex h-full flex-col items-center justify-center text-center">
+    <div
+      className={`flex min-h-screen flex-col items-center justify-center text-center`}
+    >
       <h2 className="text-2xl font-extrabold sm:text-3xl">
         찾으시는 페이지가 없습니다.
       </h2>
