@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     default: titleKr,
     template: `%s | ${titleKr}`,
   },
-  description: `AI를 활용해 로또 및 연금복권의 당첨 기회를 높이다, ${titleKr}`,
+  description: `클로버픽 AI로 쉽고 빠르게 번호를 생성해보세요!`,
   keywords: [
     "로또",
     "로또 번호 생성",
