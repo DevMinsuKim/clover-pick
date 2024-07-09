@@ -4,4 +4,7 @@
   <br>
   CloverPick
 </h1>
-<h4 align="center">클로버픽 AI로 쉽고 빠르게 번호를 생성해보세요!</h4>
+<h3 align="center">클로버픽 AI로 쉽고 빠르게 번호를 생성해보세요!</h3>
+<h3 align="center"><a href="http://www.cloverpick.com/">www.cloverpick.com</a></h3>
+
+
