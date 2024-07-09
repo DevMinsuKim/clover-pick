@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import prisma from "@/libs/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@ai-sdk/openai";
