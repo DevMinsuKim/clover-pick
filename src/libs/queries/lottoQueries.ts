@@ -1,73 +1,25 @@
 import { queryOptions } from "@tanstack/react-query";
-import axiosInstance from "../axiosInstance";
+import { lottoActions } from "@/server/lotto/lottoActions";
+import { lottoHistoryActions } from "@/server/lotto/lottoHistoryActions";
+import { lottoWinningActions } from "@/server/lotto/lottoWinningActions";
 
-interface Lotto {
-  draw_number: number;
-}
-
-interface LottoHistory {
-  draw_number: number;
-  number1: number;
-  number2: number;
-  number3: number;
-  number4: number;
-  number5: number;
-  number6: number;
-  created: string;
-}
-
-interface getLottoWinning {
-  draw_number: number;
-  ranking: number;
-  winning_number1: number;
-  winning_number2: number;
-  winning_number3: number;
-  winning_number4: number;
-  winning_number5: number;
-  winning_number6: number;
-  winning_created: string;
-}
-
-interface LottoGeneratorNumbers {
-  lottoNumbers: {
-    numbers: number[];
-  }[];
-}
-
-interface LottoRepeat {
-  repeat: number;
-}
-
-export const getLotto = queryOptions({
+export const getLottoQuery = queryOptions({
   queryKey: ["lotto"],
-  queryFn: async () => {
-    const { data } = await axiosInstance.get<Lotto>("/api/lotto");
-    return data;
+  queryFn: () => {
+    return lottoActions();
   },
 });
 
-export const getLottoHistory = queryOptions({
+export const getLottoHistoryQuery = queryOptions({
   queryKey: ["lottoHistory"],
-  queryFn: async () => {
-    const { data } =
-      await axiosInstance.get<LottoHistory[]>("/api/lotto/history");
-    return data;
+  queryFn: () => {
+    return lottoHistoryActions();
   },
 });
 
-export const getLottoWinning = queryOptions({
+export const getLottoWinningQuery = queryOptions({
   queryKey: ["lottoWinning"],
-  queryFn: async () => {
-    const { data } =
-      await axiosInstance.get<getLottoWinning[]>("/api/lotto/winning");
-    return data;
+  queryFn: () => {
+    return lottoWinningActions();
   },
 });
-
-export const createLottoNumbers = async (repeat: LottoRepeat) => {
-  const { data } = await axiosInstance.post<LottoGeneratorNumbers>(
-    "/api/lotto",
-    repeat,
-  );
-  return data;
-};

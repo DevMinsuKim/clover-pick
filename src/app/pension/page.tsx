@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 import PensionDrawNumber from "@/components/pension/PensionDrawNumber";
@@ -12,9 +10,9 @@ import PensionGeneratorWinningSkeleton from "@/components/pension/PensionGenerat
 import PensionInfo from "@/components/pension/PensionInfo";
 import { getQueryClient } from "@/libs/getQueryClient";
 import {
-  getPension,
-  getPensionHistory,
-  getPensionWinning,
+  getPensionHistoryQuery,
+  getPensionQuery,
+  getPensionWinningQuery,
 } from "@/libs/queries/pensionQueries";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
@@ -22,9 +20,9 @@ export default async function page() {
   const queryClient = getQueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(getPension),
-    queryClient.prefetchQuery(getPensionHistory),
-    queryClient.prefetchQuery(getPensionWinning),
+    queryClient.prefetchQuery(getPensionQuery),
+    queryClient.prefetchQuery(getPensionHistoryQuery),
+    queryClient.prefetchQuery(getPensionWinningQuery),
   ]);
 
   return (

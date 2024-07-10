@@ -1,13 +1,11 @@
-export const dynamic = "force-dynamic";
-
 import LottoGenerator from "@/components/lotto/LottoGenerator";
 import React from "react";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import {
-  getLotto,
-  getLottoHistory,
-  getLottoWinning,
+  getLottoHistoryQuery,
+  getLottoQuery,
+  getLottoWinningQuery,
 } from "@/libs/queries/lottoQueries";
 import { getQueryClient } from "@/libs/getQueryClient";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
@@ -23,9 +21,9 @@ export default async function Page() {
   const queryClient = getQueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(getLotto),
-    queryClient.prefetchQuery(getLottoHistory),
-    queryClient.prefetchQuery(getLottoWinning),
+    queryClient.prefetchQuery(getLottoQuery),
+    queryClient.prefetchQuery(getLottoHistoryQuery),
+    queryClient.prefetchQuery(getLottoWinningQuery),
   ]);
 
   return (

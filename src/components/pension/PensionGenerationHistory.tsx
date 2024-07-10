@@ -1,13 +1,13 @@
 "use client";
 
-import { getPensionHistory } from "@/libs/queries/pensionQueries";
+import { getPensionHistoryQuery } from "@/libs/queries/pensionQueries";
 import { formatDate } from "@/utils/formatDate";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function PensionGenerationHistory() {
-  const { data, error, isFetching } = useSuspenseQuery(getPensionHistory);
+  const { data, error, isFetching } = useSuspenseQuery(getPensionHistoryQuery);
   if (error && !isFetching) {
     throw error;
   }
@@ -22,19 +22,19 @@ export default function PensionGenerationHistory() {
       >
         <span
           key={index}
-          className={`xs:ml-1 h-8 w-8 rounded-full border-2 border-[#ffffff] text-base font-bold sm:h-8 sm:w-8 sm:text-xl`}
+          className={`h-8 w-8 rounded-full border-2 border-[#ffffff] text-base font-bold xs:ml-1 sm:h-8 sm:w-8 sm:text-xl`}
           style={{ borderColor: pensionNumberBg(index) }}
         >
           {number}
         </span>
-        {index === 0 && <span className="xs:ml-1 text-sm sm:text-xl">조</span>}
+        {index === 0 && <span className="text-sm xs:ml-1 sm:text-xl">조</span>}
       </div>
     ));
   };
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((item, index) => {
+      {data.success?.map((item, index) => {
         return (
           <div
             key={index}

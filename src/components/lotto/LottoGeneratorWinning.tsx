@@ -1,18 +1,18 @@
 "use client";
 
-import { getLottoWinning } from "@/libs/queries/lottoQueries";
+import { getLottoWinningQuery } from "@/libs/queries/lottoQueries";
 import { formatDate } from "@/utils/formatDate";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function LottoGeneratorWinning() {
-  const { data, error, isFetching } = useSuspenseQuery(getLottoWinning);
+  const { data, error, isFetching } = useSuspenseQuery(getLottoWinningQuery);
   if (error && !isFetching) {
     throw error;
   }
 
-  if (!data || data.length === 0) {
+  if (!data || data.success?.length === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-content1 py-4 shadow dark:border-none">
         <p className="font-bold">
@@ -25,7 +25,7 @@ export default function LottoGeneratorWinning() {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((item, index) => {
+      {data.success?.map((item, index) => {
         const winningNumbers = [
           item.winning_number1,
           item.winning_number2,

@@ -25,6 +25,20 @@ const config: Config = {
       screens: {
         xs: "375px",
       },
+      keyframes: {
+        "loop-scroll": {
+          from: { transform: "translateX(0)" },
+          "100%": { transform: "translateX(calc(-100% - 4rem))" },
+        },
+        "reverse-loop-scroll": {
+          from: { transform: "translateX(calc(-100% - 4rem))" },
+          "100%": { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        "loop-scroll": "loop-scroll 30s linear infinite",
+        "reverse-loop-scroll": "reverse-loop-scroll 30s linear infinite",
+      },
     },
   },
 

@@ -1,40 +1,22 @@
-export const dynamic = "force-dynamic";
+"use server";
 
 import prisma from "@/libs/prisma";
-import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 
-export async function GET() {
-  try {
-    const lastDrawNumber = await prisma.pension.findFirst({
-      orderBy: { draw_number: "desc" },
-      select: {
-        draw_number: true,
-      },
-    });
-
-    if (lastDrawNumber == null) {
-      Sentry.captureMessage(
-        "연금복권 회차 데이터가 존재하지 않습니다.",
-        "error",
-      );
-      return Response.json({ error: { code: "1000" } }, { status: 404 });
-    }
-
-    return NextResponse.json(
-      { draw_number: lastDrawNumber.draw_number + 1 },
-      { status: 200 },
-    );
-  } catch (error) {
-    Sentry.captureException(error);
-    return Response.json({ error: { code: "2000" } }, { status: 500 });
-  }
+interface PensionNumber {
+  number: string;
 }
 
-export async function POST(req: NextRequest) {
+export async function pensionCreateNumberActions({
+  repeat,
+  isAllGroup,
+}: {
+  repeat: number;
+  isAllGroup: boolean;
+}) {
   try {
     const now = new Date();
     const options = { timeZone: "Asia/Seoul", hour12: false };
@@ -45,23 +27,21 @@ export async function POST(req: NextRequest) {
 
     if (day === 4 && hours >= 17 && hours < 24) {
       Sentry.captureMessage("연금복권 번호 생성 시간이 아닙니다.", "warning");
-      return Response.json({ error: { code: "1102" } }, { status: 400 });
+      throw new Error("1102");
     }
-
-    const { repeat, isAllGroup } = await req.json();
 
     if (repeat > 5) {
       Sentry.captureMessage(
         "연금복권 번호 생성 회차가 5회를 초과했습니다.",
         "error",
       );
-      return Response.json({ error: { code: "1101" } }, { status: 400 });
+      throw new Error("1101");
     }
 
-    let pensionNumbers;
+    let pensionNumbers: PensionNumber[] = [];
 
     if (isAllGroup) {
-      const uniqueNumbers = [];
+      const uniqueNumbers: PensionNumber[] = [];
       const remainingDigits = Math.floor(Math.random() * 1000000)
         .toString()
         .padStart(6, "0");
@@ -72,7 +52,7 @@ export async function POST(req: NextRequest) {
       }
       pensionNumbers = uniqueNumbers;
     } else {
-      const uniqueNumbers = new Set();
+      const uniqueNumbers = new Set<string>();
 
       while (uniqueNumbers.size < repeat) {
         const firstDigit = Math.floor(Math.random() * 5) + 1;
@@ -98,7 +78,7 @@ export async function POST(req: NextRequest) {
         "연금복권 회차 데이터가 존재하지 않습니다.",
         "error",
       );
-      return Response.json({ error: { code: "1000" } }, { status: 404 });
+      throw new Error("1000");
     }
 
     const pensionNumbersDB = pensionNumbers.map((item) => ({
@@ -111,9 +91,9 @@ export async function POST(req: NextRequest) {
       data: pensionNumbersDB,
     });
 
-    return NextResponse.json(pensionNumbers, { status: 200 });
+    return { success: pensionNumbers };
   } catch (error) {
     Sentry.captureException(error);
-    return Response.json({ error: { code: "2000" } }, { status: 500 });
+    throw new Error("2000");
   }
 }
