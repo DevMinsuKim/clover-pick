@@ -1,11 +1,10 @@
-export const dynamic = "force-dynamic";
+"use server";
 
 import prisma from "@/libs/prisma";
 import { convertToKoreaTime } from "@/utils/convertToKoreaTime";
 import * as Sentry from "@sentry/nextjs";
-import { NextResponse } from "next/server";
 
-export async function GET() {
+export const getHome = async () => {
   try {
     const lottoCreateCount = await prisma.created_lotto.count();
 
@@ -17,7 +16,7 @@ export async function GET() {
 
     const lottoCreateListData = await prisma.created_lotto.findMany({
       orderBy: { id: "desc" },
-      take: 5,
+      take: 7,
       select: {
         draw_number: true,
         number1: true,
@@ -32,7 +31,7 @@ export async function GET() {
 
     const pensionCreateListData = await prisma.created_pension.findMany({
       orderBy: { id: "desc" },
-      take: 5,
+      take: 7,
       select: {
         draw_number: true,
         number: true,
@@ -45,16 +44,21 @@ export async function GET() {
       created: convertToKoreaTime(new Date(item.created)),
     }));
 
+    const pensionCreateList = pensionCreateListData.map((item) => ({
+      ...item,
+      created: convertToKoreaTime(new Date(item.created)),
+    }));
+
     if (
       lottoCreateCount == null ||
       lottoCreateList == null ||
       pensionCreateCount == null ||
       pensionWinningCount == null ||
       lottoWinningCount == null ||
-      pensionCreateListData == null
+      pensionCreateList == null
     ) {
       Sentry.captureMessage("데이터 생성 중 오류가 발생했습니다.", "error");
-      return NextResponse.json({ error: { code: "1000" } }, { status: 404 });
+      throw new Error("1000");
     }
 
     const responseData = {
@@ -63,12 +67,12 @@ export async function GET() {
       pensionCreateCount,
       pensionWinningCount,
       lottoCreateList,
-      pensionCreateListData,
+      pensionCreateList,
     };
 
-    return NextResponse.json(responseData, { status: 200 });
+    return { success: responseData };
   } catch (error) {
     Sentry.captureException(error);
-    return Response.json({ error: { code: "2000" } }, { status: 500 });
+    throw new Error("2000");
   }
-}
+};

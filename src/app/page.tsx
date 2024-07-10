@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import React from "react";
 import Link from "next/link";
 import BallMix from "@/components/home/BallMix";
@@ -9,18 +8,18 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 import { getQueryClient } from "@/libs/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { getHome } from "@/libs/queries/homeQueries";
 import HomeStats from "@/components/home/HomeStats";
 import HomeStatsSkeleton from "@/components/home/HomeStatsSkeleton";
 import HomeContentMoving from "@/components/home/HomeLottoMoving";
 import HomeLottoMovingSkeleton from "@/components/home/HomeLottoMovingSkeleton";
 import HomeFeature from "@/components/home/HomeFeature";
 import HomeFAQ from "@/components/home/HomeFAQ";
+import { getHomeQuery } from "@/libs/queries/homeQueries";
 
-export default function Home() {
+export default async function Home() {
   const queryClient = getQueryClient();
 
-  queryClient.prefetchQuery(getHome);
+  await queryClient.prefetchQuery(getHomeQuery);
 
   return (
     <section>

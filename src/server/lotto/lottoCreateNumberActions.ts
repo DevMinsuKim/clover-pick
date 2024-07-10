@@ -1,37 +1,12 @@
-export const dynamic = "force-dynamic";
+"use server";
 
 import prisma from "@/libs/prisma";
-import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 
-export async function GET() {
-  try {
-    const lastDrawNumber = await prisma.lotto.findFirst({
-      orderBy: { draw_number: "desc" },
-      select: {
-        draw_number: true,
-      },
-    });
-
-    if (lastDrawNumber == null) {
-      Sentry.captureMessage("로또 회차 데이터가 존재하지 않습니다.", "error");
-      return Response.json({ error: { code: "1000" } }, { status: 404 });
-    }
-
-    return NextResponse.json(
-      { draw_number: lastDrawNumber.draw_number + 1 },
-      { status: 200 },
-    );
-  } catch (error) {
-    Sentry.captureException(error);
-    return Response.json({ error: { code: "2000" } }, { status: 500 });
-  }
-}
-
-export async function POST(req: NextRequest) {
+export async function lottoCreateNumberActions({ repeat }: { repeat: number }) {
   try {
     const now = new Date();
     const options = { timeZone: "Asia/Seoul", hour12: false };
@@ -42,17 +17,15 @@ export async function POST(req: NextRequest) {
 
     if (day === 6 && hours >= 20 && hours < 22) {
       Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "warning");
-      return Response.json({ error: { code: "1102" } }, { status: 400 });
+      throw new Error("1102");
     }
-
-    const { repeat } = await req.json();
 
     if (repeat > 5) {
       Sentry.captureMessage(
         "로또 번호 생성 회차가 5회를 초과했습니다.",
         "error",
       );
-      return Response.json({ error: { code: "1101" } }, { status: 400 });
+      throw new Error("1101");
     }
 
     const { object: data } = await generateObject({
@@ -81,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     if (lastDrawNumber == null) {
       Sentry.captureMessage("로또 회차 데이터가 존재하지 않습니다.", "error");
-      return Response.json({ error: { code: "1000" } }, { status: 404 });
+      throw new Error("1000");
     }
 
     const lottoNumbersDB = data.lottoNumbers.map((item) => {
@@ -100,9 +73,9 @@ export async function POST(req: NextRequest) {
       data: lottoNumbersDB,
     });
 
-    return NextResponse.json(data, { status: 200 });
+    return { success: data };
   } catch (error) {
     Sentry.captureException(error);
-    return Response.json({ error: { code: "2000" } }, { status: 500 });
+    throw new Error("2000");
   }
 }

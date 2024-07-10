@@ -5,13 +5,13 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
 import { useMutation } from "@tanstack/react-query";
-import { createPensionNumbers } from "@/libs/queries/pensionQueries";
 import { useErrorModal } from "@/providers/ErrorModalProvider";
 import Clipboard from "../ui/icons/Clipboard";
 import { Tooltip } from "react-tooltip";
 import ClipboardCheck from "../ui/icons/ClipboardCheck";
 import { errorMessage } from "@/utils/errorMessages";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
+import { pensionCreateNumberActions } from "@/server/pension/pensionCreateNumberActions";
 
 export default function PensionGenerator() {
   const { showError } = useErrorModal();
@@ -21,7 +21,7 @@ export default function PensionGenerator() {
     data: pensionData,
     isPending,
   } = useMutation({
-    mutationFn: createPensionNumbers,
+    mutationFn: pensionCreateNumberActions,
     onError: (error) => {
       Sentry.captureException(error);
       const { title, description, btnText } = errorMessage("4");
@@ -36,9 +36,9 @@ export default function PensionGenerator() {
   const [repeatPension, setRepeatPension] = useState(1);
   const [isAllGroup, setIsAllGroup] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentPensionNumbers, setCurrentPensionNumbers] = useState<
-    { number: string }[]
-  >([{ number: "0000000" }]);
+  const [currentPensionNumbers, setCurrentPensionNumbers] = useState([
+    { number: "0000000" },
+  ]);
   const dropDownData = [1, 2, 3, 4, 5];
   const [isCopied, setIsCopied] = useState(false);
   const copyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -108,7 +108,7 @@ export default function PensionGenerator() {
 
   useEffect(() => {
     if (pensionData) {
-      setCurrentPensionNumbers(pensionData);
+      setCurrentPensionNumbers(pensionData.success);
     }
   }, [pensionData]);
 

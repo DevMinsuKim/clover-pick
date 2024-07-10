@@ -1,20 +1,20 @@
 "use client";
 
-import { getLottoHistory } from "@/libs/queries/lottoQueries";
+import { getLottoHistoryQuery } from "@/libs/queries/lottoQueries";
 import { formatDate } from "@/utils/formatDate";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function LottoGenerationHistory() {
-  const { data, error, isFetching } = useSuspenseQuery(getLottoHistory);
+  const { data, error, isFetching } = useSuspenseQuery(getLottoHistoryQuery);
   if (error && !isFetching) {
     throw error;
   }
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((item, index) => {
+      {data.success?.map((item, index) => {
         const winningNumbers = [
           item.number1,
           item.number2,

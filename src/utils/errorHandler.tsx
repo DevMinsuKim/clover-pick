@@ -33,6 +33,14 @@ export const errorHandler = (error: Error): errorHandlerProps => {
           btnText: "다시 시도하기",
         };
       }
+    } else if (error.message) {
+      const errorCode = error.message;
+      const { title, description, btnText } = errorMessage(errorCode);
+      return {
+        title: title,
+        description: description,
+        btnText: btnText,
+      };
     } else {
       return {
         title: "이용에 불편을 드려 죄송합니다.",

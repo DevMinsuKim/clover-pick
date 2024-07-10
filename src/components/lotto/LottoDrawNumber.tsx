@@ -1,14 +1,14 @@
 "use client";
 
-import { getLotto } from "@/libs/queries/lottoQueries";
+import { getLottoQuery } from "@/libs/queries/lottoQueries";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function LottoDrawNumber() {
-  const { data, error, isFetching } = useSuspenseQuery(getLotto);
+  const { data, error, isFetching } = useSuspenseQuery(getLottoQuery);
   if (error && !isFetching) {
     throw error;
   }
 
-  return <>{data?.draw_number} </>;
+  return <>{data.success?.draw_number ?? 0} </>;
 }

@@ -5,13 +5,13 @@ import React, { useEffect, useRef, useState } from "react";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
 import { useMutation } from "@tanstack/react-query";
-import { createLottoNumbers } from "@/libs/queries/lottoQueries";
 import { useErrorModal } from "@/providers/ErrorModalProvider";
 import Clipboard from "../ui/icons/Clipboard";
 import { Tooltip } from "react-tooltip";
 import ClipboardCheck from "../ui/icons/ClipboardCheck";
 import { errorMessage } from "@/utils/errorMessages";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
+import { lottoCreateNumberActions } from "@/server/lotto/lottoCreateNumberActions";
 
 interface LottoGeneratorNumbers {
   lottoNumbers: {
@@ -27,7 +27,7 @@ export default function LottoGenerator() {
     data: lottoData,
     isPending,
   } = useMutation({
-    mutationFn: createLottoNumbers,
+    mutationFn: lottoCreateNumberActions,
     onError: (error) => {
       Sentry.captureException(error);
       const { title, description, btnText } = errorMessage("1");
@@ -52,7 +52,7 @@ export default function LottoGenerator() {
   const handleCopy = async () => {
     if (lottoData) {
       try {
-        const formattedData = lottoData.lottoNumbers
+        const formattedData = lottoData.success?.lottoNumbers
           .map((item, index) => `${index + 1}. [${item.numbers.join(", ")}]`)
           .join("\n");
 
@@ -107,7 +107,7 @@ export default function LottoGenerator() {
 
   useEffect(() => {
     if (lottoData) {
-      setCurrentLottoNumbers(lottoData);
+      setCurrentLottoNumbers(lottoData.success);
     }
   }, [lottoData]);
 

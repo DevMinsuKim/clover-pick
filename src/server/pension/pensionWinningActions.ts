@@ -1,13 +1,12 @@
-export const dynamic = "force-dynamic";
+"use server";
 
 import prisma from "@/libs/prisma";
 import { convertToKoreaTime } from "@/utils/convertToKoreaTime";
 import * as Sentry from "@sentry/nextjs";
-import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function pensionWinningActions() {
   try {
-    const lottoCreateListData = await prisma.winning_pension.findMany({
+    const pensionCreateListData = await prisma.winning_pension.findMany({
       orderBy: { id: "desc" },
       take: 18,
       select: {
@@ -18,22 +17,22 @@ export async function GET() {
       },
     });
 
-    const lottoCreateList = lottoCreateListData.map((item) => ({
+    const pensionCreateList = pensionCreateListData.map((item) => ({
       ...item,
       winning_created: convertToKoreaTime(new Date(item.winning_created)),
     }));
 
-    if (lottoCreateList == null) {
+    if (pensionCreateList == null) {
       Sentry.captureMessage(
         "연금복권 번호 생성 내역 데이터가 존재하지 않습니다.",
         "error",
       );
-      return Response.json({ error: { code: "1000" } }, { status: 404 });
+      throw new Error("1000");
     }
 
-    return NextResponse.json(lottoCreateList, { status: 200 });
+    return { success: pensionCreateList };
   } catch (error) {
     Sentry.captureException(error);
-    return Response.json({ error: { code: "2000" } }, { status: 500 });
+    throw new Error("2000");
   }
 }

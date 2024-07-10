@@ -1,18 +1,18 @@
 "use client";
 
-import { getPensionWinning } from "@/libs/queries/pensionQueries";
+import { getPensionWinningQuery } from "@/libs/queries/pensionQueries";
 import { formatDate } from "@/utils/formatDate";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
 
 export default function PensionGeneratorWinning() {
-  const { data, error, isFetching } = useSuspenseQuery(getPensionWinning);
+  const { data, error, isFetching } = useSuspenseQuery(getPensionWinningQuery);
   if (error && !isFetching) {
     throw error;
   }
 
-  if (!data || data.length === 0) {
+  if (!data || data.success?.length === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-content1 py-4 shadow dark:border-none">
         <p className="font-bold">
@@ -36,13 +36,13 @@ export default function PensionGeneratorWinning() {
         )}
         <span
           key={index}
-          className={`xs:ml-1 h-8 w-8 rounded-full border-2 border-[#ffffff] text-base font-bold sm:h-8 sm:w-8 sm:text-xl`}
+          className={`h-8 w-8 rounded-full border-2 border-[#ffffff] text-base font-bold xs:ml-1 sm:h-8 sm:w-8 sm:text-xl`}
           style={{ borderColor: pensionNumberBg(index) }}
         >
           {number}
         </span>
         {index === 0 && ranking !== 8 && (
-          <span className="xs:ml-1 text-sm sm:text-xl">조</span>
+          <span className="text-sm xs:ml-1 sm:text-xl">조</span>
         )}
       </div>
     ));
@@ -50,7 +50,7 @@ export default function PensionGeneratorWinning() {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((item, index) => {
+      {data.success?.map((item, index) => {
         return (
           <div
             key={index}

@@ -1,67 +1,25 @@
 import { queryOptions } from "@tanstack/react-query";
-import axiosInstance from "../axiosInstance";
+import { pensionActions } from "@/server/pension/pensionActions";
+import { pensionHistoryActions } from "@/server/pension/pensionHistoryActions";
+import { pensionWinningActions } from "@/server/pension/pensionWinningActions";
 
-interface Pension {
-  draw_number: number;
-}
-
-interface PensionHistory {
-  draw_number: number;
-  number: string;
-  created: string;
-}
-
-interface getPensionWinning {
-  draw_number: number;
-  ranking: number;
-  winning_number: string;
-  winning_created: string;
-}
-
-interface PensionGeneratorNumbers {
-  number: string;
-}
-
-interface CreatePension {
-  repeat: number;
-  isAllGroup: boolean;
-}
-
-export const getPension = queryOptions({
+export const getPensionQuery = queryOptions({
   queryKey: ["pension"],
-  queryFn: async () => {
-    const { data } = await axiosInstance.get<Pension>("/api/pension");
-    return data;
+  queryFn: () => {
+    return pensionActions();
   },
 });
 
-export const getPensionHistory = queryOptions({
+export const getPensionHistoryQuery = queryOptions({
   queryKey: ["pensionHistory"],
-  queryFn: async () => {
-    const { data } = await axiosInstance.get<PensionHistory[]>(
-      "/api/pension/history",
-    );
-    return data;
+  queryFn: () => {
+    return pensionHistoryActions();
   },
 });
 
-export const getPensionWinning = queryOptions({
+export const getPensionWinningQuery = queryOptions({
   queryKey: ["pensionWinning"],
   queryFn: async () => {
-    const { data } = await axiosInstance.get<getPensionWinning[]>(
-      "/api/pension/winning",
-    );
-    return data;
+    return pensionWinningActions();
   },
 });
-
-export const createPensionNumbers = async ({
-  repeat,
-  isAllGroup,
-}: CreatePension) => {
-  const { data } = await axiosInstance.post<PensionGeneratorNumbers[]>(
-    "/api/pension",
-    { repeat, isAllGroup },
-  );
-  return data;
-};
