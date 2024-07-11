@@ -1,3 +1,5 @@
+export const revalidate = 1;
+
 import React from "react";
 import Link from "next/link";
 import BallMix from "@/components/home/BallMix";

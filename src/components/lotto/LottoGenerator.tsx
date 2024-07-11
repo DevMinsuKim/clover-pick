@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/nextjs";
 import React, { useEffect, useRef, useState } from "react";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useErrorModal } from "@/providers/ErrorModalProvider";
 import Clipboard from "../ui/icons/Clipboard";
 import { Tooltip } from "react-tooltip";
@@ -12,6 +12,7 @@ import ClipboardCheck from "../ui/icons/ClipboardCheck";
 import { errorMessage } from "@/utils/errorMessages";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import { lottoCreateNumberActions } from "@/server/lotto/lottoCreateNumberActions";
+import { getQueryClient } from "@/libs/getQueryClient";
 
 interface LottoGeneratorNumbers {
   lottoNumbers: {
@@ -21,6 +22,8 @@ interface LottoGeneratorNumbers {
 
 export default function LottoGenerator() {
   const { showError } = useErrorModal();
+
+  const queryClient = getQueryClient();
 
   const {
     mutate,
@@ -36,6 +39,9 @@ export default function LottoGenerator() {
         description: description,
         btnText: btnText,
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lottoHistory"] });
     },
   });
 

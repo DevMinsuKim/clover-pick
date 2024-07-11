@@ -1,3 +1,5 @@
+export const revalidate = 1;
+
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 import PensionDrawNumber from "@/components/pension/PensionDrawNumber";
