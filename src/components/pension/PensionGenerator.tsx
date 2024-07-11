@@ -12,9 +12,12 @@ import ClipboardCheck from "../ui/icons/ClipboardCheck";
 import { errorMessage } from "@/utils/errorMessages";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
 import { pensionCreateNumberActions } from "@/server/pension/pensionCreateNumberActions";
+import { getQueryClient } from "@/libs/getQueryClient";
 
 export default function PensionGenerator() {
   const { showError } = useErrorModal();
+
+  const queryClient = getQueryClient();
 
   const {
     mutate,
@@ -30,6 +33,9 @@ export default function PensionGenerator() {
         description: description,
         btnText: btnText,
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pensionHistory"] });
     },
   });
 
