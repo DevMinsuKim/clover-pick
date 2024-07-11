@@ -25,7 +25,7 @@ export async function pensionCreateNumberActions({
     const day = seoulTime.getDay();
     const hours = seoulTime.getHours();
 
-    if (day === 4 && hours >= 17 && hours < 24) {
+    if (day === 4 && hours >= 17 && hours < 22) {
       Sentry.captureMessage("연금복권 번호 생성 시간이 아닙니다.", "warning");
       throw new Error("1102");
     }
