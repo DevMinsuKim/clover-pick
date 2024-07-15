@@ -83,4 +83,6 @@ model winning_pension {
   winning_number  String   @db.VarChar(7)
   winning_created DateTime @db.Timestamptz(6)
   created         DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([draw_number, ranking, winning_number, winning_created])
 }
