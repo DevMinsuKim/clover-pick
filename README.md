@@ -3,10 +3,9 @@
 </h1>
   
 <h2 align="center">
-  <img src="https://github.com/DevMinsuKim/get-image-url/assets/70056622/9f3f3356-fb10-4981-a768-b4df0be85421" alt="logo" width="150"/>
+  <img src="https://github.com/user-attachments/assets/e369a828-b98a-4acb-8087-4a9d39725004" alt="logo" width="150"/>
   <br>
   <br>
-  클로버픽(CloverPick)
 </h2>
 
 <h3 align="center">• 배포 URL: <a href="http://www.cloverpick.com/" target="_blank">https://www.cloverpick.com</a></h3>
