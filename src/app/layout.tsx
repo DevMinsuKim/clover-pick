@@ -38,6 +38,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -58,7 +59,7 @@ export default function RootLayout({
               </header>
               <main className="min-h-screen flex-grow">
                 {children}
-                <SpeedInsights />
+                {/* <SpeedInsights /> */}
               </main>
               <footer>
                 <Footer />
