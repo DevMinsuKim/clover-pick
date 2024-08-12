@@ -20,6 +20,15 @@
   
 <br>
 
+## 주요 개발 기능
+- Next.js, TypeScript, Tailwind CSS, PWA 등을 활용한 다크 모드 및 반응형 PWA 구현
+- SSR 적용 및 SEO 최적화, Three.js (R3F)와 Framer Motion을 활용한 인터랙션 애니메이션 구현
+- React Query + Server Action 및 React Suspense를 이용해 로딩 및 데이터 관리
+- React Error Boundary를 통해 선언적으로 에러를 통제하고 Sentry에 오류를 보고하도록 구현
+- PostgreSQL 및 Prisma를 통한 데이터베이스 관리
+  
+<br>
+
 ## 개발 내용
 #### 개발 기간: 2024.05 - 현재 진행 중
 #### 사용한 기술 스택
@@ -40,7 +49,6 @@
 #### 아키텍처
 <img src="https://github.com/user-attachments/assets/7a30237a-ca25-4068-99dc-5a9587f0e7ec" alt="Architecture" width="600px"/>
 <br>
-<br>
 
 #### 트러블슈팅(troubleshooting)
 Sentry 구성 시 Next.js에서 생성되는 SourceMaps 파일의 보안적 이슈를 예방하기 위해 .map 파일 생성을 비활성화
@@ -56,6 +64,9 @@ Sentry 구성 시 Next.js에서 생성되는 SourceMaps 파일의 보안적 이�
 | SourceMaps 비활성화 코드 적용 후 |
 |----------|
 | <img src="https://github.com/user-attachments/assets/116e2cd1-b355-44ad-98a1-8871544f08b2" alt="SourceMaps 비활성화 코드 적용 후" width="300px"> |
+
+<br>
+<br>
 
 ## 페이지별 기능
 | 반응형 및 다크모드(테마 선택) 기능 |
@@ -74,4 +85,5 @@ Sentry 구성 시 Next.js에서 생성되는 SourceMaps 파일의 보안적 이�
 |----------|
 | <img src="https://github.com/user-attachments/assets/eee4ba44-2702-4d69-8b2e-8940af20f8f4" alt="연금복권 번호 생성 및 번호 복사 기능"> |
 
-
+<br>
+<br>
