@@ -3,7 +3,7 @@
 </h1>
   
 <h2 align="center">
-  <img src="https://github.com/user-attachments/assets/e369a828-b98a-4acb-8087-4a9d39725004" alt="logo" width="150"/>
+  <img src="https://github.com/user-attachments/assets/e369a828-b98a-4acb-8087-4a9d39725004" alt="logo" width="150px"/>
   <br>
   <br>
 </h2>
@@ -36,3 +36,42 @@
 #### 브랜치 전략
   - Git Flow 전략을 기반으로 `main`, `develop` 브랜치 운용
   - 기능 개발은 `develop` 브랜치에서 진행하며, 충분히 테스트된 후 `main` 브랜치로 병합하여 배포
+
+#### 아키텍처
+<img src="https://github.com/user-attachments/assets/e8d0695c-f163-4152-8987-a3bd3092d6db" alt="Architecture" width="600px"/>
+<br>
+<br>
+
+#### 트러블슈팅(troubleshooting)
+Sentry 구성 시 Next.js에서 생성되는 SourceMaps 파일의 보안적 이슈를 예방하기 위해 .map 파일 생성을 비활성화
+
+| SourceMaps 비활성화 코드 적용 전 |
+|----------|
+| <img src="https://github.com/user-attachments/assets/3612c6fc-2818-49a7-b59b-e821fb7842cc" alt="SourceMaps 비활성화 코드 적용 전" width="300px"> |
+
+| SourceMaps 비활성화 코드 |
+|----------|
+| <img src="https://github.com/user-attachments/assets/416efea8-d1d0-45cd-a900-45309d343097" alt="SourceMaps 비활성화 코드" width="300px"> |
+
+| SourceMaps 비활성화 코드 적용 후 |
+|----------|
+| <img src="https://github.com/user-attachments/assets/116e2cd1-b355-44ad-98a1-8871544f08b2" alt="SourceMaps 비활성화 코드 적용 후" width="300px"> |
+
+## 페이지별 기능
+| 반응형 및 다크모드(테마 선택) 기능 |
+|----------|
+| <img src="https://github.com/user-attachments/assets/b327fa45-133f-4bdd-946f-fa03f9061378" alt="반응형 및 다크모드(테마 선택) 기능"> |
+
+| 3D 애니메이션 및 메인페이지 |
+|----------|
+| <img src="https://github.com/user-attachments/assets/bf7ee86b-930d-4d02-a83e-1cc14e193b4d" alt="3D 애니메이션 및 메인페이지"> |
+
+| 로또 번호 생성 및 번호 복사 기능 |
+|----------|
+| <img src="https://github.com/user-attachments/assets/95ca8a99-60f2-47ba-bfeb-78e6d9102a7a" alt="로또 번호 생성 및 번호 복사 기능"> |
+
+| 연금복권 번호 생성 및 번호 복사 기능 |
+|----------|
+| <img src="https://github.com/user-attachments/assets/eee4ba44-2702-4d69-8b2e-8940af20f8f4" alt="연금복권 번호 생성 및 번호 복사 기능"> |
+
+
