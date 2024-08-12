@@ -38,7 +38,7 @@
   - 기능 개발은 `develop` 브랜치에서 진행하며, 충분히 테스트된 후 `main` 브랜치로 병합하여 배포
 
 #### 아키텍처
-<img src="https://github.com/user-attachments/assets/e8d0695c-f163-4152-8987-a3bd3092d6db" alt="Architecture" width="600px"/>
+<img src="https://github.com/user-attachments/assets/7a30237a-ca25-4068-99dc-5a9587f0e7ec" alt="Architecture" width="600px"/>
 <br>
 <br>
 
