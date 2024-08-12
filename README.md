@@ -69,7 +69,7 @@ Sentry 구성 시 Next.js에서 생성되는 SourceMaps 파일의 보안적 이�
 <br>
 
 ## 페이지별 기능
-| 반응형 및 다크모드(테마 선택) 기능 |
+| 반응형 및 다크 모드(테마 선택) 기능 |
 |----------|
 | <img src="https://github.com/user-attachments/assets/b327fa45-133f-4bdd-946f-fa03f9061378" alt="반응형 및 다크모드(테마 선택) 기능"> |
 
