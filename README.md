@@ -42,6 +42,9 @@
   - **배포**: Vercel
   - **에러 추적 및 분석**: Sentry, GA4
   - **API**: ChatGPT API
+  - **검색 엔진 최적화(SEO)**
+
+    
 #### 브랜치 전략
   - Git Flow 전략을 기반으로 `main`, `develop` 브랜치 운용
   - 기능 개발은 `develop` 브랜치에서 진행하며, 충분히 테스트된 후 `main` 브랜치로 병합하여 배포
