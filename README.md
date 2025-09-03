@@ -13,7 +13,7 @@
 <br>
 
 ## 프로젝트 소개
-- **2025년 7월 기준, 누적 사용자 248명 및 4,300회 이상의 이벤트 발생 (GA4 기준)**
+- **2025년 9월 기준, 누적 사용자 271명 및 4,371회 이상의 이벤트 발생 (GA4 기준)**
 - 1인 프로젝트로 기획, 디자인, 개발, 배포까지 모든 과정을 직접 수행했습니다.
 - 매일 동행복권 사이트에서 최신 번호 데이터를 자동 수집·정제하여 데이터베이스에 저장하고, 이를 기반으로 ChatGPT 모델을 활용해 예측 번호를 생성합니다.
 - 생성형 AI를 활용해 버튼 한 번으로 로또 및 연금복권 번호를 간편하게 생성할 수 있는 서비스입니다.
@@ -56,7 +56,37 @@
 <br>
 
 #### 트러블슈팅(troubleshooting)
-Sentry 구성 시 Next.js에서 생성되는 SourceMaps 파일의 보안적 이슈를 예방하기 위해 .map 파일 생성을 비활성화
+##### 1. 서버리스 환경 제약으로 인한 아키텍처 전환
+   
+- 초기에는 Python (Pandas + TensorFlow LSTM) 기반 시계열 모델을 고려했지만,
+서버리스 환경인 Vercel 배포 과정에서 고용량 라이브러리 제약 문제가 발생했습니다.
+
+- 비용을 최소화하고 단일 환경(Vercel)에서 배포 및 운영 경험을 쌓기 위해,
+아키텍처를 전면 재설계하여 OpenAI ChatGPT API 기반 번호 생성 서비스로 전환했습니다.
+
+핵심코드
+```
+const { object: data } = await generateObject({
+  model: openai("gpt-4o"),
+  system: "You're a lotto number prediction system",
+  prompt: `Predict ${repeat} sets of 6 winning numbers from 1 to 45`,
+  schema: z.object({
+    lottoNumbers: z.array(
+      z.object({
+        numbers: z.array(z.number().min(1).max(45)).length(6),
+      }),
+    ),
+  }),
+});
+```
+예시 출력: data.lottoNumbers[0].numbers -> [3, 12, 17, 26, 31, 41]
+
+객체 형식을 선택한 이유
+- 프롬프트 결과를 직접 객체로 매핑해 UI/DB 연동 용이
+- Zod 스키마 검증으로 잘못된 응답(할루시네이션·형식 오류) 차단
+
+#### 2. SourceMaps 보안 이슈
+- Sentry 구성 시 Next.js에서 생성되는 SourceMaps 파일의 보안적 이슈를 예방하기 위해 .map 파일 생성을 비활성화
 
 | SourceMaps 비활성화 코드 적용 전 |
 |----------|
