@@ -9,6 +9,8 @@ import Footer from "@/components/common/Footer";
 import { ErrorModalProvider } from "@/providers/ErrorModalProvider";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import GoogleAdsense from "@/components/common/GoogleAdsense";
+import WebVitals from "@/components/common/WebVitals";
+
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -59,7 +61,7 @@ export default function RootLayout({
               </header>
               <main className="min-h-screen flex-grow">
                 {children}
-                {/* <SpeedInsights /> */}
+             
               </main>
               <footer>
                 <Footer />
@@ -67,6 +69,8 @@ export default function RootLayout({
             </ErrorModalProvider>
           </QueryProvider>
         </ThemeProvider>
+        <SpeedInsights /> 
+        <WebVitals />
       </body>
       <GoogleTagManager
         gtmId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER ?? ""}
