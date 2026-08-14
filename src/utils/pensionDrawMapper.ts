@@ -39,7 +39,7 @@ export function mapPensionDrawJsonToRows(
   }
 
   const rows: PensionDrawRow[] = [];
-  for (const [drawNumber, first] of firstByRound) {
+  firstByRound.forEach((first, drawNumber) => {
     const bonus = bonusByRound.get(drawNumber);
     if (!first.wnBndNo || !bonus) {
       throw new Error(`${drawNumber}회 1등 조 또는 보너스 번호가 없습니다.`);
@@ -51,7 +51,7 @@ export function mapPensionDrawJsonToRows(
       winning_number: `${first.wnBndNo}${first.wnRnkVl.padStart(6, "0")}`,
       bonus_number: bonus.wnRnkVl.padStart(6, "0"),
     });
-  }
+  });
 
   return rows.sort((a, b) => a.draw_number - b.draw_number);
 }
