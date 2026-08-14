@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import * as cheerio from "cheerio";
 import * as Sentry from "@sentry/nextjs";
 import prisma from "@/libs/prisma";
+import { getPensionRanking } from "@/utils/pensionRanking";
 import iconv from "iconv-lite";
 
 export async function GET() {
@@ -72,29 +73,11 @@ export async function GET() {
     });
 
     for (const userPension of userPensions) {
-      const userNumber = userPension.number;
-      const winningNumber = latestPension.winning_number;
-      const bonusNumber = latestPension.bonus_number;
-
-      let ranking = 0;
-
-      if (userNumber === winningNumber) {
-        ranking = 1; // 1등
-      } else if (userNumber.slice(-6) === winningNumber.slice(-6)) {
-        ranking = 2; // 2등
-      } else if (userNumber.slice(-5) === winningNumber.slice(-5)) {
-        ranking = 3; // 3등
-      } else if (userNumber.slice(-4) === winningNumber.slice(-4)) {
-        ranking = 4; // 4등
-      } else if (userNumber.slice(-3) === winningNumber.slice(-3)) {
-        ranking = 5; // 5등
-      } else if (userNumber.slice(-2) === winningNumber.slice(-2)) {
-        ranking = 6; // 6등
-      } else if (userNumber.slice(-1) === winningNumber.slice(-1)) {
-        ranking = 7; // 7등
-      } else if (userNumber.slice(-6) === bonusNumber.slice(-6)) {
-        ranking = 8; // 보너스 등위
-      }
+      const ranking = getPensionRanking(
+        userPension.number,
+        latestPension.winning_number,
+        latestPension.bonus_number,
+      );
 
       if (ranking > 0) {
         winningData.push({

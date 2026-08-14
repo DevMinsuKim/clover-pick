@@ -6,6 +6,7 @@ import * as cheerio from "cheerio";
 import * as Sentry from "@sentry/nextjs";
 import iconv from "iconv-lite";
 import prisma from "@/libs/prisma";
+import { getLottoRanking } from "@/utils/lottoRanking";
 
 export async function GET() {
   try {
@@ -105,25 +106,11 @@ export async function GET() {
         latestLotto.winning_number_6,
       ];
 
-      const bonusNumber = latestLotto.bonus_number;
-
-      const matchCount = userNumbers.filter((num) =>
-        winningNumbers.includes(num),
-      ).length;
-
-      let ranking = 0;
-
-      if (matchCount === 6) {
-        ranking = 1; // 1등: 6개 번호 일치
-      } else if (matchCount === 5 && userNumbers.includes(bonusNumber)) {
-        ranking = 2; // 2등: 5개 번호 일치 + 보너스 번호 일치
-      } else if (matchCount === 5) {
-        ranking = 3; // 3등: 5개 번호 일치
-      } else if (matchCount === 4) {
-        ranking = 4; // 4등: 4개 번호 일치
-      } else if (matchCount === 3) {
-        ranking = 5; // 5등: 3개 번호 일치
-      }
+      const ranking = getLottoRanking(
+        userNumbers,
+        winningNumbers,
+        latestLotto.bonus_number,
+      );
 
       if (ranking > 0) {
         winningData.push({
