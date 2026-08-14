@@ -1,5 +1,6 @@
 "use server";
 
+import { getLottoCurrentRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@ai-sdk/openai";
@@ -9,19 +10,7 @@ import * as Sentry from "@sentry/nextjs";
 
 export async function lottoActions() {
   try {
-    const lastDrawNumber = await prisma.lotto.findFirst({
-      orderBy: { draw_number: "desc" },
-      select: {
-        draw_number: true,
-      },
-    });
-
-    if (lastDrawNumber == null) {
-      Sentry.captureMessage("로또 회차 데이터가 존재하지 않습니다.", "error");
-      throw new Error("1000");
-    }
-
-    return { success: { draw_number: lastDrawNumber.draw_number + 1 } };
+    return { success: { draw_number: getLottoCurrentRound() } };
   } catch (error) {
     Sentry.captureException(error);
     throw new Error("2000");
@@ -69,21 +58,11 @@ export async function POST(req: NextRequest) {
       obj.numbers.sort((a, b) => a - b);
     });
 
-    const lastDrawNumber = await prisma.lotto.findFirst({
-      orderBy: { draw_number: "desc" },
-      select: {
-        draw_number: true,
-      },
-    });
-
-    if (lastDrawNumber == null) {
-      Sentry.captureMessage("로또 회차 데이터가 존재하지 않습니다.", "error");
-      return Response.json({ error: { code: "1000" } }, { status: 404 });
-    }
+    const currentRound = getLottoCurrentRound();
 
     const lottoNumbersDB = data.lottoNumbers.map((item) => {
       return {
-        draw_number: lastDrawNumber.draw_number + 1,
+        draw_number: currentRound,
         number1: item.numbers[0],
         number2: item.numbers[1],
         number3: item.numbers[2],
