@@ -8,7 +8,9 @@ import {
   PENSION_ANCHOR_ROUND,
   PENSION_DRAW_SCHEDULE,
   getLottoCurrentRound,
+  getLottoLastCompletedRound,
   getPensionCurrentRound,
+  getPensionLastCompletedRound,
 } from "@/constants/lotteryRounds";
 
 describe("calculateRoundNumber", () => {
@@ -72,6 +74,11 @@ describe("calculateRoundNumber", () => {
       expect(getLottoCurrentRound(beforeDraw)).toBe(1237);
       expect(getLottoCurrentRound(afterDraw)).toBe(1238);
     });
+
+    it("추첨 직후 수집 대상은 방금 끝난 회차다", () => {
+      const afterDraw = new Date("2026-08-15T22:30:00+09:00");
+      expect(getLottoLastCompletedRound(afterDraw)).toBe(1237);
+    });
   });
 
   describe("연금복권720+ (앵커 2020-05-07, 목 17:00 KST)", () => {
@@ -109,6 +116,11 @@ describe("calculateRoundNumber", () => {
       const afterDraw = new Date("2026-08-20T17:00:00+09:00");
       expect(getPensionCurrentRound(beforeDraw)).toBe(329);
       expect(getPensionCurrentRound(afterDraw)).toBe(330);
+    });
+
+    it("추첨 직후 수집 대상은 방금 끝난 회차다", () => {
+      const afterDraw = new Date("2026-08-20T21:00:00+09:00");
+      expect(getPensionLastCompletedRound(afterDraw)).toBe(329);
     });
   });
 });

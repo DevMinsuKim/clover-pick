@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/lotto/update",
-      "schedule": "30 12 * * *"
+      "schedule": "30 13 * * 6"
     },
     {
       "path": "/api/pension/update",
-      "schedule": "00 02 * * *"
+      "schedule": "0 12 * * 4"
     }
   ]
 }
