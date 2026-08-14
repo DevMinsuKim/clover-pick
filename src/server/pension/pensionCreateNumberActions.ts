@@ -6,6 +6,7 @@ import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
+import { isPensionGenerationRestricted } from "@/utils/generationRestriction";
 
 interface PensionNumber {
   number: string;
@@ -19,14 +20,7 @@ export async function pensionCreateNumberActions({
   isAllGroup: boolean;
 }) {
   try {
-    const now = new Date();
-    const options = { timeZone: "Asia/Seoul", hour12: false };
-    const seoulTime = new Date(now.toLocaleString("en-US", options));
-
-    const day = seoulTime.getDay();
-    const hours = seoulTime.getHours();
-
-    if (day === 4 && hours >= 17 && hours < 22) {
+    if (isPensionGenerationRestricted()) {
       Sentry.captureMessage("연금복권 번호 생성 시간이 아닙니다.", "warning");
       throw new Error("1102");
     }

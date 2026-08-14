@@ -13,6 +13,7 @@ import { errorMessage } from "@/utils/errorMessages";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
 import { pensionCreateNumberActions } from "@/server/pension/pensionCreateNumberActions";
 import { getQueryClient } from "@/libs/getQueryClient";
+import { isPensionGenerationRestricted } from "@/utils/generationRestriction";
 
 export default function PensionGenerator() {
   const { showError } = useErrorModal();
@@ -87,14 +88,7 @@ export default function PensionGenerator() {
   };
 
   const handleCreateNumbers = () => {
-    const now = new Date();
-    const options = { timeZone: "Asia/Seoul", hour12: false };
-    const seoulTime = new Date(now.toLocaleString("en-US", options));
-
-    const day = seoulTime.getDay();
-    const hours = seoulTime.getHours();
-
-    if (day === 4 && hours >= 17 && hours < 22) {
+    if (isPensionGenerationRestricted()) {
       Sentry.captureMessage("연금복권 번호 생성 시간이 아닙니다.", "info");
       const { title, description, btnText } = errorMessage("6");
       showError({

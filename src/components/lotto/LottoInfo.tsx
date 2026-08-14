@@ -18,7 +18,7 @@ export default function LottoInfo() {
         <strong>로또 번호 생성 가능 시간 안내</strong>
         <p className="mb-8 mt-1">
           추첨 결과 확인 및 다음 회차 준비로 인해 번호 생성이 매주 토요일 저녁
-          20시부터 22시까지 제한됩니다.
+          20시부터 23시 30분까지 제한됩니다.
           <br />
           서비스 이용에 착오 없으시길 바랍니다.
         </p>
