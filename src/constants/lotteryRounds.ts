@@ -39,6 +39,15 @@ export function getPensionCurrentRound(today: Date = new Date()): number {
   );
 }
 
+/** 이미 추첨이 끝난 가장 최근 회차 */
+export function getLottoLastCompletedRound(today: Date = new Date()): number {
+  return getLottoCurrentRound(today) - 1;
+}
+
+export function getPensionLastCompletedRound(today: Date = new Date()): number {
+  return getPensionCurrentRound(today) - 1;
+}
+
 /** 생성일 기준 해당 시점의 예정 회차 */
 export function getLottoRoundAt(createdAt: Date): number {
   return getLottoCurrentRound(createdAt);
