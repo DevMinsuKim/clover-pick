@@ -1,5 +1,6 @@
 "use server";
 
+import { getPensionCurrentRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
@@ -66,24 +67,11 @@ export async function pensionCreateNumberActions({
       pensionNumbers = Array.from(uniqueNumbers).map((number) => ({ number }));
     }
 
-    const lastDrawNumber = await prisma.pension.findFirst({
-      orderBy: { draw_number: "desc" },
-      select: {
-        draw_number: true,
-      },
-    });
-
-    if (lastDrawNumber == null) {
-      Sentry.captureMessage(
-        "연금복권 회차 데이터가 존재하지 않습니다.",
-        "error",
-      );
-      throw new Error("1000");
-    }
+    const currentRound = getPensionCurrentRound();
 
     const pensionNumbersDB = pensionNumbers.map((item) => ({
       ...item,
-      draw_number: lastDrawNumber.draw_number + 1,
+      draw_number: currentRound,
       number: String(item.number),
     }));
 

@@ -1,5 +1,6 @@
 "use server";
 
+import { getLottoCurrentRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
@@ -45,21 +46,11 @@ export async function lottoCreateNumberActions({ repeat }: { repeat: number }) {
       obj.numbers.sort((a, b) => a - b);
     });
 
-    const lastDrawNumber = await prisma.lotto.findFirst({
-      orderBy: { draw_number: "desc" },
-      select: {
-        draw_number: true,
-      },
-    });
-
-    if (lastDrawNumber == null) {
-      Sentry.captureMessage("로또 회차 데이터가 존재하지 않습니다.", "error");
-      throw new Error("1000");
-    }
+    const currentRound = getLottoCurrentRound();
 
     const lottoNumbersDB = data.lottoNumbers.map((item) => {
       return {
-        draw_number: lastDrawNumber.draw_number + 1,
+        draw_number: currentRound,
         number1: item.numbers[0],
         number2: item.numbers[1],
         number3: item.numbers[2],
