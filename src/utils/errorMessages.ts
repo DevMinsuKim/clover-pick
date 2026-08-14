@@ -22,7 +22,7 @@ export const errorMessage = (errorCode: string): errorMessageProps => {
       return {
         title: "서비스 이용 제한 시간입니다.",
         description:
-          "매주 토요일 저녁 20시부터 22시까지는 서비스를 이용할 수 없습니다.\n이후에 다시 시도해 주세요.",
+          "매주 토요일 저녁 20시부터 23시 30분까지는 서비스를 이용할 수 없습니다.\n이후에 다시 시도해 주세요.",
         btnText: "확인",
       };
     case "4":
@@ -41,7 +41,7 @@ export const errorMessage = (errorCode: string): errorMessageProps => {
       return {
         title: "서비스 이용 제한 시간입니다.",
         description:
-          "매주 목요일 오후 17시부터 24시까지는 서비스를 이용할 수 없습니다.\n이후에 다시 시도해 주세요.",
+          "매주 목요일 오후 17시부터 22시까지는 서비스를 이용할 수 없습니다.\n이후에 다시 시도해 주세요.",
         btnText: "확인",
       };
 
@@ -61,7 +61,7 @@ export const errorMessage = (errorCode: string): errorMessageProps => {
       return {
         title: "서비스 이용 제한 시간입니다.",
         description:
-          "매주 토요일 오후 8시부터 10시까지는 서비스를 이용할 수 없습니다.\n이후에 다시 시도해 주세요.",
+          "매주 토요일 저녁 20시부터 23시 30분까지는 서비스를 이용할 수 없습니다.\n이후에 다시 시도해 주세요.",
         btnText: "확인",
       };
 

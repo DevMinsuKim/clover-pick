@@ -13,6 +13,7 @@ import { errorMessage } from "@/utils/errorMessages";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import { lottoCreateNumberActions } from "@/server/lotto/lottoCreateNumberActions";
 import { getQueryClient } from "@/libs/getQueryClient";
+import { isLottoGenerationRestricted } from "@/utils/generationRestriction";
 
 interface LottoGeneratorNumbers {
   lottoNumbers: {
@@ -86,14 +87,7 @@ export default function LottoGenerator() {
   };
 
   const handleCreateNumbers = () => {
-    const now = new Date();
-    const options = { timeZone: "Asia/Seoul", hour12: false };
-    const seoulTime = new Date(now.toLocaleString("en-US", options));
-
-    const day = seoulTime.getDay();
-    const hours = seoulTime.getHours();
-
-    if (day === 6 && hours >= 20 && hours < 22) {
+    if (isLottoGenerationRestricted()) {
       Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "info");
       const { title, description, btnText } = errorMessage("3");
       showError({
