@@ -1,11 +1,12 @@
 export const dynamic = "force-dynamic";
 
 import axios from "axios";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
 import { getLottoLastCompletedRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
 import { assertExpectedDrawRound } from "@/utils/assertExpectedDrawRound";
+import { isAuthorizedCronRequest } from "@/utils/cronAuth";
 import {
   mapLottoDrawJsonToRow,
   type LottoDrawJsonItem,
@@ -18,7 +19,11 @@ interface LottoLatestDrawResponse {
   };
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  if (!isAuthorizedCronRequest(request.headers.get("authorization"))) {
+    return NextResponse.json({ message: false }, { status: 401 });
+  }
+
   try {
     const url = process.env.LOTTO_LATEST_DRAW_URL;
     if (!url) {
