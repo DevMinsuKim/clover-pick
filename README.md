@@ -185,10 +185,9 @@ const { object: data } = await generateObject({
 
 <br>
 
-<details>
-<summary><strong>3. SourceMaps 보안 이슈</strong></summary>
-<br>
+### 3. SourceMaps 보안 이슈
 
+#### 문제 상황
 - Sentry 연동 과정에서 Next.js 빌드 결과물에 SourceMaps 파일이 생성될 수 있음을 확인했습니다.
 - SourceMaps가 외부에 노출될 경우 원본 코드 구조나 내부 로직을 추론할 수 있어, 운영 환경에서는 .map 파일이 브라우저에 노출되지 않도록 설정을 적용했습니다.
 - 이를 통해 Sentry 기반 에러 추적은 유지하면서도, 클라이언트 번들에서 SourceMaps 접근 가능성을 줄였습니다.
@@ -197,15 +196,16 @@ const { object: data } = await generateObject({
 | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | <img src="https://github.com/user-attachments/assets/3612c6fc-2818-49a7-b59b-e821fb7842cc" alt="SourceMaps 비활성화 코드 적용 전" width="300px"> |
 
+#### 해결 과정
 | SourceMaps 비활성화 코드                                                                                                                 |
 | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | <img src="https://github.com/user-attachments/assets/416efea8-d1d0-45cd-a900-45309d343097" alt="SourceMaps 비활성화 코드" width="300px"> |
 
+#### 결과
 | SourceMaps 비활성화 코드 적용 후                                                                                                                 |
 | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | <img src="https://github.com/user-attachments/assets/116e2cd1-b355-44ad-98a1-8871544f08b2" alt="SourceMaps 비활성화 코드 적용 후" width="300px"> |
 
-</details>
 
 <br>
 
