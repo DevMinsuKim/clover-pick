@@ -3,8 +3,8 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
-import SunIcon from "../ui/icons/SunIcon";
 import DarkIcon from "../ui/icons/DarkIcon";
+import SunIcon from "../ui/icons/SunIcon";
 import SystemIcon from "../ui/icons/SystemIcon";
 
 const menu = [
@@ -64,6 +64,7 @@ export function ThemeSwitcher() {
           data-tooltip-content={title}
         >
           <button
+            type="button"
             aria-label={title}
             onClick={() => {
               setTheme(id);

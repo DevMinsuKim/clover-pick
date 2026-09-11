@@ -1,8 +1,8 @@
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import prisma from "@/libs/prisma";
 import { convertToKoreaTime } from "@/utils/convertToKoreaTime";
-import * as Sentry from "@sentry/nextjs";
 
 export async function pensionHistoryActions() {
   try {

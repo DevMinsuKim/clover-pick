@@ -1,16 +1,15 @@
 "use client";
 
-import * as THREE from "three";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Physics, useSphere } from "@react-three/cannon";
-import React, { MutableRefObject, useEffect } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useEffect } from "react";
+import * as THREE from "three";
 import useTouchDevice from "@/hooks/useTouchDevice";
 import Loader from "../common/Loader";
 
 interface MixProps {
   mat?: THREE.Matrix4;
   vec?: THREE.Vector3;
-  [key: string]: any;
 }
 
 const count = 40;
@@ -34,17 +33,16 @@ const getRandomColor = (): THREE.Color => {
 const Mix = ({
   mat = new THREE.Matrix4(),
   vec = new THREE.Vector3(),
-  ...props
 }: MixProps) => {
   const isMobile = window.innerWidth < 768;
 
-  const [ref, api] = useSphere(() => ({
+  const [ref, api] = useSphere<THREE.InstancedMesh>(() => ({
     args: [1],
     mass: 1,
     angularDamping: 0.1,
     linearDamping: 0.65,
     position: [rfs(10), rfs(10), rfs(10)],
-  })) as [MutableRefObject<THREE.InstancedMesh>, any];
+  }));
 
   useFrame(() => {
     if (ref.current) {
@@ -91,13 +89,15 @@ const Pointer = () => {
     args: [3],
     position: [0, 0, 0],
   }));
-  return useFrame((state) =>
+  useFrame((state) =>
     api.position.set(
-      (state.mouse.x * viewport.width) / 2,
-      (state.mouse.y * viewport.height) / 2,
+      (state.pointer.x * viewport.width) / 2,
+      (state.pointer.y * viewport.height) / 2,
       0,
     ),
   );
+
+  return null;
 };
 
 export default function BallMix() {

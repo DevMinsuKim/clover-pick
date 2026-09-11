@@ -1,9 +1,12 @@
-import { withSentryConfig } from "@sentry/nextjs";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { withSentryConfig } from "@sentry/nextjs/config";
 import withPWA from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  outputFileTracingRoot: dirname(fileURLToPath(import.meta.url)),
   webpack(config) {
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg"),
@@ -31,6 +34,8 @@ const nextConfig = {
 
 const pwaConfig = withPWA({
   dest: "public",
+  buildExcludes: [/\.map$/],
+  publicExcludes: ["!**/*.map"],
   disable: process.env.NODE_ENV === "development",
 })(nextConfig);
 
@@ -38,14 +43,14 @@ export default withSentryConfig(pwaConfig, {
   org: process.env.NEXT_PUBLIC_SENTRY_ORG,
   project: process.env.NEXT_PUBLIC_SENTRY_PROJECT,
   silent: !process.env.CI,
+  telemetry: false,
   widenClientFileUpload: true,
   tunnelRoute: "/monitoring",
-  hideSourceMaps: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
-  unstable_sentryWebpackPluginOptions: {
-    sourcemaps: {
-      filesToDeleteAfterUpload: ["./.next/static/**/*.map"],
-    },
+  sourcemaps: {
+    filesToDeleteAfterUpload: ["./.next/static/**/*.map"],
+  },
+  webpack: {
+    treeshake: { removeDebugLogging: true },
+    automaticVercelMonitors: true,
   },
 });

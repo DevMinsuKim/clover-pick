@@ -10,30 +10,69 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Unit tests
+  quality:
+    name: Lint, types, tests and build
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: cloverpick
+          POSTGRES_PASSWORD: cloverpick_test
+          POSTGRES_DB: cloverpick_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cloverpick -d cloverpick_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      POSTGRES_PRISMA_URL: postgresql://cloverpick:cloverpick_test@localhost:5432/cloverpick_test
+      POSTGRES_URL_NON_POOLING: postgresql://cloverpick:cloverpick_test@localhost:5432/cloverpick_test
+      NEXT_TELEMETRY_DISABLED: '1'
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           persist-credentials: false
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version: '1.2.23'
 
       - name: Cache Bun dependencies
         uses: actions/cache@v6
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          key: ${{ runner.os }}-bun-1.2.23-${{ hashFiles('bun.lock') }}
           restore-keys: |
-            ${{ runner.os }}-bun-
+            ${{ runner.os }}-bun-1.2.23-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install --frozen-lockfile --ignore-scripts
+
+      - name: Generate Prisma client
+        run: bunx prisma generate
+
+      - name: Check lint and formatting
+        run: bun run check
+
+      - name: Check types
+        run: bun run typecheck
 
       - name: Run tests
         run: bun run test
+
+      - name: Prepare isolated test database
+        run: bunx prisma db push --skip-generate
+
+      - name: Build application
+        run: bun run build

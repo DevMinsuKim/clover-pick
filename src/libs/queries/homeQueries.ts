@@ -1,5 +1,5 @@
-import { getHome } from "@/server/home/homeActions";
 import { queryOptions } from "@tanstack/react-query";
+import { getHome } from "@/server/home/homeActions";
 
 export const getHomeQuery = queryOptions({
   queryKey: ["home"],

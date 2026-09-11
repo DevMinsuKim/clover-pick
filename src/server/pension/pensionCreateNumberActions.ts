@@ -1,11 +1,8 @@
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { getPensionCurrentRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
-import { openai } from "@ai-sdk/openai";
-import { generateObject } from "ai";
-import { z } from "zod";
-import * as Sentry from "@sentry/nextjs";
 import { isPensionGenerationRestricted } from "@/utils/generationRestriction";
 
 interface PensionNumber {

@@ -1,10 +1,9 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getPensionHistoryQuery } from "@/libs/queries/pensionQueries";
 import { formatDate } from "@/utils/formatDate";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import React from "react";
 
 export default function PensionGenerationHistory() {
   const { data, error, isFetching } = useSuspenseQuery(getPensionHistoryQuery);

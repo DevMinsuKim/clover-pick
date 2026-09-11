@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { calculateRoundNumber } from "./calculateRoundNumber";
 import {
+  getLottoCurrentRound,
+  getLottoLastCompletedRound,
+  getPensionCurrentRound,
+  getPensionLastCompletedRound,
   LOTTO_ANCHOR_DATE,
   LOTTO_ANCHOR_ROUND,
   LOTTO_DRAW_SCHEDULE,
   PENSION_ANCHOR_DATE,
   PENSION_ANCHOR_ROUND,
   PENSION_DRAW_SCHEDULE,
-  getLottoCurrentRound,
-  getLottoLastCompletedRound,
-  getPensionCurrentRound,
-  getPensionLastCompletedRound,
 } from "@/constants/lotteryRounds";
+import { calculateRoundNumber } from "./calculateRoundNumber";
 
 describe("calculateRoundNumber", () => {
   describe("로또 6/45 (앵커 2002-12-07, 토 20:00 KST)", () => {

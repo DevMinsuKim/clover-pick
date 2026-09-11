@@ -1,5 +1,6 @@
 export const revalidate = 1;
 
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 import PensionDrawNumber from "@/components/pension/PensionDrawNumber";
@@ -16,7 +17,6 @@ import {
   getPensionQuery,
   getPensionWinningQuery,
 } from "@/libs/queries/pensionQueries";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function page() {
   const queryClient = getQueryClient();

@@ -1,4 +1,3 @@
-import React from "react";
 import DeferredComponent from "../common/DeferredComponent";
 
 export default function LottoDrawNumberSkeleton() {

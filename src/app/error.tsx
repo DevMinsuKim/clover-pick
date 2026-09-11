@@ -3,7 +3,7 @@
 import Button from "@/components/common/Button";
 import { errorHandler } from "@/utils/errorHandler";
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset,
 }: {

@@ -1,4 +1,3 @@
-import React from "react";
 import Info from "../ui/icons/Info";
 
 export default function LottoInfo() {

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, MotionConfig } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 type FAQ = {
@@ -62,6 +62,7 @@ export default function HomeFAQ() {
         {faqs.map((faq, index) => (
           <div key={index} className="border-b">
             <button
+              type="button"
               className="flex w-full items-center justify-between px-2 py-4 text-left"
               onClick={() => handleToggle(index)}
             >

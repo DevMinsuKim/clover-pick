@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
-import { FallbackProps } from "react-error-boundary";
-import Button from "./Button";
+import type { FallbackProps } from "react-error-boundary";
 import { errorHandler } from "@/utils/errorHandler";
+import Button from "./Button";
 
 export default function ErrorFallback({
   error,

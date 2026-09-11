@@ -1,11 +1,10 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getHomeQuery } from "@/libs/queries/homeQueries";
 import { formatDate } from "@/utils/formatDate";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import React from "react";
 
 export default function HomeLottoMoving() {
   const { data, error, isFetching } = useSuspenseQuery(getHomeQuery);

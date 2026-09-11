@@ -73,6 +73,35 @@ flowchart LR; User(["사용자 / Browser PWA"]); Cron(["Vercel Cron / 주간 스
 - Prisma ORM과 PostgreSQL을 활용해 생성 이력과 수집 데이터를 타입 안정성 있게 관리했습니다.
 - Sentry와 GA4를 연동해 에러 추적 및 사용자 분석이 가능한 운영 환경을 구성했습니다.
 
+## 로컬 개발 및 품질 검사
+
+- Node.js 22 이상과 Bun 1.2.23을 사용합니다. `bun.lock`을 커밋하고 CI에서도 같은 Bun 버전으로 설치합니다.
+- Next.js 16.3.5와 React 19.2.8을 사용합니다. React Three Fiber 9.7의 지원 범위에 맞춰 React 19.3으로 자동 업데이트되지 않도록 고정했습니다.
+- React 19 호환성을 위해 Three.js 계열, Motion, next-themes, TanStack Query를 갱신하고 Lottie 플레이어를 `@lottiefiles/dotlottie-react`로 교체했습니다.
+- PWA와 SVG 로더를 유지하기 위해 개발·빌드 모두 Webpack을 사용합니다. `public/sw.js`와 `public/workbox-*`는 빌드 생성물이며 Git에 저장하지 않습니다.
+- ESLint와 Prettier를 Biome으로 통합했습니다. React·Next.js 규칙, import 정리, 두 칸 들여쓰기·큰따옴표·세미콜론을 적용합니다. Cursor/VS Code에서는 권장 Biome 확장을 설치하면 저장 시 적용됩니다.
+- 기존 위치 기반 번호 표시와 스켈레톤의 key 정책은 이번 도구 전환에서 유지하므로 `noArrayIndexKey`는 비활성화했습니다. Tailwind 클래스 정렬은 Biome의 실험적 규칙과 기존 플러그인의 동작이 달라 자동 적용하지 않습니다.
+- Prisma 5, AI SDK 3, Zod 3, Tailwind CSS 3의 메이저 업데이트는 별도로 진행합니다.
+
+```sh
+bun install --frozen-lockfile --ignore-scripts
+bunx prisma generate
+bun run dev
+```
+
+화면의 통계·생성 이력 조회에는 PostgreSQL이 필요합니다. 로컬 `.env`에 개발용 `POSTGRES_PRISMA_URL`과 `POSTGRES_URL_NON_POOLING`을 설정합니다. 번호 생성과 외부 서비스 연동에 필요한 키는 별도로 설정하며 커밋하지 않습니다.
+
+```sh
+bun run check       # 린트·포맷·import 순서 검사
+bun run check:fix   # 안전한 자동 수정
+bun run format     # 포맷 적용
+bun run typecheck  # Next.js 타입 생성 및 TypeScript 검사
+bun run test       # Vitest 단위 테스트
+bun run build      # Prisma 클라이언트 생성 및 프로덕션 빌드
+```
+
+CI는 별도 PostgreSQL 서비스에 테스트 스키마를 생성한 뒤 빌드합니다. 운영 DB나 외부 API 키를 사용하지 않습니다. 로컬 빌드는 페이지 사전 렌더링 중 DB를 조회하므로 개발용 DB 연결을 먼저 확인합니다.
+
 ## 🚨 트러블슈팅(troubleshooting)
 
 ### 1. 당첨 번호 수집 중단으로 인한 회차 고정 및 데이터 정합성 문제

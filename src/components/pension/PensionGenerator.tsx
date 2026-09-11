@@ -1,19 +1,19 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import React, { useEffect, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { Tooltip } from "react-tooltip";
+import { getQueryClient } from "@/libs/getQueryClient";
+import { useErrorModal } from "@/providers/ErrorModalProvider";
+import { pensionCreateNumberActions } from "@/server/pension/pensionCreateNumberActions";
+import { errorMessage } from "@/utils/errorMessages";
+import { isPensionGenerationRestricted } from "@/utils/generationRestriction";
+import { pensionNumberBg } from "@/utils/pensionNumberBg";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
-import { useMutation } from "@tanstack/react-query";
-import { useErrorModal } from "@/providers/ErrorModalProvider";
 import Clipboard from "../ui/icons/Clipboard";
-import { Tooltip } from "react-tooltip";
 import ClipboardCheck from "../ui/icons/ClipboardCheck";
-import { errorMessage } from "@/utils/errorMessages";
-import { pensionNumberBg } from "@/utils/pensionNumberBg";
-import { pensionCreateNumberActions } from "@/server/pension/pensionCreateNumberActions";
-import { getQueryClient } from "@/libs/getQueryClient";
-import { isPensionGenerationRestricted } from "@/utils/generationRestriction";
 
 export default function PensionGenerator() {
   const { showError } = useErrorModal();
@@ -122,16 +122,15 @@ export default function PensionGenerator() {
     return numberInt.map((number, index) => (
       <div key={index} className="mt-4 flex items-center justify-between">
         {number.number.map((subNumber, subIndex) => (
-          <>
+          <Fragment key={subIndex}>
             <span
-              key={subIndex}
               className={`h-8 w-8 rounded-full border-2 border-[#ffffff] text-base font-bold sm:h-11 sm:w-11 sm:text-3xl`}
               style={{ borderColor: pensionNumberBg(subIndex) }}
             >
               {subNumber}
             </span>
             {subIndex === 0 && <span className="text-sm sm:text-xl">조</span>}
-          </>
+          </Fragment>
         ))}
       </div>
     ));
@@ -171,16 +170,16 @@ export default function PensionGenerator() {
             {isDropdownOpen && (
               <div className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md border bg-white shadow dark:border-none dark:bg-black">
                 <div className="p-2">
-                  {dropDownData.map((item, index) => {
+                  {dropDownData.map((item, _index) => {
                     return (
-                      <p
+                      <button
+                        type="button"
                         onClick={() => dropdownChangeHandler(item)}
-                        key={index}
-                        className="block rounded px-2 py-2 text-sm text-foreground hover:bg-content1Hover"
-                        role="menuitem"
+                        key={item}
+                        className="block w-full rounded px-2 py-2 text-left text-sm text-foreground hover:bg-content1Hover"
                       >
                         {item}
-                      </p>
+                      </button>
                     );
                   })}
                 </div>
@@ -202,7 +201,11 @@ export default function PensionGenerator() {
               것이며, 선택한다고 무조건 당첨되거나 당첨 확률이 증가하는 것은
               아닙니다.
             </p>
-            <div
+            <button
+              type="button"
+              role="switch"
+              aria-label="모든 조 선택"
+              aria-checked={isAllGroup}
               className={`${
                 isAllGroup ? "bg-primary" : "bg-gray-300 dark:bg-gray-500"
               } mt-4 flex h-6 w-10 cursor-pointer items-center rounded-full p-1`}
@@ -215,7 +218,7 @@ export default function PensionGenerator() {
                   isAllGroup ? "translate-x-3" : ""
                 } transition`}
               />
-            </div>
+            </button>
           </div>
 
           <ul>{renderPensionNumbers(currentPensionNumbers)}</ul>
@@ -246,8 +249,10 @@ export default function PensionGenerator() {
 
           {pensionData && (
             <button
+              type="button"
               data-tooltip-id="tooltip"
               data-tooltip-content={isCopied ? "복사 완료" : "번호 복사"}
+              aria-label={isCopied ? "복사 완료" : "번호 복사"}
               onClick={() => {
                 handleCopy();
               }}

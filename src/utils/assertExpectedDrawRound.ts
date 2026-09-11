@@ -5,7 +5,9 @@ export function assertExpectedDrawRound(
   gameLabel: string,
 ): void {
   if (!Number.isInteger(actualRound) || actualRound <= 0) {
-    throw new Error(`${gameLabel} 응답 회차가 올바르지 않습니다: ${actualRound}`);
+    throw new Error(
+      `${gameLabel} 응답 회차가 올바르지 않습니다: ${actualRound}`,
+    );
   }
 
   if (actualRound !== expectedRound) {

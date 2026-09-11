@@ -1,10 +1,9 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getPensionWinningQuery } from "@/libs/queries/pensionQueries";
 import { formatDate } from "@/utils/formatDate";
 import { pensionNumberBg } from "@/utils/pensionNumberBg";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import React from "react";
 
 export default function PensionGeneratorWinning() {
   const { data, error, isFetching } = useSuspenseQuery(getPensionWinningQuery);

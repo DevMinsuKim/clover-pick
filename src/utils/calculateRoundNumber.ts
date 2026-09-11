@@ -48,8 +48,14 @@ function getKstParts(date: Date): KstDateTimeParts {
 /** KST 시각을 UTC epoch ms로 변환 */
 function kstToUtcMs(parts: KstDateTimeParts): number {
   return (
-    Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second) -
-    KST_OFFSET_MS
+    Date.UTC(
+      parts.year,
+      parts.month - 1,
+      parts.day,
+      parts.hour,
+      parts.minute,
+      parts.second,
+    ) - KST_OFFSET_MS
   );
 }
 

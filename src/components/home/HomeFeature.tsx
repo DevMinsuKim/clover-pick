@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
-import { DotLottiePlayer, Controls } from "@dotlottie/react-player";
-import "@dotlottie/react-player/dist/index.css";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function HomeFeature() {
   return (
@@ -18,7 +16,7 @@ export default function HomeFeature() {
         </div>
 
         <div className="h-[50%] w-[50%]">
-          <DotLottiePlayer src="/lottie/ai.lottie" autoplay loop />
+          <DotLottieReact src="/lottie/ai.lottie" autoplay loop />
         </div>
       </div>
 
@@ -33,7 +31,7 @@ export default function HomeFeature() {
         <div className="mt-10 flex w-full flex-col items-center justify-center md:flex-row md:items-stretch md:gap-12 lg:gap-32">
           <div className="flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow dark:border-none">
             <div className="max-h-[100px] max-w-[100px] rounded-xl bg-primaryHover sm:max-h-[150px] sm:max-w-[150px]">
-              <DotLottiePlayer src="/lottie/calculator.lottie" autoplay loop />
+              <DotLottieReact src="/lottie/calculator.lottie" autoplay loop />
             </div>
             <p className="mt-7 text-xl font-bold">당첨금 실수령액 계산기</p>
             <p className="mt-3 text-base">
@@ -45,7 +43,7 @@ export default function HomeFeature() {
 
           <div className="mt-5 flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow dark:border-none md:mt-0">
             <div className="max-h-[100px] max-w-[100px] rounded-xl bg-primaryHover sm:max-h-[150px] sm:max-w-[150px]">
-              <DotLottiePlayer src="/lottie/analysis.lottie" autoplay loop />
+              <DotLottieReact src="/lottie/analysis.lottie" autoplay loop />
             </div>
             <p className="mt-7 text-xl font-bold">당첨 통계 분석</p>
             <p className="mt-3 text-base">

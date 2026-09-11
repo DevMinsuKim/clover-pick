@@ -1,8 +1,9 @@
 "use client";
 
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
-import React, { ComponentType, ReactNode, Suspense } from "react";
-import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+import type React from "react";
+import { type ComponentType, type ReactNode, Suspense } from "react";
+import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 
 interface PropsType {
   children: React.ReactNode;

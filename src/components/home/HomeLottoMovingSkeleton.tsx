@@ -1,4 +1,3 @@
-import React from "react";
 import DeferredComponent from "../common/DeferredComponent";
 
 export default function HomeLottoMovingSkeleton() {
@@ -7,7 +6,7 @@ export default function HomeLottoMovingSkeleton() {
     <DeferredComponent>
       <div className="mx-auto mt-20 w-full animate-pulse overflow-hidden">
         <div className="flex">
-          {skeletonItems.map((item, index) => (
+          {skeletonItems.map((_item, index) => (
             <div
               key={index}
               className="mx-6 w-72 flex-shrink-0 rounded-xl bg-divider"
@@ -21,7 +20,7 @@ export default function HomeLottoMovingSkeleton() {
           ))}
         </div>
         <div className="mt-10 flex">
-          {skeletonItems.map((item, index) => (
+          {skeletonItems.map((_item, index) => (
             <div
               key={index}
               className="mx-6 w-72 flex-shrink-0 rounded-xl bg-divider"

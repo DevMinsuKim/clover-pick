@@ -1,16 +1,15 @@
 import "./globals.css";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ThemeProvider } from "@/providers/ThemeProvider";
-import QueryProvider from "@/providers/QueryClientProvider";
-import NavBar from "@/components/common/NavBar";
 import Footer from "@/components/common/Footer";
-import { ErrorModalProvider } from "@/providers/ErrorModalProvider";
-import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import GoogleAdsense from "@/components/common/GoogleAdsense";
+import NavBar from "@/components/common/NavBar";
 import WebVitals from "@/components/common/WebVitals";
-
+import { ErrorModalProvider } from "@/providers/ErrorModalProvider";
+import QueryProvider from "@/providers/QueryClientProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -18,6 +17,7 @@ const titleEn = "CloverPick";
 const titleKr = "클로버픽";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.cloverpick.com"),
   title: {
     default: titleKr,
     template: `%s | ${titleKr}`,
@@ -59,17 +59,14 @@ export default function RootLayout({
               <header className="sticky top-0 z-20 mx-auto w-full bg-background px-6">
                 <NavBar />
               </header>
-              <main className="min-h-screen flex-grow">
-                {children}
-             
-              </main>
+              <main className="min-h-screen flex-grow">{children}</main>
               <footer>
                 <Footer />
               </footer>
             </ErrorModalProvider>
           </QueryProvider>
         </ThemeProvider>
-        <SpeedInsights /> 
+        <SpeedInsights />
         <WebVitals />
       </body>
       <GoogleTagManager

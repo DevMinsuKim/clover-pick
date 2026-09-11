@@ -1,10 +1,9 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getLottoHistoryQuery } from "@/libs/queries/lottoQueries";
 import { formatDate } from "@/utils/formatDate";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import React from "react";
 
 export default function LottoGenerationHistory() {
   const { data, error, isFetching } = useSuspenseQuery(getLottoHistoryQuery);

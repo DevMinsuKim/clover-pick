@@ -1,11 +1,11 @@
 "use server";
 
-import { getLottoCurrentRound } from "@/constants/lotteryRounds";
-import prisma from "@/libs/prisma";
 import { openai } from "@ai-sdk/openai";
+import * as Sentry from "@sentry/nextjs";
 import { generateObject } from "ai";
 import { z } from "zod";
-import * as Sentry from "@sentry/nextjs";
+import { getLottoCurrentRound } from "@/constants/lotteryRounds";
+import prisma from "@/libs/prisma";
 import { isLottoGenerationRestricted } from "@/utils/generationRestriction";
 
 export async function lottoCreateNumberActions({ repeat }: { repeat: number }) {

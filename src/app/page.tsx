@@ -1,21 +1,20 @@
 export const revalidate = 1;
 
-import React from "react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import Link from "next/link";
-import BallMix from "@/components/home/BallMix";
 import Button from "@/components/common/Button";
-import { ROUTES } from "@/constants/routes";
-import DeviceActionText from "@/components/home/DeviceActionText";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
-import { getQueryClient } from "@/libs/getQueryClient";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import HomeStats from "@/components/home/HomeStats";
-import HomeStatsSkeleton from "@/components/home/HomeStatsSkeleton";
+import BallMix from "@/components/home/BallMix";
+import DeviceActionText from "@/components/home/DeviceActionText";
+import HomeFAQ from "@/components/home/HomeFAQ";
+import HomeFeature from "@/components/home/HomeFeature";
 import HomeContentMoving from "@/components/home/HomeLottoMoving";
 import HomeLottoMovingSkeleton from "@/components/home/HomeLottoMovingSkeleton";
-import HomeFeature from "@/components/home/HomeFeature";
-import HomeFAQ from "@/components/home/HomeFAQ";
+import HomeStats from "@/components/home/HomeStats";
+import HomeStatsSkeleton from "@/components/home/HomeStatsSkeleton";
+import { ROUTES } from "@/constants/routes";
+import { getQueryClient } from "@/libs/getQueryClient";
 import { getHomeQuery } from "@/libs/queries/homeQueries";
 
 export default async function Home() {

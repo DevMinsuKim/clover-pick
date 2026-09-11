@@ -1,19 +1,19 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import React, { useEffect, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
+import { Tooltip } from "react-tooltip";
+import { getQueryClient } from "@/libs/getQueryClient";
+import { useErrorModal } from "@/providers/ErrorModalProvider";
+import { lottoCreateNumberActions } from "@/server/lotto/lottoCreateNumberActions";
+import { errorMessage } from "@/utils/errorMessages";
+import { isLottoGenerationRestricted } from "@/utils/generationRestriction";
+import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import Button from "../common/Button";
 import Loader from "../common/Loader";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useErrorModal } from "@/providers/ErrorModalProvider";
 import Clipboard from "../ui/icons/Clipboard";
-import { Tooltip } from "react-tooltip";
 import ClipboardCheck from "../ui/icons/ClipboardCheck";
-import { errorMessage } from "@/utils/errorMessages";
-import { lottoNumberBg } from "@/utils/lottoNumberBg";
-import { lottoCreateNumberActions } from "@/server/lotto/lottoCreateNumberActions";
-import { getQueryClient } from "@/libs/getQueryClient";
-import { isLottoGenerationRestricted } from "@/utils/generationRestriction";
 
 interface LottoGeneratorNumbers {
   lottoNumbers: {
@@ -163,16 +163,16 @@ export default function LottoGenerator() {
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-full origin-top-right rounded-md border bg-white shadow dark:border-none dark:bg-black">
                 <div className="p-2">
-                  {dropDownData.map((item, index) => {
+                  {dropDownData.map((item, _index) => {
                     return (
-                      <p
+                      <button
+                        type="button"
                         onClick={() => dropdownChangeHandler(item)}
-                        key={index}
-                        className="block rounded px-2 py-2 text-sm text-foreground hover:bg-content1Hover"
-                        role="menuitem"
+                        key={item}
+                        className="block w-full rounded px-2 py-2 text-left text-sm text-foreground hover:bg-content1Hover"
                       >
                         {item}
-                      </p>
+                      </button>
                     );
                   })}
                 </div>
@@ -207,8 +207,10 @@ export default function LottoGenerator() {
 
           {lottoData && (
             <button
+              type="button"
               data-tooltip-id="tooltip"
               data-tooltip-content={isCopied ? "복사 완료" : "번호 복사"}
+              aria-label={isCopied ? "복사 완료" : "번호 복사"}
               onClick={() => {
                 handleCopy();
               }}

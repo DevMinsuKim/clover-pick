@@ -1,23 +1,22 @@
 export const revalidate = 1;
 
-import LottoGenerator from "@/components/lotto/LottoGenerator";
-import React from "react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import ErrorFallback from "@/components/common/ErrorFallback";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
+import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
+import LottoDrawNumberSkeleton from "@/components/lotto/LottoDrawNumberSkeleton";
+import LottoGenerationHistory from "@/components/lotto/LottoGenerationHistory";
+import LottoGenerationHistorySkeleton from "@/components/lotto/LottoGenerationHistorySkeleton";
+import LottoGenerator from "@/components/lotto/LottoGenerator";
+import LottoGeneratorWinning from "@/components/lotto/LottoGeneratorWinning";
+import LottoGeneratorWinningSkeleton from "@/components/lotto/LottoGeneratorWinningSkeleton";
+import LottoInfo from "@/components/lotto/LottoInfo";
+import { getQueryClient } from "@/libs/getQueryClient";
 import {
   getLottoHistoryQuery,
   getLottoQuery,
   getLottoWinningQuery,
 } from "@/libs/queries/lottoQueries";
-import { getQueryClient } from "@/libs/getQueryClient";
-import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
-import LottoDrawNumberSkeleton from "@/components/lotto/LottoDrawNumberSkeleton";
-import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
-import LottoGenerationHistory from "@/components/lotto/LottoGenerationHistory";
-import LottoGenerationHistorySkeleton from "@/components/lotto/LottoGenerationHistorySkeleton";
-import LottoGeneratorWinning from "@/components/lotto/LottoGeneratorWinning";
-import LottoInfo from "@/components/lotto/LottoInfo";
-import LottoGeneratorWinningSkeleton from "@/components/lotto/LottoGeneratorWinningSkeleton";
 
 export default async function Page() {
   const queryClient = getQueryClient();
