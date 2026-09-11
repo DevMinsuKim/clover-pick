@@ -24,7 +24,7 @@
 ## 🛠️ 주요 기능 및 기술적 접근
 
 - **반응형 UX/UI**: `Next.js`, `TypeScript`, `Tailwind CSS`를 기반으로 모바일·데스크톱에 대응하는 반응형 UI와 다크 모드를 구현
-- **SEO 및 인터랙션 애니메이션**: `SSR` 적용과 메타데이터 최적화를 통해 검색 엔진 노출을 고려했으며, `Three.js(R3F)`와 `Framer Motion`을 활용해 메인 페이지의 3D 인터랙션과 애니메이션을 구현
+- **SEO 및 인터랙션 애니메이션**: `SSR` 적용과 메타데이터 최적화를 통해 검색 엔진 노출을 고려했으며, `Three.js(R3F)`와 `Motion for React`을 활용해 메인 페이지의 3D 인터랙션과 애니메이션을 구현
 - **데이터 페칭 및 상태 관리**: `TanStack Query(React Query)`와 `Next.js Server Action`을 함께 활용해 서버 데이터 요청 흐름을 구성하고, `React Suspense`를 적용해 로딩 상태를 선언적으로 관리
 - **AI 응답 구조화 및 검증**: `generateText`·`Output.object`·`Zod`로 로또 응답을 검증합니다. 요청한 조합 개수, 조합별 1~45의 정수 6개, 조합 내부 및 같은 요청 내 조합 중복을 검사하고, 실패하면 일부만 저장하지 않고 요청 전체를 실패 처리합니다.
 - **에러 핸들링 및 모니터링**: `React Error Boundary`를 통해 런타임 에러를 선언적으로 처리하고, `Sentry`와 연동해 프로덕션 환경에서 발생하는 오류를 추적할 수 있도록 환경 구성
@@ -44,7 +44,7 @@
 | 코어                     | `Next.js`, `TypeScript`                        |
 | 상태 관리 및 데이터 페칭 | `TanStack Query(React Query)`, `Server Action` |
 | 비동기 UI 처리           | `React Suspense`, `React Error Boundary`       |
-| 스타일링 및 애니메이션   | `Tailwind CSS`, `Framer Motion`                |
+| 스타일링 및 애니메이션   | `Tailwind CSS`, `Motion for React`                |
 | 3D 그래픽                | `Three.js(R3F)`                                |
 | 패키지 매니저            | `Bun`                                          |
 | 빌드 도구                | `Turbopack`                                          |
@@ -78,7 +78,9 @@ flowchart LR; User(["사용자 / Browser"]); Cron(["Vercel Cron / 주간 스케�
 - Node.js 22.12 이상(22 LTS 권장)과 Bun 1.2.23을 사용합니다. `bun.lock`을 커밋하고 CI에서도 같은 Bun 버전으로 설치합니다.
 - Next.js 16.3.5와 React 19.2.8을 사용합니다. React Three Fiber 9.7의 지원 범위에 맞춰 React 19.3으로 자동 업데이트되지 않도록 고정했습니다.
 - React 19 호환성을 위해 Three.js 계열, Motion, next-themes, TanStack Query를 갱신하고 Lottie 플레이어를 `@lottiefiles/dotlottie-react`로 교체했습니다.
-- 개발·프로덕션 빌드 모두 Next.js 기본 Turbopack을 사용하며 SVG 컴포넌트는 `turbopack.rules`에서 SVGR로 변환합니다. Sentry는 Turbopack의 소스맵 처리를 사용하며 Webpack 전용 옵션은 제거했습니다.
+- 개발·프로덕션 빌드 모두 Next.js 기본 Turbopack을 사용하며 SVG 컴포넌트는 `turbopack.rules`에서 SVGR로 변환합니다. `svgr.d.ts`에서 SVG 속성 타입을 선언합니다.
+- Sentry 10.74와 Turbopack의 기본 소스맵 생성·업로드·클라이언트 소스맵 삭제 동작을 사용합니다. 중복된 수동 삭제 glob은 제거했으며, 서버 소스맵은 런타임 오류 추적을 위해 유지합니다. 업로드에는 빌드 환경의 Sentry 인증 설정이 필요합니다.
+- TanStack Query 5.102의 `environmentManager.isServer()`와 `queryClient.query()`를 사용합니다. 사전 조회 실패는 `.catch(noop)`으로 처리해 기존 Suspense·Error Boundary 재시도 흐름을 유지합니다. Next.js 라우트 오류 화면은 16.3의 `retry()`로 데이터를 다시 요청하며, React Context는 19의 Provider 표기를 사용합니다. Motion의 공식 권장 import인 `motion/react`로 갱신했습니다.
 - 앱 설치·오프라인 캐시 기능은 종료했습니다. `public/sw.js`는 기존 방문자의 서비스 워커를 종료하고 해당 캐시만 정리하는 파일로 Git에서 관리합니다. 새 방문자에게는 등록하지 않으며, 장기간 후 재방문하는 사용자도 갱신할 수 있도록 같은 URL을 유지합니다. 일반 브라우저 저장소·다크 모드 설정은 삭제하지 않습니다.
 - ESLint와 Prettier를 Biome으로 통합했습니다. React·Next.js 규칙, import 정리, 두 칸 들여쓰기·큰따옴표·세미콜론을 적용합니다. Cursor/VS Code에서는 권장 Biome 확장을 설치하면 저장 시 적용됩니다.
 - 기존 위치 기반 번호 표시와 스켈레톤의 key 정책은 이번 도구 전환에서 유지하므로 `noArrayIndexKey`는 비활성화했습니다. Tailwind 클래스 정렬은 Biome의 실험적 규칙과 기존 플러그인의 동작이 달라 자동 적용하지 않습니다.
@@ -224,6 +226,8 @@ const { object: data } = await generateObject({
 <br>
 
 ### 3. SourceMaps 보안 이슈
+
+아래 스크린샷은 초기 설정 당시 기록입니다. 현재 Sentry 10.74·Turbopack에서는 [SDK 기본 동작](https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/build/)으로 소스맵을 생성하고 업로드 후 공개 경로(`.next/static/`)의 소스맵을 삭제합니다. 소스맵 생성을 끄는 방식과는 다르며 서버 소스맵(`.next/server/`)은 보존합니다.
 
 #### 문제 상황
 - Sentry 연동 과정에서 Next.js 빌드 결과물에 SourceMaps 파일이 생성될 수 있음을 확인했습니다.

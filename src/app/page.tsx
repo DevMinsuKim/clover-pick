@@ -1,6 +1,6 @@
 export const revalidate = 1;
 
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, noop } from "@tanstack/react-query";
 import Link from "next/link";
 import Button from "@/components/common/Button";
 import ErrorFallback from "@/components/common/ErrorFallback";
@@ -20,7 +20,7 @@ import { getHomeQuery } from "@/libs/queries/homeQueries";
 export default async function Home() {
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery(getHomeQuery);
+  await queryClient.query(getHomeQuery).catch(noop);
 
   return (
     <section>

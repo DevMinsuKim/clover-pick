@@ -1,6 +1,6 @@
 export const revalidate = 1;
 
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary, noop } from "@tanstack/react-query";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
@@ -22,9 +22,9 @@ export default async function Page() {
   const queryClient = getQueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(getLottoQuery),
-    queryClient.prefetchQuery(getLottoHistoryQuery),
-    queryClient.prefetchQuery(getLottoWinningQuery),
+    queryClient.query(getLottoQuery).catch(noop),
+    queryClient.query(getLottoHistoryQuery).catch(noop),
+    queryClient.query(getLottoWinningQuery).catch(noop),
   ]);
 
   return (

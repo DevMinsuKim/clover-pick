@@ -38,9 +38,9 @@ export const ErrorModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ErrorContext.Provider value={{ showError, hideError }}>
+    <ErrorContext value={{ showError, hideError }}>
       {children}
       {error && <ErrorModal message={error} onClose={hideError} />}
-    </ErrorContext.Provider>
+    </ErrorContext>
   );
 };

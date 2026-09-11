@@ -31,7 +31,4 @@ export default withSentryConfig(nextConfig, {
   telemetry: false,
   widenClientFileUpload: true,
   tunnelRoute: "/monitoring",
-  sourcemaps: {
-    filesToDeleteAfterUpload: ["./.next/static/**/*.map"],
-  },
 });

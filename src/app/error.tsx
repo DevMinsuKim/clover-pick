@@ -5,10 +5,10 @@ import { errorHandler } from "@/utils/errorHandler";
 
 export default function ErrorPage({
   error,
-  reset,
+  retry,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
+  retry: () => void;
 }) {
   const { title, description, btnText } = errorHandler(error);
 
@@ -25,7 +25,7 @@ export default function ErrorPage({
         </div>
       )}
 
-      <Button onClick={() => reset()}>{btnText}</Button>
+      <Button onClick={retry}>{btnText}</Button>
     </div>
   );
 }
