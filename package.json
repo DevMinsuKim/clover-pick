@@ -9,11 +9,11 @@
     "lint": "biome lint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "biome check .",
-    "check:fix": "biome check --write .",
+    "check": "biome check . && bun run typecheck",
+    "check:fix": "biome check --write . && bun run typecheck",
     "format": "biome format --write .",
     "format:check": "biome format .",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.66",

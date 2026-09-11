@@ -101,8 +101,8 @@ bun run dev
 화면의 통계·생성 이력 조회에는 PostgreSQL이 필요합니다. 로컬 `.env`에 개발용 `POSTGRES_PRISMA_URL`과 `POSTGRES_URL_NON_POOLING`을 설정합니다. 번호 생성과 외부 서비스 연동에 필요한 키는 별도로 설정하며 커밋하지 않습니다.
 
 ```sh
-bun run check       # 린트·포맷·import 순서 검사
-bun run check:fix   # 안전한 자동 수정
+bun run check       # 린트·포맷·import 순서 및 TypeScript 검사
+bun run check:fix   # 안전한 자동 수정 후 TypeScript 검사
 bun run format     # 포맷 적용
 bun run typecheck  # Next.js 타입 생성 및 TypeScript 검사
 bun run test       # Vitest 단위 테스트
