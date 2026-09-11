@@ -38,10 +38,9 @@ function completion(content: string) {
   );
 }
 
-// Exercise the real AI SDK, provider and Zod parser without network or database writes.
-describe("lotto number generation validation", () => {
+// 실제 AI SDK와 Zod 파서를 실행하되 HTTP 응답과 DB 저장은 mock으로 대체한다.
+describe("로또 번호 생성과 AI 응답 검증", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     isRestricted.mockReturnValue(false);
     vi.stubEnv("OPENAI_API_KEY", "migration-test-key");
     createMany.mockResolvedValue({ count: 1 });
@@ -50,10 +49,9 @@ describe("lotto number generation validation", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
-    vi.restoreAllMocks();
   });
 
-  it("keeps Chat Completions and saves the parsed, sorted numbers", async () => {
+  it("Chat Completions의 구조화 응답을 검증하고 번호를 정렬해 저장한다", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       completion(
         JSON.stringify({
@@ -93,7 +91,7 @@ describe("lotto number generation validation", () => {
     "not JSON",
     JSON.stringify({ lottoNumbers: [{ numbers: [1, 2, 3] }] }),
     JSON.stringify({ lottoNumbers: [{ numbers: [1, 2, 3, 4, 5, 46] }] }),
-  ])("rejects malformed output before persistence: %s", async (content) => {
+  ])("잘못된 AI 응답은 저장 전에 거부한다: %s", async (content) => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(completion(content)));
 
     await expect(lottoCreateNumberActions({ repeat: 1 })).rejects.toThrow(
@@ -103,7 +101,7 @@ describe("lotto number generation validation", () => {
     expect(captureException).toHaveBeenCalled();
   });
 
-  it("does not persist a provider authentication error", async () => {
+  it("OpenAI 인증에 실패하면 저장하지 않는다", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue(
@@ -127,13 +125,12 @@ describe("lotto number generation validation", () => {
   });
 });
 
-describe("lotto request and response boundaries", () => {
+describe("로또 생성 요청과 응답의 경계 조건", () => {
   const first = { numbers: [1, 2, 3, 4, 5, 6] };
   const second = { numbers: [7, 8, 9, 10, 11, 12] };
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    vi.clearAllMocks();
     vi.stubEnv("OPENAI_API_KEY", "validation-test-key");
     isRestricted.mockReturnValue(false);
     createMany.mockResolvedValue({ count: 1 });
@@ -143,7 +140,6 @@ describe("lotto request and response boundaries", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
-    vi.restoreAllMocks();
   });
 
   it.each([
@@ -158,20 +154,17 @@ describe("lotto request and response boundaries", () => {
     { repeat: Infinity },
     { repeat: "1" },
     { repeat: true },
-  ])(
-    "rejects invalid input without calling OpenAI or DB: %j",
-    async (input) => {
-      await expect(
-        lottoCreateNumberActions(
-          input as Parameters<typeof lottoCreateNumberActions>[0],
-        ),
-      ).rejects.toThrow("2000");
-      expect(fetchMock).not.toHaveBeenCalled();
-      expect(createMany).not.toHaveBeenCalled();
-    },
-  );
+  ])("잘못된 입력은 OpenAI 호출과 DB 저장 전에 거부한다: %o", async (input) => {
+    await expect(
+      lottoCreateNumberActions(
+        input as Parameters<typeof lottoCreateNumberActions>[0],
+      ),
+    ).rejects.toThrow("2000");
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(createMany).not.toHaveBeenCalled();
+  });
 
-  it("rejects requests during the restricted period before external calls", async () => {
+  it("생성 제한 시간에는 OpenAI 호출과 DB 저장 전에 요청을 거부한다", async () => {
     isRestricted.mockReturnValue(true);
     await expect(lottoCreateNumberActions({ repeat: 1 })).rejects.toThrow(
       "2000",
@@ -181,33 +174,33 @@ describe("lotto request and response boundaries", () => {
   });
 
   it.each([
-    { name: "empty response", repeat: 1, tickets: [] },
-    { name: "too few combinations", repeat: 2, tickets: [first] },
-    { name: "too many combinations", repeat: 1, tickets: [first, second] },
+    { name: "빈 응답", repeat: 1, tickets: [] },
+    { name: "요청보다 적은 조합", repeat: 2, tickets: [first] },
+    { name: "요청보다 많은 조합", repeat: 1, tickets: [first, second] },
     {
-      name: "duplicate number",
+      name: "조합 내부의 중복 번호",
       repeat: 1,
       tickets: [{ numbers: [1, 2, 3, 4, 5, 5] }],
     },
     {
-      name: "fractional number",
+      name: "소수인 번호",
       repeat: 1,
       tickets: [{ numbers: [1, 2, 3, 4, 5, 6.5] }],
     },
-    { name: "zero", repeat: 1, tickets: [{ numbers: [0, 2, 3, 4, 5, 6] }] },
+    { name: "0인 번호", repeat: 1, tickets: [{ numbers: [0, 2, 3, 4, 5, 6] }] },
     {
-      name: "extra number",
+      name: "번호가 7개인 조합",
       repeat: 1,
       tickets: [{ numbers: [1, 2, 3, 4, 5, 6, 7] }],
     },
-    { name: "duplicate combination", repeat: 2, tickets: [first, first] },
+    { name: "동일한 조합", repeat: 2, tickets: [first, first] },
     {
-      name: "reordered duplicate combination",
+      name: "순서만 다른 중복 조합",
       repeat: 2,
       tickets: [first, { numbers: [6, 5, 4, 3, 2, 1] }],
     },
   ])(
-    "rejects $name without saving any partial output",
+    "$name 응답은 일부도 저장하지 않고 거부한다",
     async ({ repeat, tickets }) => {
       fetchMock.mockResolvedValue(
         completion(JSON.stringify({ lottoNumbers: tickets })),
@@ -219,7 +212,7 @@ describe("lotto request and response boundaries", () => {
     },
   );
 
-  it("accepts exactly five distinct combinations, including numbers shared across combinations", async () => {
+  it("서로 다른 조합 5개를 허용하고 조합 간 개별 번호의 재사용은 허용한다", async () => {
     const tickets = Array.from({ length: 5 }, (_, i) => ({
       numbers: [45 - i, 1, 2, 3, 4, 5],
     }));
@@ -234,7 +227,7 @@ describe("lotto request and response boundaries", () => {
     expect(createMany.mock.calls[0][0].data).toHaveLength(5);
   });
 
-  it("does not return success if persistence fails", async () => {
+  it("DB 저장에 실패하면 성공 응답을 반환하지 않는다", async () => {
     fetchMock.mockResolvedValue(
       completion(JSON.stringify({ lottoNumbers: [first] })),
     );

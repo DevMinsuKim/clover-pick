@@ -44,15 +44,15 @@ function worker(cacheNames: string[]) {
   return { handlers, unregister, claim, skipWaiting, cacheStorage, dispatch };
 }
 
-describe("retired service worker", () => {
-  it("takes over old registrations without installing a fetch handler", async () => {
+describe("기존 서비스 워커 종료", () => {
+  it("즉시 활성화를 요청하고 fetch 처리기를 등록하지 않는다", async () => {
     const instance = worker([]);
     await instance.dispatch("install");
     expect(instance.skipWaiting).toHaveBeenCalledOnce();
     expect(instance.handlers.has("fetch")).toBe(false);
   });
 
-  it("removes legacy caches, preserves unrelated caches and unregisters", async () => {
+  it("기존 앱 캐시만 삭제하고 다른 캐시는 보존한 뒤 등록을 해제한다", async () => {
     const precache = "workbox-precache-v2-https://www.cloverpick.com/";
     const instance = worker([
       "start-url",
@@ -69,7 +69,7 @@ describe("retired service worker", () => {
     expect(instance.unregister).toHaveBeenCalledOnce();
   });
 
-  it("still unregisters when cache cleanup fails", async () => {
+  it("캐시 삭제에 실패해도 등록은 해제한다", async () => {
     const instance = worker(["next-data"]);
     instance.cacheStorage.delete.mockRejectedValue(
       new Error("Cache unavailable"),

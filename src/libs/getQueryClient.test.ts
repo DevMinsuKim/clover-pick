@@ -23,8 +23,8 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe("QueryClient SSR migration", () => {
-  it("isolates query data between server requests", () => {
+describe("서버와 브라우저의 QueryClient 관리", () => {
+  it("서버 요청마다 별도 클라이언트를 생성해 캐시를 격리한다", () => {
     const first = client();
     const second = client();
     first.setQueryData(["private"], "first request");
@@ -32,12 +32,12 @@ describe("QueryClient SSR migration", () => {
     expect(second.getQueryData(["private"])).toBeUndefined();
   });
 
-  it("reuses one client during browser renders", () => {
+  it("브라우저에서는 같은 클라이언트를 재사용한다", () => {
     vi.mocked(environmentManager.isServer).mockReturnValue(false);
     expect(client()).toBe(client());
   });
 
-  it("dehydrates data and honors staleTime without refetching fresh data", async () => {
+  it("캐시 유효 시간 안에는 재조회하지 않고 서버 데이터를 직렬화한다", async () => {
     const instance = client();
     const queryFn = vi.fn().mockResolvedValue({ draw_number: 1234 });
     const options = { queryKey: ["round"], queryFn };
@@ -47,30 +47,5 @@ describe("QueryClient SSR migration", () => {
     expect(dehydrate(instance).queries[0].state.data).toEqual({
       draw_number: 1234,
     });
-  });
-
-  it("keeps successful queries when a parallel prefetch fails and allows retry", async () => {
-    const instance = client();
-    const failedQuery = vi
-      .fn()
-      .mockRejectedValue(new Error("Temporary fetch error"));
-    await expect(
-      Promise.all([
-        instance
-          .query({ queryKey: ["good"], queryFn: async () => 1 })
-          .catch(noop),
-        instance
-          .query({ queryKey: ["retry"], queryFn: failedQuery })
-          .catch(noop),
-      ]),
-    ).resolves.toEqual([1, undefined]);
-    expect(dehydrate(instance).queries.map(({ queryKey }) => queryKey)).toEqual(
-      [["good"]],
-    );
-    failedQuery.mockResolvedValue(2);
-    await instance
-      .query({ queryKey: ["retry"], queryFn: failedQuery })
-      .catch(noop);
-    expect(instance.getQueryData(["retry"])).toBe(2);
   });
 });

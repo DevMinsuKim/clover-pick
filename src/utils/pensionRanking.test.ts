@@ -4,7 +4,7 @@ import { getPensionRanking } from "./pensionRanking";
 const winningNumber = "3123456";
 const bonusNumber = "654321";
 
-describe("getPensionRanking", () => {
+describe("연금복권 등수 판정 (getPensionRanking)", () => {
   it("1등: 조와 6자리 모두 일치", () => {
     expect(getPensionRanking("3123456", winningNumber, bonusNumber)).toBe(1);
   });
@@ -35,12 +35,6 @@ describe("getPensionRanking", () => {
 
   it("보너스 등위: 보너스 번호와 끝 6자리 일치", () => {
     expect(getPensionRanking("1654321", winningNumber, bonusNumber)).toBe(8);
-  });
-
-  it("1등이 2등보다 우선한다", () => {
-    expect(getPensionRanking(winningNumber, winningNumber, bonusNumber)).toBe(
-      1,
-    );
   });
 
   it("낙첨: 끝자리와 보너스가 모두 불일치", () => {

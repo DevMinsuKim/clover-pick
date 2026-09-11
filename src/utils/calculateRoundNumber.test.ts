@@ -13,7 +13,7 @@ import {
 } from "@/constants/lotteryRounds";
 import { calculateRoundNumber } from "./calculateRoundNumber";
 
-describe("calculateRoundNumber", () => {
+describe("복권 회차 계산 (calculateRoundNumber)", () => {
   describe("로또 6/45 (앵커 2002-12-07, 토 20:00 KST)", () => {
     it("1회차 추첨 전에는 1회차를 반환한다", () => {
       const beforeFirstDraw = new Date("2002-12-07T19:59:00+09:00");

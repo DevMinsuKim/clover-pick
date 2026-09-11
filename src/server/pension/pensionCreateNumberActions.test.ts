@@ -16,9 +16,8 @@ vi.mock("@sentry/nextjs", () => ({
   captureMessage: vi.fn(),
 }));
 
-describe("pension number generation validation", () => {
+describe("연금복권 번호 생성 검증", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     isRestricted.mockReturnValue(false);
     createMany.mockResolvedValue({ count: 1 });
   });
@@ -39,21 +38,18 @@ describe("pension number generation validation", () => {
       isAllGroup: false,
     })),
     { repeat: 0, isAllGroup: true },
-  ])(
-    "rejects invalid input before random generation and DB writes: %j",
-    async (input) => {
-      const random = vi.spyOn(Math, "random");
-      await expect(
-        pensionCreateNumberActions(
-          input as Parameters<typeof pensionCreateNumberActions>[0],
-        ),
-      ).rejects.toThrow("2000");
-      expect(random).not.toHaveBeenCalled();
-      expect(createMany).not.toHaveBeenCalled();
-    },
-  );
+  ])("잘못된 입력은 난수 생성과 DB 저장 전에 거부한다: %o", async (input) => {
+    const random = vi.spyOn(Math, "random");
+    await expect(
+      pensionCreateNumberActions(
+        input as Parameters<typeof pensionCreateNumberActions>[0],
+      ),
+    ).rejects.toThrow("2000");
+    expect(random).not.toHaveBeenCalled();
+    expect(createMany).not.toHaveBeenCalled();
+  });
 
-  it("enforces the server-side generation restriction", async () => {
+  it("서버에서도 생성 제한 시간을 검사한다", async () => {
     const random = vi.spyOn(Math, "random");
     isRestricted.mockReturnValue(true);
     await expect(
@@ -67,7 +63,7 @@ describe("pension number generation validation", () => {
     { value: 0, expected: "1000000" },
     { value: 0.9999999, expected: "5999999" },
   ])(
-    "preserves leading zeros and valid repeated digits: $expected",
+    "조 번호와 여섯 자리 번호의 경계값을 올바르게 저장한다: $expected",
     async ({ value, expected }) => {
       vi.spyOn(Math, "random").mockReturnValue(value);
       const result = await pensionCreateNumberActions({
@@ -82,7 +78,7 @@ describe("pension number generation validation", () => {
   );
 
   it.each([1, 5])(
-    "all-group mode returns five groups with one shared six-digit number (repeat=%i)",
+    "모든 조 선택 시 요청 개수와 관계없이 같은 번호로 1~5조를 생성한다 (repeat=%i)",
     async (repeat) => {
       vi.spyOn(Math, "random").mockReturnValue(0);
       const result = await pensionCreateNumberActions({
@@ -100,7 +96,7 @@ describe("pension number generation validation", () => {
     },
   );
 
-  it("retries a duplicate ticket and returns exactly the requested count", async () => {
+  it("중복 조합이 나오면 다시 생성해 요청한 개수를 채운다", async () => {
     vi.spyOn(Math, "random")
       .mockReturnValueOnce(0)
       .mockReturnValueOnce(0)
@@ -118,7 +114,7 @@ describe("pension number generation validation", () => {
     expect(createMany.mock.calls[0][0].data).toHaveLength(2);
   });
 
-  it("supports five distinct tickets in ordinary mode", async () => {
+  it("일반 모드에서 서로 다른 조합 5개를 생성한다", async () => {
     const random = vi.spyOn(Math, "random");
     for (const value of [0, 0.2, 0.4, 0.6, 0.8])
       random.mockReturnValueOnce(value).mockReturnValueOnce(0);
@@ -135,7 +131,7 @@ describe("pension number generation validation", () => {
     ]);
   });
 
-  it("stops repeated collisions without hanging or saving a partial set", async () => {
+  it("중복이 계속되면 무한 반복하거나 일부를 저장하지 않고 실패한다", async () => {
     const random = vi.spyOn(Math, "random").mockReturnValue(0);
     await expect(
       pensionCreateNumberActions({ repeat: 2, isAllGroup: false }),
@@ -144,15 +140,7 @@ describe("pension number generation validation", () => {
     expect(createMany).not.toHaveBeenCalled();
   });
 
-  it("rejects an invalid generated ticket before persistence", async () => {
-    vi.spyOn(Math, "random").mockReturnValue(1);
-    await expect(
-      pensionCreateNumberActions({ repeat: 1, isAllGroup: false }),
-    ).rejects.toThrow("2000");
-    expect(createMany).not.toHaveBeenCalled();
-  });
-
-  it("does not return success if persistence fails", async () => {
+  it("DB 저장에 실패하면 성공 응답을 반환하지 않는다", async () => {
     vi.spyOn(Math, "random").mockReturnValue(0);
     createMany.mockRejectedValue(new Error("Test database failure"));
     await expect(

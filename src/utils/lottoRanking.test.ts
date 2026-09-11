@@ -4,7 +4,7 @@ import { getLottoRanking } from "./lottoRanking";
 const winningNumbers = [1, 2, 3, 4, 5, 6];
 const bonusNumber = 7;
 
-describe("getLottoRanking", () => {
+describe("로또 등수 판정 (getLottoRanking)", () => {
   it("1등: 6개 일치", () => {
     expect(
       getLottoRanking([1, 2, 3, 4, 5, 6], winningNumbers, bonusNumber),

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { isAuthorizedCronRequest } from "./cronAuth";
 
-describe("isAuthorizedCronRequest", () => {
+describe("예약 작업 요청 인증 (isAuthorizedCronRequest)", () => {
   afterEach(() => {
     vi.unstubAllEnvs();
   });

@@ -109,6 +109,12 @@ bun run test       # Vitest 단위 테스트
 bun run build      # Prisma 클라이언트 생성 및 프로덕션 빌드
 ```
 
+테스트의 `describe`·`it`·`test` 설명과 매개변수별 사례 이름은 한국어로 작성하며, 조건과 기대 결과를 드러냅니다. 함수·API·필드 식별자는 원래 이름을 유지합니다.
+
+회차·등수·입력 검증·저장 실패·인증·기존 캐시 정리처럼 실제 동작과 데이터 보호에 필요한 테스트를 유지합니다. 동일한 입력과 결과를 반복하거나 라이브러리 자체 동작만 재검사하는 사례는 추가하지 않습니다. 외부 API와 DB는 mock으로 대체합니다.
+
+[Vitest 5](https://vitest.dev/guide/migration/#clearmocks-is-enabled-by-default)의 기본 `clearMocks: true`로 mock 호출 기록을 초기화합니다. 환경변수·전역 함수·spy의 복원은 자동 초기화와 다르므로 해당 테스트에서 명시적으로 정리합니다. JSON·JUnit·HTML 리포트의 기본 저장 경로인 `.vitest/`는 Git에서 제외합니다.
+
 CI는 별도 PostgreSQL 서비스에 테스트 스키마를 생성한 뒤 빌드합니다. 운영 DB나 외부 API 키를 사용하지 않습니다. 로컬 빌드는 페이지 사전 렌더링 중 DB를 조회하므로 개발용 DB 연결을 먼저 확인합니다.
 
 ## 🚨 트러블슈팅(troubleshooting)

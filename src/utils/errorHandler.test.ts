@@ -6,9 +6,9 @@ vi.mock("@sentry/nextjs", () => ({
   captureMessage: vi.fn(),
 }));
 
-describe("Error Boundary unknown errors", () => {
+describe("오류 화면의 예외 값 처리", () => {
   it.each([undefined, null, "failure", 42, { message: 42 }])(
-    "returns a fallback for a non-Error thrown value: %s",
+    "Error가 아닌 값에도 기본 오류 안내를 반환한다: %s",
     (value) => {
       expect(errorHandler(value)).toEqual({
         title: "이용에 불편을 드려 죄송합니다.",
@@ -19,7 +19,7 @@ describe("Error Boundary unknown errors", () => {
     },
   );
 
-  it("preserves a recognized Error code", () => {
+  it("정의된 오류 코드는 해당 안내로 변환한다", () => {
     expect(errorHandler(new Error("1000")).title).toBe(
       "데이터를 로드하는데 실패했습니다.",
     );
