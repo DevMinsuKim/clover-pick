@@ -17,7 +17,8 @@
       "!public/workbox-*.js",
       "!next-env.d.ts",
       "!bun.lock",
-      "!public/**/*.svg"
+      "!public/**/*.svg",
+      "!src/generated"
     ]
   },
   "formatter": {
@@ -55,12 +56,6 @@
         "noDocumentImportInPage": "error",
         "noHeadImportInDocument": "error",
         "useGoogleFontDisplay": "warn",
-        "noUnknownAtRules": {
-          "level": "error",
-          "options": {
-            "ignore": ["tailwind"]
-          }
-        },
         "noArrayIndexKey": "off"
       }
     },

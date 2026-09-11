@@ -29,7 +29,7 @@ export default function HomeFeature() {
         </p>
 
         <div className="mt-10 flex w-full flex-col items-center justify-center md:flex-row md:items-stretch md:gap-12 lg:gap-32">
-          <div className="flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow dark:border-none">
+          <div className="flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow-sm dark:border-none">
             <div className="max-h-[100px] max-w-[100px] rounded-xl bg-primaryHover sm:max-h-[150px] sm:max-w-[150px]">
               <DotLottieReact src="/lottie/calculator.lottie" autoplay loop />
             </div>
@@ -41,7 +41,7 @@ export default function HomeFeature() {
             </p>
           </div>
 
-          <div className="mt-5 flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow dark:border-none md:mt-0">
+          <div className="mt-5 flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow-sm dark:border-none md:mt-0">
             <div className="max-h-[100px] max-w-[100px] rounded-xl bg-primaryHover sm:max-h-[150px] sm:max-w-[150px]">
               <DotLottieReact src="/lottie/analysis.lottie" autoplay loop />
             </div>

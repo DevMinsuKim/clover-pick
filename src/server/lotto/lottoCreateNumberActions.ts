@@ -2,7 +2,7 @@
 
 import { openai } from "@ai-sdk/openai";
 import * as Sentry from "@sentry/nextjs";
-import { generateObject } from "ai";
+import { generateText, Output } from "ai";
 import { z } from "zod";
 import { getLottoCurrentRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
@@ -23,16 +23,18 @@ export async function lottoCreateNumberActions({ repeat }: { repeat: number }) {
       throw new Error("1101");
     }
 
-    const { object: data } = await generateObject({
-      model: openai("gpt-4o"),
-      system: "You're a lotto number prediction system",
+    const { output: data } = await generateText({
+      model: openai.chat("gpt-4o"),
+      instructions: "You're a lotto number prediction system",
       prompt: `Predict ${repeat} sets of 6 winning numbers from 1 to 45`,
-      schema: z.object({
-        lottoNumbers: z.array(
-          z.object({
-            numbers: z.array(z.number().min(1).max(45)).length(6),
-          }),
-        ),
+      output: Output.object({
+        schema: z.object({
+          lottoNumbers: z.array(
+            z.object({
+              numbers: z.array(z.number().min(1).max(45)).length(6),
+            }),
+          ),
+        }),
       }),
     });
 

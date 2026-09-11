@@ -82,7 +82,7 @@ export default async function Home() {
       <HomeFAQ />
 
       <div className="mx-auto my-20 w-full max-w-screen-xl px-6 md:my-40">
-        <div className="rounded-xl border bg-content1 px-6 pb-6 pt-4 shadow dark:border-none sm:py-8">
+        <div className="rounded-xl border bg-content1 px-6 pb-6 pt-4 shadow-sm dark:border-none sm:py-8">
           <div className="mb-6 flex items-center justify-center">
             <p className="text-center text-xl font-bold sm:text-2xl">
               지금 바로 1분 안에 번호를 생성해 보세요!

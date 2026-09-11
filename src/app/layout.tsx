@@ -59,7 +59,7 @@ export default function RootLayout({
               <header className="sticky top-0 z-20 mx-auto w-full bg-background px-6">
                 <NavBar />
               </header>
-              <main className="min-h-screen flex-grow">{children}</main>
+              <main className="min-h-screen grow">{children}</main>
               <footer>
                 <Footer />
               </footer>

@@ -11,9 +11,9 @@ export default function PensionGenerationHistorySkeleton() {
         {skeletonItems.map((_item, index) => (
           <div key={index} className="rounded-lg bg-divider p-4">
             <div className="flex flex-col gap-y-3">
-              <div className="h-4 rounded bg-content2"></div>
-              <div className="h-4 rounded bg-content2"></div>
-              <div className="h-4 rounded bg-content2"></div>
+              <div className="h-4 rounded-sm bg-content2"></div>
+              <div className="h-4 rounded-sm bg-content2"></div>
+              <div className="h-4 rounded-sm bg-content2"></div>
             </div>
           </div>
         ))}

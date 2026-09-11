@@ -9,12 +9,12 @@ export default function HomeLottoMovingSkeleton() {
           {skeletonItems.map((_item, index) => (
             <div
               key={index}
-              className="mx-6 w-72 flex-shrink-0 rounded-xl bg-divider"
+              className="mx-6 w-72 shrink-0 rounded-xl bg-divider"
             >
               <div className="my-6 px-6">
-                <div className="my-2 h-2 rounded bg-content2"></div>
-                <div className="my-2 h-2 rounded bg-content2"></div>
-                <div className="my-2 h-2 rounded bg-content2"></div>
+                <div className="my-2 h-2 rounded-sm bg-content2"></div>
+                <div className="my-2 h-2 rounded-sm bg-content2"></div>
+                <div className="my-2 h-2 rounded-sm bg-content2"></div>
               </div>
             </div>
           ))}
@@ -23,12 +23,12 @@ export default function HomeLottoMovingSkeleton() {
           {skeletonItems.map((_item, index) => (
             <div
               key={index}
-              className="mx-6 w-72 flex-shrink-0 rounded-xl bg-divider"
+              className="mx-6 w-72 shrink-0 rounded-xl bg-divider"
             >
               <div className="my-6 px-6">
-                <div className="my-2 h-2 rounded bg-content2"></div>
-                <div className="my-2 h-2 rounded bg-content2"></div>
-                <div className="my-2 h-2 rounded bg-content2"></div>
+                <div className="my-2 h-2 rounded-sm bg-content2"></div>
+                <div className="my-2 h-2 rounded-sm bg-content2"></div>
+                <div className="my-2 h-2 rounded-sm bg-content2"></div>
               </div>
             </div>
           ))}

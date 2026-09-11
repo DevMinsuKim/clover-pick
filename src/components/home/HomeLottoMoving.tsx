@@ -35,8 +35,8 @@ export default function HomeLottoMoving() {
 
   return (
     <div className="mt-20">
-      <div className="group flex space-x-16 overflow-hidden">
-        <div className="animate-loop-scroll group-hover:paused flex space-x-16">
+      <div className="group flex gap-x-16 overflow-hidden">
+        <div className="animate-loop-scroll group-hover:paused flex gap-x-16">
           {data.success?.lottoCreateList.map((item, index) => {
             const numbers = [
               item.number1,
@@ -50,7 +50,7 @@ export default function HomeLottoMoving() {
             return (
               <div
                 key={index}
-                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow dark:border-none"
+                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow-sm dark:border-none"
               >
                 <p className="font-bold">{item.draw_number} 회</p>
 
@@ -73,7 +73,7 @@ export default function HomeLottoMoving() {
                   ))}
                 </div>
 
-                <p className="whitespace-pre-wrap break-words text-xs">
+                <p className="whitespace-pre-wrap wrap-break-word text-xs">
                   {formatDate(item.created)}
                 </p>
               </div>
@@ -82,7 +82,7 @@ export default function HomeLottoMoving() {
         </div>
 
         <div
-          className="animate-loop-scroll group-hover:paused flex space-x-16"
+          className="animate-loop-scroll group-hover:paused flex gap-x-16"
           aria-hidden="true"
         >
           {data.success?.lottoCreateList.map((item, index) => {
@@ -98,7 +98,7 @@ export default function HomeLottoMoving() {
             return (
               <div
                 key={index}
-                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow dark:border-none"
+                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow-sm dark:border-none"
               >
                 <p className="font-bold">{item.draw_number} 회</p>
 
@@ -121,7 +121,7 @@ export default function HomeLottoMoving() {
                   ))}
                 </div>
 
-                <p className="whitespace-pre-wrap break-words text-xs">
+                <p className="whitespace-pre-wrap wrap-break-word text-xs">
                   {formatDate(item.created)}
                 </p>
               </div>
@@ -130,13 +130,13 @@ export default function HomeLottoMoving() {
         </div>
       </div>
 
-      <div className="group mt-12 flex space-x-16 overflow-hidden">
-        <div className="animate-reverse-loop-scroll group-hover:paused flex space-x-16">
+      <div className="group mt-12 flex gap-x-16 overflow-hidden">
+        <div className="animate-reverse-loop-scroll group-hover:paused flex gap-x-16">
           {data.success?.pensionCreateList.map((item, index) => {
             return (
               <div
                 key={index}
-                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow dark:border-none"
+                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow-sm dark:border-none"
               >
                 <p className="font-bold">{item.draw_number} 회</p>
 
@@ -144,7 +144,7 @@ export default function HomeLottoMoving() {
                   {renderPensionNumbers(item.number)}
                 </div>
 
-                <p className="whitespace-pre-wrap break-words text-xs">
+                <p className="whitespace-pre-wrap wrap-break-word text-xs">
                   {formatDate(item.created)}
                 </p>
               </div>
@@ -153,14 +153,14 @@ export default function HomeLottoMoving() {
         </div>
 
         <div
-          className="animate-reverse-loop-scroll group-hover:paused flex space-x-16"
+          className="animate-reverse-loop-scroll group-hover:paused flex gap-x-16"
           aria-hidden="true"
         >
           {data.success?.pensionCreateList.map((item, index) => {
             return (
               <div
                 key={index}
-                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow dark:border-none"
+                className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow-sm dark:border-none"
               >
                 <p className="font-bold">{item.draw_number} 회</p>
 
@@ -168,7 +168,7 @@ export default function HomeLottoMoving() {
                   {renderPensionNumbers(item.number)}
                 </div>
 
-                <p className="whitespace-pre-wrap break-words text-xs">
+                <p className="whitespace-pre-wrap wrap-break-word text-xs">
                   {formatDate(item.created)}
                 </p>
               </div>

@@ -72,7 +72,7 @@ jobs:
         run: bun run test
 
       - name: Prepare isolated test database
-        run: bunx prisma db push --skip-generate
+        run: bunx prisma db push
 
       - name: Build application
         run: bun run build

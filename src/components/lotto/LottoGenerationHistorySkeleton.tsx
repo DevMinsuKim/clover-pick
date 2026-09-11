@@ -11,9 +11,9 @@ export default function LottoGenerationHistorySkeleton() {
         {skeletonItems.map((_item, index) => (
           <div key={index} className="rounded-lg bg-divider p-4">
             <div className="flex flex-col gap-y-3">
-              <div className="bg-content2 h-4 rounded"></div>
-              <div className="bg-content2 h-4 rounded"></div>
-              <div className="bg-content2 h-4 rounded"></div>
+              <div className="bg-content2 h-4 rounded-sm"></div>
+              <div className="bg-content2 h-4 rounded-sm"></div>
+              <div className="bg-content2 h-4 rounded-sm"></div>
             </div>
           </div>
         ))}

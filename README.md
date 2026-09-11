@@ -75,13 +75,18 @@ flowchart LR; User(["사용자 / Browser PWA"]); Cron(["Vercel Cron / 주간 스
 
 ## 로컬 개발 및 품질 검사
 
-- Node.js 22 이상과 Bun 1.2.23을 사용합니다. `bun.lock`을 커밋하고 CI에서도 같은 Bun 버전으로 설치합니다.
+- Node.js 22.12 이상(22 LTS 권장)과 Bun 1.2.23을 사용합니다. `bun.lock`을 커밋하고 CI에서도 같은 Bun 버전으로 설치합니다.
 - Next.js 16.3.5와 React 19.2.8을 사용합니다. React Three Fiber 9.7의 지원 범위에 맞춰 React 19.3으로 자동 업데이트되지 않도록 고정했습니다.
 - React 19 호환성을 위해 Three.js 계열, Motion, next-themes, TanStack Query를 갱신하고 Lottie 플레이어를 `@lottiefiles/dotlottie-react`로 교체했습니다.
 - PWA와 SVG 로더를 유지하기 위해 개발·빌드 모두 Webpack을 사용합니다. `public/sw.js`와 `public/workbox-*`는 빌드 생성물이며 Git에 저장하지 않습니다.
 - ESLint와 Prettier를 Biome으로 통합했습니다. React·Next.js 규칙, import 정리, 두 칸 들여쓰기·큰따옴표·세미콜론을 적용합니다. Cursor/VS Code에서는 권장 Biome 확장을 설치하면 저장 시 적용됩니다.
 - 기존 위치 기반 번호 표시와 스켈레톤의 key 정책은 이번 도구 전환에서 유지하므로 `noArrayIndexKey`는 비활성화했습니다. Tailwind 클래스 정렬은 Biome의 실험적 규칙과 기존 플러그인의 동작이 달라 자동 적용하지 않습니다.
-- Prisma 5, AI SDK 3, Zod 3, Tailwind CSS 3의 메이저 업데이트는 별도로 진행합니다.
+- Prisma CLI·Client·PostgreSQL 드라이버를 정식 7.10.0으로 맞췄습니다. `latest`의 Prisma 8 RC는 적용하지 않았습니다. 생성 코드는 `src/generated/prisma`에 두고 Git에서 제외합니다.
+- Prisma CLI는 `prisma.config.ts`의 `POSTGRES_URL_NON_POOLING`, 앱은 `POSTGRES_PRISMA_URL`을 사용합니다. `pg` 어댑터는 인스턴스당 최대 연결 5개, 연결 대기 5초, 유휴 연결 10초로 설정하며 개발 중에는 클라이언트를 재사용합니다. 기존 DB 모델과 데이터는 유지합니다. SSL의 `require` 등 기존 별칭은 `pg` 8과 같은 인증서 검증을 유지하도록 `verify-full`로 명시하며, 원본 환경변수는 바꾸지 않습니다.
+- AI SDK 7·OpenAI Provider 4·Zod 4로 전환했습니다. `generateText`와 `Output.object`를 사용하며, 기존 GPT-4o의 Chat Completions 호출은 명시적으로 유지합니다. 테스트는 가짜 HTTP 응답과 DB mock으로 SDK·스키마 파싱 및 저장 전 오류 처리를 확인합니다.
+- Tailwind CSS 4의 테마·다크 모드·애니메이션을 `src/app/globals.css`로 옮기고 PostCSS 전용 플러그인을 사용합니다. 지원 브라우저 기준은 Safari 16.4+, Chrome 111+, Firefox 128+입니다. 기존 테두리·그림자·툴팁 및 버튼 커서 표현은 전환 시 보존합니다.
+- TypeScript는 Next.js 빌드의 JavaScript 컴파일러 API와 호환되는 6.0.3으로 고정하고, Vitest는 5로 갱신했습니다. React Error Boundary 6의 `unknown` 오류는 타입을 확인한 뒤 처리합니다.
+- Vercel CLI는 개발 의존성으로 이동하고, 사용하지 않는 `@types/minimatch`와 Tailwind 4에서 불필요한 Autoprefixer는 제거했습니다.
 
 ```sh
 bun install --frozen-lockfile --ignore-scripts

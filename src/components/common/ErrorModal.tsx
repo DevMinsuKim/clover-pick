@@ -38,14 +38,14 @@ export default function ErrorModal({
   }, [onClose]);
 
   return createPortal(
-    <div className="fixed inset-0 z-20 flex min-w-[320px] items-center justify-center bg-black bg-opacity-50 px-6">
+    <div className="fixed inset-0 z-20 flex min-w-[320px] items-center justify-center bg-black/50 px-6">
       <button
         type="button"
         aria-label="오류 알림 닫기"
         className="absolute inset-0"
         onClick={onClose}
       />
-      <div className="relative max-w-screen-xl whitespace-pre-wrap break-words rounded-xl bg-content1 px-5 py-4 text-center text-foreground shadow-lg sm:m-0">
+      <div className="relative max-w-screen-xl whitespace-pre-wrap wrap-break-word rounded-xl bg-content1 px-5 py-4 text-center text-foreground shadow-lg sm:m-0">
         {title && (
           <h2 className="mb-4 text-base font-bold sm:text-lg">{title}</h2>
         )}

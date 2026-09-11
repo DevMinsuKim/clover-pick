@@ -13,7 +13,7 @@ export default function LottoGeneratorWinning() {
 
   if (!data || data.success?.length === 0) {
     return (
-      <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-content1 py-4 shadow dark:border-none">
+      <div className="flex w-full flex-col items-center justify-center rounded-lg border bg-content1 py-4 shadow-sm dark:border-none">
         <p className="font-bold">
           아직 당첨 내역이 없습니다.😔 <br />
           다음 회차를 기대해 주세요!
@@ -37,7 +37,7 @@ export default function LottoGeneratorWinning() {
         return (
           <div
             key={index}
-            className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow dark:border-none"
+            className="flex flex-col items-center gap-y-2 rounded-lg border bg-content1 px-4 py-2 shadow-sm dark:border-none"
           >
             <p className="text-lg font-bold">
               <strong className="text-primary">{item.ranking}</strong> 등
@@ -61,7 +61,7 @@ export default function LottoGeneratorWinning() {
               ))}
             </div>
 
-            <p className="whitespace-pre-wrap break-words text-xs">
+            <p className="whitespace-pre-wrap wrap-break-word text-xs">
               {formatDate(item.winning_created)}
             </p>
           </div>

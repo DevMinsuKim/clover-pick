@@ -149,7 +149,7 @@ export default function PensionGenerator() {
                 disabled={isAllGroup}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 type="button"
-                className="inline-flex w-full justify-between rounded-md border bg-white px-4 py-2 text-sm font-medium text-foreground shadow hover:bg-content1Hover focus:ring-primary disabled:opacity-40 disabled:hover:bg-white dark:border-none dark:bg-black dark:hover:bg-content1Hover disabled:hover:dark:bg-black"
+                className="inline-flex w-full justify-between rounded-md border bg-white px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-content1Hover focus:ring-primary disabled:opacity-40 disabled:hover:bg-white dark:border-none dark:bg-black dark:hover:bg-content1Hover disabled:hover:dark:bg-black"
               >
                 {repeatPension}
                 <svg
@@ -168,7 +168,7 @@ export default function PensionGenerator() {
               </button>
             </div>
             {isDropdownOpen && (
-              <div className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md border bg-white shadow dark:border-none dark:bg-black">
+              <div className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md border bg-white shadow-sm dark:border-none dark:bg-black">
                 <div className="p-2">
                   {dropDownData.map((item, _index) => {
                     return (
@@ -176,7 +176,7 @@ export default function PensionGenerator() {
                         type="button"
                         onClick={() => dropdownChangeHandler(item)}
                         key={item}
-                        className="block w-full rounded px-2 py-2 text-left text-sm text-foreground hover:bg-content1Hover"
+                        className="block w-full rounded-sm px-2 py-2 text-left text-sm text-foreground hover:bg-content1Hover"
                       >
                         {item}
                       </button>
@@ -187,7 +187,7 @@ export default function PensionGenerator() {
             )}
           </div>
 
-          <div className="mb-6 rounded-xl border bg-background p-4 text-left shadow dark:border-none">
+          <div className="mb-6 rounded-xl border bg-background p-4 text-left shadow-sm dark:border-none">
             <p className="font-bold">모든 조를 선택하시겠습니까?</p>
             <p className="text-xs sm:text-sm">
               - 모든 조를 선택하시면 1등과 2등 동시 당첨될 수 있습니다.
@@ -257,7 +257,7 @@ export default function PensionGenerator() {
                 handleCopy();
               }}
             >
-              <div className="flex items-center justify-center rounded-full border bg-background p-3 shadow hover:bg-content1Hover dark:border-none dark:hover:bg-content1Hover">
+              <div className="flex items-center justify-center rounded-full border bg-background p-3 shadow-sm hover:bg-content1Hover dark:border-none dark:hover:bg-content1Hover">
                 {isCopied ? (
                   <ClipboardCheck className="h-4 w-4 sm:h-5 sm:w-5" />
                 ) : (

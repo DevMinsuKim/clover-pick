@@ -12,8 +12,8 @@ export default function HomeStatsSkeleton() {
           {skeletonItems.map((_item, index) => (
             <div key={index} className="mx-6 rounded-xl bg-background">
               <div className="my-6 px-6">
-                <div className="h-12 rounded bg-content2 sm:h-10"></div>
-                <div className="mt-4 h-4 rounded bg-content2"></div>
+                <div className="h-12 rounded-sm bg-content2 sm:h-10"></div>
+                <div className="mt-4 h-4 rounded-sm bg-content2"></div>
               </div>
             </div>
           ))}
