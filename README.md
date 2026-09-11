@@ -86,7 +86,7 @@ flowchart LR; User(["사용자 / Browser"]); Cron(["Vercel Cron / 주간 스케�
 - Prisma CLI는 `prisma.config.ts`의 `POSTGRES_URL_NON_POOLING`, 앱은 `POSTGRES_PRISMA_URL`을 사용합니다. `pg` 어댑터는 인스턴스당 최대 연결 5개, 연결 대기 5초, 유휴 연결 10초로 설정하며 개발 중에는 클라이언트를 재사용합니다. 기존 DB 모델과 데이터는 유지합니다. SSL의 `require` 등 기존 별칭은 `pg` 8과 같은 인증서 검증을 유지하도록 `verify-full`로 명시하며, 원본 환경변수는 바꾸지 않습니다.
 - AI SDK 7·OpenAI Provider 4·Zod 4로 전환했습니다. `generateText`와 `Output.object`를 사용하며, 기존 GPT-4o의 Chat Completions 호출은 명시적으로 유지합니다. 테스트는 가짜 HTTP 응답과 DB mock으로 SDK·스키마 파싱 및 저장 전 오류 처리를 확인합니다.
 - Tailwind CSS 4의 테마·다크 모드·애니메이션을 `src/app/globals.css`로 옮기고 PostCSS 전용 플러그인을 사용합니다. 지원 브라우저 기준은 Safari 16.4+, Chrome 111+, Firefox 128+입니다. 기존 테두리·그림자·툴팁 및 버튼 커서 표현은 전환 시 보존합니다.
-- TypeScript는 Next.js 빌드의 JavaScript 컴파일러 API와 호환되는 6.0.3으로 고정하고, Vitest는 5로 갱신했습니다. React Error Boundary 6의 `unknown` 오류는 타입을 확인한 뒤 처리합니다.
+- TypeScript 7.0.2와 Vitest 5를 사용합니다. Next.js 16.3.5의 기본 CLI 타입 검사 경로(`experimental.useTypeScriptCli`)를 사용하며 빌드 오류 검사를 유지합니다. 해당 Next.js 설정은 공식 문서상 experimental입니다. React Error Boundary 6의 `unknown` 오류는 타입을 확인한 뒤 처리합니다.
 - Vercel CLI는 개발 의존성으로 이동하고, 사용하지 않는 `@types/minimatch`와 Tailwind 4에서 불필요한 Autoprefixer는 제거했습니다.
 
 ```sh
