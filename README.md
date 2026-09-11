@@ -26,7 +26,7 @@
 - **반응형 UX/UI**: `Next.js`, `TypeScript`, `Tailwind CSS`를 기반으로 모바일·데스크톱에 대응하는 반응형 UI와 다크 모드를 구현
 - **SEO 및 인터랙션 애니메이션**: `SSR` 적용과 메타데이터 최적화를 통해 검색 엔진 노출을 고려했으며, `Three.js(R3F)`와 `Framer Motion`을 활용해 메인 페이지의 3D 인터랙션과 애니메이션을 구현
 - **데이터 페칭 및 상태 관리**: `TanStack Query(React Query)`와 `Next.js Server Action`을 함께 활용해 서버 데이터 요청 흐름을 구성하고, `React Suspense`를 적용해 로딩 상태를 선언적으로 관리
-- **AI 응답 구조화 및 검증**: `LLM(OpenAI)`의 응답을 `generateObject`와 `Zod` 스키마로 검증하여, 번호 개수와 범위가 맞지 않는 비정상 응답(파싱 오류, 할루시네이션)의 형식 오류 방지
+- **AI 응답 구조화 및 검증**: `generateText`·`Output.object`·`Zod`로 로또 응답을 검증합니다. 요청한 조합 개수, 조합별 1~45의 정수 6개, 조합 내부 및 같은 요청 내 조합 중복을 검사하고, 실패하면 일부만 저장하지 않고 요청 전체를 실패 처리합니다.
 - **에러 핸들링 및 모니터링**: `React Error Boundary`를 통해 런타임 에러를 선언적으로 처리하고, `Sentry`와 연동해 프로덕션 환경에서 발생하는 오류를 추적할 수 있도록 환경 구성
 - **데이터베이스 관리**: `PostgreSQL`과 `Prisma ORM`를 활용해 생성된 번호 데이터를 저장하고, 타입 안정성을 유지하며 데이터 조회 및 관리 로직을 구성
 - **단위 테스트**: 회차 계산, 당첨 등수 판별처럼 정합성이 중요한 순수 함수에 `Vitest` 단위 테스트를 작성해 회귀 발생 가능성을 줄임
@@ -69,7 +69,7 @@ flowchart LR; User(["사용자 / Browser"]); Cron(["Vercel Cron / 주간 스케�
 #### 4-1. 아키텍처 설명
 
 - Vercel Cron Job을 활용해 주 단위(회차 마감 후)로 동행복권 데이터를 자동 수집하고 DB에 적재했습니다.
-- OpenAI API 응답은 generateObject + Zod 스키마 검증을 통해 번호 범위, 개수, 응답 구조를 검증한 뒤 사용했습니다.
+- OpenAI API 응답은 `generateText`·`Output.object`와 Zod로 번호 범위·정수 여부·개수·중복을 검증한 뒤 저장합니다.
 - Prisma ORM과 PostgreSQL을 활용해 생성 이력과 수집 데이터를 타입 안정성 있게 관리했습니다.
 - Sentry와 GA4를 연동해 에러 추적 및 사용자 분석이 가능한 운영 환경을 구성했습니다.
 
@@ -84,6 +84,7 @@ flowchart LR; User(["사용자 / Browser"]); Cron(["Vercel Cron / 주간 스케�
 - 기존 위치 기반 번호 표시와 스켈레톤의 key 정책은 이번 도구 전환에서 유지하므로 `noArrayIndexKey`는 비활성화했습니다. Tailwind 클래스 정렬은 Biome의 실험적 규칙과 기존 플러그인의 동작이 달라 자동 적용하지 않습니다.
 - Prisma CLI·Client·PostgreSQL 드라이버를 정식 7.10.0으로 맞췄습니다. `latest`의 Prisma 8 RC는 적용하지 않았습니다. 생성 코드는 `src/generated/prisma`에 두고 Git에서 제외합니다.
 - Prisma CLI는 `prisma.config.ts`의 `POSTGRES_URL_NON_POOLING`, 앱은 `POSTGRES_PRISMA_URL`을 사용합니다. `pg` 어댑터는 인스턴스당 최대 연결 5개, 연결 대기 5초, 유휴 연결 10초로 설정하며 개발 중에는 클라이언트를 재사용합니다. 기존 DB 모델과 데이터는 유지합니다. SSL의 `require` 등 기존 별칭은 `pg` 8과 같은 인증서 검증을 유지하도록 `verify-full`로 명시하며, 원본 환경변수는 바꾸지 않습니다.
+- 생성 요청은 서버에서 1~5의 정수만 허용하며 연금복권의 모든 조 옵션은 boolean으로 검증합니다. 연금복권은 1~5조와 6자리 숫자를 유지하고, 모든 조 선택 시 같은 번호의 5개 조합을 생성합니다. 일반 생성의 중복 재시도는 최대 100회이며 개수를 채우지 못하면 저장하지 않습니다. 중복 제한은 한 요청 안에 적용하며 과거 생성 이력과의 중복을 금지하지 않습니다.
 - AI SDK 7·OpenAI Provider 4·Zod 4로 전환했습니다. `generateText`와 `Output.object`를 사용하며, 기존 GPT-4o의 Chat Completions 호출은 명시적으로 유지합니다. 테스트는 가짜 HTTP 응답과 DB mock으로 SDK·스키마 파싱 및 저장 전 오류 처리를 확인합니다.
 - Tailwind CSS 4의 테마·다크 모드·애니메이션을 `src/app/globals.css`로 옮기고 PostCSS 전용 플러그인을 사용합니다. 지원 브라우저 기준은 Safari 16.4+, Chrome 111+, Firefox 128+입니다. 기존 테두리·그림자·툴팁 및 버튼 커서 표현은 전환 시 보존합니다.
 - TypeScript 7.0.2와 Vitest 5를 사용합니다. Next.js 16.3.5의 기본 CLI 타입 검사 경로(`experimental.useTypeScriptCli`)를 사용하며 빌드 오류 검사를 유지합니다. 해당 Next.js 설정은 공식 문서상 experimental입니다. React Error Boundary 6의 `unknown` 오류는 타입을 확인한 뒤 처리합니다.
@@ -189,6 +190,8 @@ Sentry 연동은 되어 있었으나 데이터 수집 오류에 대한 실패 �
 단순히 LLM 응답을 문자열로 받아 사용하는 방식은 JSON 파싱 오류, 형식 불일치, 할루시네이션 응답이 발생할 수 있다고 판단했습니다.
 <br>
 이를 방지하기 위해 `generateObject`와 `Zod` 스키마를 함께 적용해 AI 응답을 구조화된 객체로 받고, 런타임에서 응답 형식을 검증하도록 설계했습니다.
+
+아래는 초기 구현 예시입니다. 현재 구현은 AI SDK 7의 `generateText`·`Output.object`로 전환했으며, [번호 생성 검증 스키마](src/server/lottery/numberGenerationSchemas.ts)에서 입력값·응답 개수·정수·중복 검증을 추가로 수행합니다.
 
 ```typescript
 const { object: data } = await generateObject({

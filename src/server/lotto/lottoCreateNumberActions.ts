@@ -3,38 +3,30 @@
 import { openai } from "@ai-sdk/openai";
 import * as Sentry from "@sentry/nextjs";
 import { generateText, Output } from "ai";
-import { z } from "zod";
 import { getLottoCurrentRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
+import {
+  type LottoGenerationInput,
+  lottoGenerationInputSchema,
+  lottoGenerationOutputSchema,
+} from "@/server/lottery/numberGenerationSchemas";
 import { isLottoGenerationRestricted } from "@/utils/generationRestriction";
 
-export async function lottoCreateNumberActions({ repeat }: { repeat: number }) {
+export async function lottoCreateNumberActions(input: LottoGenerationInput) {
   try {
+    const { repeat } = lottoGenerationInputSchema.parse(input);
     if (isLottoGenerationRestricted()) {
       Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "warning");
       throw new Error("1102");
     }
 
-    if (repeat > 5) {
-      Sentry.captureMessage(
-        "로또 번호 생성 회차가 5회를 초과했습니다.",
-        "error",
-      );
-      throw new Error("1101");
-    }
-
     const { output: data } = await generateText({
       model: openai.chat("gpt-4o"),
-      instructions: "You're a lotto number prediction system",
-      prompt: `Predict ${repeat} sets of 6 winning numbers from 1 to 45`,
+      instructions:
+        "Generate lottery number combinations, without predicting winning numbers.",
+      prompt: `Generate exactly ${repeat} distinct combinations. Each combination must contain 6 distinct integers from 1 to 45. Do not repeat a combination in a different order.`,
       output: Output.object({
-        schema: z.object({
-          lottoNumbers: z.array(
-            z.object({
-              numbers: z.array(z.number().min(1).max(45)).length(6),
-            }),
-          ),
-        }),
+        schema: lottoGenerationOutputSchema(repeat),
       }),
     });
 
