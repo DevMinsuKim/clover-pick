@@ -23,7 +23,7 @@
 
 ## 🛠️ 주요 기능 및 기술적 접근
 
-- **UX/UI 및 PWA**: `Next.js`, `TypeScript`, `Tailwind CSS`를 기반으로 반응형 UI와 다크 모드를 구현하고, `PWA` 설정을 통해 모바일 환경에서도 앱과 유사한 사용자 경험을 제공
+- **반응형 UX/UI**: `Next.js`, `TypeScript`, `Tailwind CSS`를 기반으로 모바일·데스크톱에 대응하는 반응형 UI와 다크 모드를 구현
 - **SEO 및 인터랙션 애니메이션**: `SSR` 적용과 메타데이터 최적화를 통해 검색 엔진 노출을 고려했으며, `Three.js(R3F)`와 `Framer Motion`을 활용해 메인 페이지의 3D 인터랙션과 애니메이션을 구현
 - **데이터 페칭 및 상태 관리**: `TanStack Query(React Query)`와 `Next.js Server Action`을 함께 활용해 서버 데이터 요청 흐름을 구성하고, `React Suspense`를 적용해 로딩 상태를 선언적으로 관리
 - **AI 응답 구조화 및 검증**: `LLM(OpenAI)`의 응답을 `generateObject`와 `Zod` 스키마로 검증하여, 번호 개수와 범위가 맞지 않는 비정상 응답(파싱 오류, 할루시네이션)의 형식 오류 방지
@@ -47,13 +47,13 @@
 | 스타일링 및 애니메이션   | `Tailwind CSS`, `Framer Motion`                |
 | 3D 그래픽                | `Three.js(R3F)`                                |
 | 패키지 매니저            | `Bun`                                          |
-| 빌드 도구                | `SWC`                                          |
+| 빌드 도구                | `Turbopack`                                          |
 | 테스트                   | `Vitest`                                       |
 | 데이터베이스 및 ORM      | `PostgreSQL(Neon)`, `Prisma ORM`               |
 | 배포                     | `Vercel`                                       |
 | 에러 추적 및 분석        | `Sentry`, `GA4`                                |
 | AI API                   | `OpenAI API`                                   |
-| 기타                     | `PWA`, `SEO`                                   |
+| 기타                     | `SEO`                                   |
 
 ### 3. 브랜치 전략
 
@@ -63,7 +63,7 @@
 ### 4. 아키텍처
 
 ```mermaid
-flowchart LR; User(["사용자 / Browser PWA"]); Cron(["Vercel Cron / 주간 스케줄"]); subgraph Client["클라이언트 계층"]; UI["Next.js 화면 / PWA / SEO"]; Boundary["Suspense / Error Boundary"]; end; subgraph App["Vercel 애플리케이션 계층"]; Middleware["Middleware"]; Router["App Router"]; Action["Server Actions / 비즈니스 로직"]; CronHandler["Cron Route Handler"]; end; subgraph AI["AI 생성 및 검증 계층"]; Prompt["Prompt Builder"]; OpenAI["OpenAI API / GPT-4o"]; Validator["Zod 스키마 검증"]; end; subgraph Batch["주간 배치 수집 계층"]; LottoExcel["동행복권 최근 회차 API"]; Processor["조회 / 정제 / 가공"]; end; subgraph Data["데이터 계층"]; Prisma["Prisma ORM"]; PostgreSQL[("PostgreSQL")]; end; subgraph Ops["모니터링 계층"]; Sentry["Sentry / 에러 추적"]; GA4["GA4 / 사용자 분석"]; end; User --> UI; UI --> Boundary; Boundary --> Middleware; Middleware --> Router; Router --> Action; Action --> Prompt; Prompt --> OpenAI; OpenAI --> Validator; Validator --> Prisma; Cron --> CronHandler; CronHandler --> LottoExcel; LottoExcel --> Processor; Processor --> Prisma; Prisma --> PostgreSQL; Action -.-> Sentry; CronHandler -.-> Sentry; User -.-> GA4; classDef entry fill:mintcream,stroke:seagreen,stroke-width:2px,color:darkgreen; classDef client fill:aliceblue,stroke:steelblue,stroke-width:2px,color:darkblue; classDef app fill:lavender,stroke:mediumslateblue,stroke-width:2px,color:midnightblue; classDef ai fill:thistle,stroke:purple,stroke-width:2px,color:indigo; classDef batch fill:lemonchiffon,stroke:goldenrod,stroke-width:2px,color:saddlebrown; classDef data fill:honeydew,stroke:seagreen,stroke-width:2px,color:darkgreen; classDef ops fill:mistyrose,stroke:crimson,stroke-width:2px,color:darkred; class User,Cron entry; class UI,Boundary client; class Middleware,Router,Action,CronHandler app; class Prompt,OpenAI,Validator ai; class LottoExcel,Processor batch; class Prisma,PostgreSQL data; class Sentry,GA4 ops;
+flowchart LR; User(["사용자 / Browser"]); Cron(["Vercel Cron / 주간 스케줄"]); subgraph Client["클라이언트 계층"]; UI["Next.js 화면 / SEO"]; Boundary["Suspense / Error Boundary"]; end; subgraph App["Vercel 애플리케이션 계층"]; Middleware["Middleware"]; Router["App Router"]; Action["Server Actions / 비즈니스 로직"]; CronHandler["Cron Route Handler"]; end; subgraph AI["AI 생성 및 검증 계층"]; Prompt["Prompt Builder"]; OpenAI["OpenAI API / GPT-4o"]; Validator["Zod 스키마 검증"]; end; subgraph Batch["주간 배치 수집 계층"]; LottoExcel["동행복권 최근 회차 API"]; Processor["조회 / 정제 / 가공"]; end; subgraph Data["데이터 계층"]; Prisma["Prisma ORM"]; PostgreSQL[("PostgreSQL")]; end; subgraph Ops["모니터링 계층"]; Sentry["Sentry / 에러 추적"]; GA4["GA4 / 사용자 분석"]; end; User --> UI; UI --> Boundary; Boundary --> Middleware; Middleware --> Router; Router --> Action; Action --> Prompt; Prompt --> OpenAI; OpenAI --> Validator; Validator --> Prisma; Cron --> CronHandler; CronHandler --> LottoExcel; LottoExcel --> Processor; Processor --> Prisma; Prisma --> PostgreSQL; Action -.-> Sentry; CronHandler -.-> Sentry; User -.-> GA4; classDef entry fill:mintcream,stroke:seagreen,stroke-width:2px,color:darkgreen; classDef client fill:aliceblue,stroke:steelblue,stroke-width:2px,color:darkblue; classDef app fill:lavender,stroke:mediumslateblue,stroke-width:2px,color:midnightblue; classDef ai fill:thistle,stroke:purple,stroke-width:2px,color:indigo; classDef batch fill:lemonchiffon,stroke:goldenrod,stroke-width:2px,color:saddlebrown; classDef data fill:honeydew,stroke:seagreen,stroke-width:2px,color:darkgreen; classDef ops fill:mistyrose,stroke:crimson,stroke-width:2px,color:darkred; class User,Cron entry; class UI,Boundary client; class Middleware,Router,Action,CronHandler app; class Prompt,OpenAI,Validator ai; class LottoExcel,Processor batch; class Prisma,PostgreSQL data; class Sentry,GA4 ops;
 ```
 
 #### 4-1. 아키텍처 설명
@@ -78,7 +78,8 @@ flowchart LR; User(["사용자 / Browser PWA"]); Cron(["Vercel Cron / 주간 스
 - Node.js 22.12 이상(22 LTS 권장)과 Bun 1.2.23을 사용합니다. `bun.lock`을 커밋하고 CI에서도 같은 Bun 버전으로 설치합니다.
 - Next.js 16.3.5와 React 19.2.8을 사용합니다. React Three Fiber 9.7의 지원 범위에 맞춰 React 19.3으로 자동 업데이트되지 않도록 고정했습니다.
 - React 19 호환성을 위해 Three.js 계열, Motion, next-themes, TanStack Query를 갱신하고 Lottie 플레이어를 `@lottiefiles/dotlottie-react`로 교체했습니다.
-- PWA와 SVG 로더를 유지하기 위해 개발·빌드 모두 Webpack을 사용합니다. `public/sw.js`와 `public/workbox-*`는 빌드 생성물이며 Git에 저장하지 않습니다.
+- 개발·프로덕션 빌드 모두 Next.js 기본 Turbopack을 사용하며 SVG 컴포넌트는 `turbopack.rules`에서 SVGR로 변환합니다. Sentry는 Turbopack의 소스맵 처리를 사용하며 Webpack 전용 옵션은 제거했습니다.
+- 앱 설치·오프라인 캐시 기능은 종료했습니다. `public/sw.js`는 기존 방문자의 서비스 워커를 종료하고 해당 캐시만 정리하는 파일로 Git에서 관리합니다. 새 방문자에게는 등록하지 않으며, 장기간 후 재방문하는 사용자도 갱신할 수 있도록 같은 URL을 유지합니다. 일반 브라우저 저장소·다크 모드 설정은 삭제하지 않습니다.
 - ESLint와 Prettier를 Biome으로 통합했습니다. React·Next.js 규칙, import 정리, 두 칸 들여쓰기·큰따옴표·세미콜론을 적용합니다. Cursor/VS Code에서는 권장 Biome 확장을 설치하면 저장 시 적용됩니다.
 - 기존 위치 기반 번호 표시와 스켈레톤의 key 정책은 이번 도구 전환에서 유지하므로 `noArrayIndexKey`는 비활성화했습니다. Tailwind 클래스 정렬은 Biome의 실험적 규칙과 기존 플러그인의 동작이 달라 자동 적용하지 않습니다.
 - Prisma CLI·Client·PostgreSQL 드라이버를 정식 7.10.0으로 맞췄습니다. `latest`의 Prisma 8 RC는 적용하지 않았습니다. 생성 코드는 `src/generated/prisma`에 두고 Git에서 제외합니다.
