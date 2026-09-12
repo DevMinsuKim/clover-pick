@@ -16,7 +16,7 @@
 
 - **운영 지표: GA4 기준 누적 활성 사용자 수(AU) 400명 기록 (2026.09 기준)**
 - **개발 형태**: 1인 프로젝트로 기획, UI/UX 디자인, 프론트엔드/백엔드 개발, 배포 및 운영까지 전 과정 직접 수행
-- **핵심 기능**: 주 단위(회차 마감 후)로 동행복권의 최신 당첨 번호 데이터를 자동 수집 및 정제하여 데이터베이스에 저장하고, 이를 기반으로 OpenAI 모델을 활용한 복권 번호 조합 생성 기능 제공
+- **핵심 기능**: 주 단위(회차 마감 후)로 동행복권의 최신 당첨 번호 데이터를 자동 수집 및 정제하여 데이터베이스에 저장하고, 로또의 자연어 조건 해석과 무작위 번호 생성, 최근 출현 빈도 조건을 제공
 - **로드맵**: 유저 리텐션 향상을 위한 당첨금 실수령액 계산기, 시각화된 당첨 통계, LLM 기반 대화형 분석 기능 개발 중
 
 <br>
@@ -26,7 +26,7 @@
 - **반응형 UX/UI**: `Next.js`, `TypeScript`, `Tailwind CSS`를 기반으로 모바일·데스크톱에 대응하는 반응형 UI와 다크 모드를 구현
 - **SEO 및 인터랙션 애니메이션**: `SSR` 적용과 메타데이터 최적화를 통해 검색 엔진 노출을 고려했으며, `Three.js(R3F)`와 `Motion for React`을 활용해 메인 페이지의 3D 인터랙션과 애니메이션을 구현
 - **데이터 페칭 및 상태 관리**: `TanStack Query(React Query)`와 `Next.js Server Action`을 함께 활용해 서버 데이터 요청 흐름을 구성하고, `React Suspense`를 적용해 로딩 상태를 선언적으로 관리
-- **AI 응답 구조화 및 검증**: `generateText`·`Output.object`·`Zod`로 로또 응답을 검증합니다. 요청한 조합 개수, 조합별 1~45의 정수 6개, 조합 내부 및 같은 요청 내 조합 중복을 검사하고, 실패하면 일부만 저장하지 않고 요청 전체를 실패 처리합니다.
+- **AI 조건 해석과 번호 생성 분리**: `generateText`·`Output.object`·`Zod`로 자연어를 조건으로 정리하고, 사용자가 확인한 조건 안에서 암호학적 난수로 조합을 선택합니다. 세트·번호·충돌을 서버에서 검증하며, 요청 UUID로 중복 적재를 방지합니다. [주요 설계](#로또-생성의-주요-설계)을 참고하세요.
 - **에러 핸들링 및 모니터링**: `React Error Boundary`를 통해 런타임 에러를 선언적으로 처리하고, `Sentry`와 연동해 프로덕션 환경에서 발생하는 오류를 추적할 수 있도록 환경 구성
 - **데이터베이스 관리**: `PostgreSQL`과 `Prisma ORM`를 활용해 생성된 번호 데이터를 저장하고, 타입 안정성을 유지하며 데이터 조회 및 관리 로직을 구성
 - **단위 테스트**: 회차 계산, 당첨 등수 판별처럼 정합성이 중요한 순수 함수에 `Vitest` 단위 테스트를 작성해 회귀 발생 가능성을 줄임
@@ -63,15 +63,43 @@
 ### 4. 아키텍처
 
 ```mermaid
-flowchart LR; User(["사용자 / Browser"]); Cron(["Vercel Cron / 주간 스케줄"]); subgraph Client["클라이언트 계층"]; UI["Next.js 화면 / SEO"]; Boundary["Suspense / Error Boundary"]; end; subgraph App["Vercel 애플리케이션 계층"]; Middleware["Middleware"]; Router["App Router"]; Action["Server Actions / 비즈니스 로직"]; CronHandler["Cron Route Handler"]; end; subgraph AI["AI 생성 및 검증 계층"]; Prompt["Prompt Builder"]; OpenAI["OpenAI API / GPT-4o"]; Validator["Zod 스키마 검증"]; end; subgraph Batch["주간 배치 수집 계층"]; LottoExcel["동행복권 최근 회차 API"]; Processor["조회 / 정제 / 가공"]; end; subgraph Data["데이터 계층"]; Prisma["Prisma ORM"]; PostgreSQL[("PostgreSQL")]; end; subgraph Ops["모니터링 계층"]; Sentry["Sentry / 에러 추적"]; GA4["GA4 / 사용자 분석"]; end; User --> UI; UI --> Boundary; Boundary --> Middleware; Middleware --> Router; Router --> Action; Action --> Prompt; Prompt --> OpenAI; OpenAI --> Validator; Validator --> Prisma; Cron --> CronHandler; CronHandler --> LottoExcel; LottoExcel --> Processor; Processor --> Prisma; Prisma --> PostgreSQL; Action -.-> Sentry; CronHandler -.-> Sentry; User -.-> GA4; classDef entry fill:mintcream,stroke:seagreen,stroke-width:2px,color:darkgreen; classDef client fill:aliceblue,stroke:steelblue,stroke-width:2px,color:darkblue; classDef app fill:lavender,stroke:mediumslateblue,stroke-width:2px,color:midnightblue; classDef ai fill:thistle,stroke:purple,stroke-width:2px,color:indigo; classDef batch fill:lemonchiffon,stroke:goldenrod,stroke-width:2px,color:saddlebrown; classDef data fill:honeydew,stroke:seagreen,stroke-width:2px,color:darkgreen; classDef ops fill:mistyrose,stroke:crimson,stroke-width:2px,color:darkred; class User,Cron entry; class UI,Boundary client; class Middleware,Router,Action,CronHandler app; class Prompt,OpenAI,Validator ai; class LottoExcel,Processor batch; class Prisma,PostgreSQL data; class Sentry,GA4 ops;
+flowchart LR
+  User["사용자 / Browser"] --> UI["Next.js 화면 / TanStack Query"]
+  UI --> Action["Server Functions / 입력 검증"]
+  Action -->|자유 문장 조건 확인| OpenAI["OpenAI Responses"]
+  OpenAI --> Conditions["조건 정리 / 충돌·조합 수 확인"]
+  Action -->|빠른 조건 확인| Conditions
+  Conditions -->|확인할 조건| UI
+  Action -->|랜덤·맞춤 번호 생성| Generator["조건 검증 / 암호학적 난수"]
+  Generator --> Save["요청 UUID 확인 / 번호와 요청 기록 저장"]
+  Save --> Prisma["Prisma ORM"]
+  Action -->|목록·빈도 조회| Prisma
+  Conditions -->|최근 출현 빈도 조회| Prisma
+  Prisma --> DB[("PostgreSQL")]
+  Cron["Vercel Cron / 주간 스케줄"] --> Collector["당첨 번호 수집·검증"]
+  Collector --> Source["동행복권 API"]
+  Collector --> Prisma
+  Action -.-> Sentry["Sentry / 오류 추적"]
+  Collector -.-> Sentry
+  User -.-> GA4["GA4 / 사용자 분석"]
 ```
 
 #### 4-1. 아키텍처 설명
 
 - Vercel Cron Job을 활용해 주 단위(회차 마감 후)로 동행복권 데이터를 자동 수집하고 DB에 적재했습니다.
-- OpenAI API 응답은 `generateText`·`Output.object`와 Zod로 번호 범위·정수 여부·개수·중복을 검증한 뒤 저장합니다.
+- OpenAI는 자연어에서 로또 조건을 추출합니다. 조건을 확인한 뒤 서버가 조합을 생성하고 요청 기록과 번호를 한 트랜잭션에 저장합니다.
 - Prisma ORM과 PostgreSQL을 활용해 생성 이력과 수집 데이터를 타입 안정성 있게 관리했습니다.
 - Sentry와 GA4를 연동해 에러 추적 및 사용자 분석이 가능한 운영 환경을 구성했습니다.
+
+## 로또 생성의 주요 설계
+
+- **AI의 역할 제한**: 자유 문장을 번호 조건으로 변환하고 사용자가 확인한 뒤 생성합니다. 실제 번호 선택은 서버의 암호학적 난수로 처리하며, 랜덤 생성과 빠른 조건에는 AI를 호출하지 않습니다. 최대 300자·5세트를 허용하고 충돌하거나 지원하지 않는 조건은 임의로 무시하지 않습니다.
+- **통계 기준 명시**: 최근 100회 추첨의 본번호 출현 횟수 상위 20개를 후보로 사용합니다. 보너스 번호는 제외하고 동률은 작은 번호부터 선택합니다. 회차 누락 시 해당 조건을 제공하지 않으며, 당첨확률을 높이는 기능으로 설명하지 않습니다.
+- **저장과 재시도**: 요청 UUID·입력 해시로 중복 요청을 구분하고 번호와 요청 기록을 한 트랜잭션에 저장합니다. 응답을 받지 못해 같은 요청을 재시도하면 저장된 결과를 반환합니다. 재시도 식별자는 열린 페이지에서 유지되며 새로고침 후에는 새 요청입니다. 한 번에 생성한 세트끼리는 동일한 조합을 허용하지 않습니다.
+- **비용·입력 보호**: AI 호출은 15초로 제한하고 PostgreSQL에서 분당·일일 요청 한도와 서비스 전체 예산을 관리합니다. 원문은 서비스 DB에 저장하지 않으며 화면에 OpenAI 전송을 안내합니다. 입력 내용은 개발 로그와 오류 재현 기록에서도 제외하거나 마스킹합니다. 상세 한도는 [요청 제한 코드](src/server/lottery/lottoRequestLimit.ts)에서 관리합니다.
+- **안정적인 목록 탐색**: 생성 목록과 당첨 내역은 6세트씩 조회합니다. 페이지 탐색 중 새 기록이 추가되어도 항목이 밀리지 않도록 조회 기준을 유지하고, 로딩 중 기존 화면을 보존합니다. 당첨 내역은 생성 시각 대신 해당 회차의 추첨일을 연결합니다.
+
+핵심 구현: [조건 해석](src/server/lottery/parseLottoPrompt.ts) · [조합 생성](src/server/lottery/lottoEngine.ts) · [중복 저장 방지](src/server/lottery/lottoPersistence.ts) · [목록 조회](src/server/lottery/lottoRecords.ts)
 
 ## 로컬 개발 및 품질 검사
 
@@ -87,18 +115,21 @@ flowchart LR; User(["사용자 / Browser"]); Cron(["Vercel Cron / 주간 스케�
 - Prisma CLI·Client·PostgreSQL 드라이버를 정식 7.10.0으로 맞췄습니다. `latest`의 Prisma 8 RC는 적용하지 않았습니다. 생성 코드는 `src/generated/prisma`에 두고 Git에서 제외합니다.
 - Prisma CLI는 `prisma.config.ts`의 `POSTGRES_URL_NON_POOLING`, 앱은 `POSTGRES_PRISMA_URL`을 사용합니다. `pg` 어댑터는 인스턴스당 최대 연결 5개, 연결 대기 5초, 유휴 연결 10초로 설정하며 개발 중에는 클라이언트를 재사용합니다. 기존 DB 모델과 데이터는 유지합니다. SSL의 `require` 등 기존 별칭은 `pg` 8과 같은 인증서 검증을 유지하도록 `verify-full`로 명시하며, 원본 환경변수는 바꾸지 않습니다.
 - 생성 요청은 서버에서 1~5의 정수만 허용하며 연금복권의 모든 조 옵션은 boolean으로 검증합니다. 연금복권은 1~5조와 6자리 숫자를 유지하고, 모든 조 선택 시 같은 번호의 5개 조합을 생성합니다. 일반 생성의 중복 재시도는 최대 100회이며 개수를 채우지 못하면 저장하지 않습니다. 중복 제한은 한 요청 안에 적용하며 과거 생성 이력과의 중복을 금지하지 않습니다.
-- AI SDK 7·OpenAI Provider 4·Zod 4로 전환했습니다. `generateText`와 `Output.object`를 사용하며, 기존 GPT-4o의 Chat Completions 호출은 명시적으로 유지합니다. 테스트는 가짜 HTTP 응답과 DB mock으로 SDK·스키마 파싱 및 저장 전 오류 처리를 확인합니다.
+- AI SDK 7·OpenAI Provider 4·Zod 4를 사용합니다. 로또 자유 문장은 Responses의 구조화 출력으로 해석하며, 기본 모델은 `gpt-5.4-nano-2026-03-17`입니다. 랜덤 생성과 빠른 조건은 AI 호출 없이 처리합니다. `OPENAI_API_KEY`를 설정하며 모델은 `OPENAI_LOTTO_MODEL`로 변경할 수 있습니다.
 - Tailwind CSS 4의 테마·다크 모드·애니메이션을 `src/app/globals.css`로 옮기고 PostCSS 전용 플러그인을 사용합니다. 지원 브라우저 기준은 Safari 16.4+, Chrome 111+, Firefox 128+입니다. 기존 테두리·그림자·툴팁 및 버튼 커서 표현은 전환 시 보존합니다.
 - TypeScript 7.0.2와 Vitest 5를 사용합니다. Next.js 16.3.5의 기본 CLI 타입 검사 경로(`experimental.useTypeScriptCli`)를 사용하며 빌드 오류 검사를 유지합니다. 해당 Next.js 설정은 공식 문서상 experimental입니다. React Error Boundary 6의 `unknown` 오류는 타입을 확인한 뒤 처리합니다.
 - Vercel CLI는 개발 의존성으로 이동하고, 사용하지 않는 `@types/minimatch`와 Tailwind 4에서 불필요한 Autoprefixer는 제거했습니다.
 
+화면의 통계·생성 이력 조회에는 PostgreSQL이 필요합니다. 로컬에서는 Docker Desktop을 실행한 뒤 아래 명령을 사용합니다. 기존 `.env`의 운영 DB 주소는 변경하지 않아도 됩니다. `:local` 명령이 자식 프로세스의 DB 주소만 로컬 주소로 대체합니다. API 키는 기존 `.env`에서 읽으며 커밋하지 않습니다.
+
 ```sh
 bun install --frozen-lockfile --ignore-scripts
-bunx prisma generate
-bun run dev
+bun run db:up
+bun run db:prepare:local
+bun run dev:local
 ```
 
-화면의 통계·생성 이력 조회에는 PostgreSQL이 필요합니다. 로컬 `.env`에 개발용 `POSTGRES_PRISMA_URL`과 `POSTGRES_URL_NON_POOLING`을 설정합니다. 번호 생성과 외부 서비스 연동에 필요한 키는 별도로 설정하며 커밋하지 않습니다.
+`bun run test:local`은 DB 동시성 테스트까지 실행하며 `bun run build:local`은 로컬 DB로 빌드를 검증합니다. `bun run db:stop`으로 중지해도 데이터는 보존됩니다. 로컬 DB는 [compose.yaml](compose.yaml)로 관리합니다.
 
 ```sh
 bun run check       # 린트·포맷·import 순서 및 TypeScript 검사
@@ -106,16 +137,34 @@ bun run check:fix   # 안전한 자동 수정 후 TypeScript 검사
 bun run format     # 포맷 적용
 bun run typecheck  # Next.js 타입 생성 및 TypeScript 검사
 bun run test       # Vitest 단위 테스트
-bun run build      # Prisma 클라이언트 생성 및 프로덕션 빌드
+bun run build:local # 로컬 DB로 Prisma 클라이언트 생성 및 프로덕션 빌드
 ```
 
 테스트의 `describe`·`it`·`test` 설명과 매개변수별 사례 이름은 한국어로 작성하며, 조건과 기대 결과를 드러냅니다. 함수·API·필드 식별자는 원래 이름을 유지합니다.
 
-회차·등수·입력 검증·저장 실패·인증·기존 캐시 정리처럼 실제 동작과 데이터 보호에 필요한 테스트를 유지합니다. 동일한 입력과 결과를 반복하거나 라이브러리 자체 동작만 재검사하는 사례는 추가하지 않습니다. 외부 API와 DB는 mock으로 대체합니다.
+회차·등수·입력 검증·저장 실패·인증·기존 캐시 정리처럼 실제 동작과 데이터 보호에 필요한 테스트를 유지합니다. 동일한 입력과 결과를 반복하거나 라이브러리 자체 동작만 재검사하는 사례는 추가하지 않습니다. 일반 테스트에서 외부 API와 DB는 mock으로 대체합니다. 명시한 로컬 테스트 DB에서만 저장·동시성 통합 테스트를 추가로 실행합니다.
 
 [Vitest 5](https://vitest.dev/guide/migration/#clearmocks-is-enabled-by-default)의 기본 `clearMocks: true`로 mock 호출 기록을 초기화합니다. 환경변수·전역 함수·spy의 복원은 자동 초기화와 다르므로 해당 테스트에서 명시적으로 정리합니다. JSON·JUnit·HTML 리포트의 기본 저장 경로인 `.vitest/`는 Git에서 제외합니다.
 
 CI는 별도 PostgreSQL 서비스에 테스트 스키마를 생성한 뒤 빌드합니다. 운영 DB나 외부 API 키를 사용하지 않습니다. 로컬 빌드는 페이지 사전 렌더링 중 DB를 조회하므로 개발용 DB 연결을 먼저 확인합니다.
+
+빈 로컬 DB에는 당첨 번호 자료가 없으므로 출현 빈도 조건을 사용할 수 없습니다. 화면 검증용 합성 데이터는 실제 당첨 통계와 구분합니다.
+
+<details>
+<summary>환경변수와 운영 DB 준비</summary>
+
+- `POSTGRES_PRISMA_URL`: 앱의 PostgreSQL 연결
+- `POSTGRES_URL_NON_POOLING`: Prisma CLI의 직접 연결
+- `OPENAI_API_KEY`: 자연어 조건 확인에 필요한 서버 키
+- `OPENAI_LOTTO_MODEL`: 조건 해석 모델 변경 시에만 지정
+
+로컬 `:local` 명령은 DB 주소를 Docker 주소로 덮어씁니다. 운영 배포 전에는 직접 연결 대상을 확인하고 [추가 SQL](prisma/lotto-generation-setup.sql)로 `lotto_generation_batch`와 `lottery_request_limit` 두 테이블을 준비합니다. 기존 번호 데이터는 변경하지 않으며 운영 DB에 `prisma db push`나 reset을 사용하지 않습니다.
+
+```sh
+bun run db:setup:lotto
+```
+
+</details>
 
 ## 🚨 트러블슈팅(troubleshooting)
 
@@ -199,7 +248,7 @@ Sentry 연동은 되어 있었으나 데이터 수집 오류에 대한 실패 �
 <br>
 이를 방지하기 위해 `generateObject`와 `Zod` 스키마를 함께 적용해 AI 응답을 구조화된 객체로 받고, 런타임에서 응답 형식을 검증하도록 설계했습니다.
 
-아래는 초기 구현 예시입니다. 현재 구현은 AI SDK 7의 `generateText`·`Output.object`로 전환했으며, [번호 생성 검증 스키마](src/server/lottery/numberGenerationSchemas.ts)에서 입력값·응답 개수·정수·중복 검증을 추가로 수행합니다.
+아래는 초기 구현 예시이며 당첨 예측 성능이 검증되었다는 의미는 아닙니다. 현재는 AI SDK 7의 `generateText`·`Output.object`로 **자연어 조건만 해석**하고, [조건별 조합 생성기](src/server/lottery/lottoEngine.ts)에서 번호를 무작위로 선택합니다. [현재 주요 설계](#로또-생성의-주요-설계)을 참고하세요.
 
 ```typescript
 const { object: data } = await generateObject({
