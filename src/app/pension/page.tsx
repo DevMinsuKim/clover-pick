@@ -1,14 +1,12 @@
 export const revalidate = 1;
 
+import { dehydrate, HydrationBoundary, noop } from "@tanstack/react-query";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
+import LotteryRecordsTabs from "@/components/lottery/LotteryRecordsTabs";
 import PensionDrawNumber from "@/components/pension/PensionDrawNumber";
 import PensionDrawNumberSkeleton from "@/components/pension/PensionDrawNumberSkeleton";
-import PensionGenerationHistory from "@/components/pension/PensionGenerationHistory";
-import PensionGenerationHistorySkeleton from "@/components/pension/PensionGenerationHistorySkeleton";
 import PensionGenerator from "@/components/pension/PensionGenerator";
-import PensionGeneratorWinning from "@/components/pension/PensionGeneratorWinning";
-import PensionGeneratorWinningSkeleton from "@/components/pension/PensionGeneratorWinningSkeleton";
 import PensionInfo from "@/components/pension/PensionInfo";
 import { getQueryClient } from "@/libs/getQueryClient";
 import {
@@ -16,15 +14,14 @@ import {
   getPensionQuery,
   getPensionWinningQuery,
 } from "@/libs/queries/pensionQueries";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export default async function page() {
+export default async function Page() {
   const queryClient = getQueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(getPensionQuery),
-    queryClient.prefetchQuery(getPensionHistoryQuery),
-    queryClient.prefetchQuery(getPensionWinningQuery),
+    queryClient.query(getPensionQuery).catch(noop),
+    queryClient.query(getPensionHistoryQuery()).catch(noop),
+    queryClient.query(getPensionWinningQuery()).catch(noop),
   ]);
 
   return (
@@ -41,7 +38,7 @@ export default async function page() {
               </HydrationBoundary>
               회차
             </p>
-            <p>연금복권 720+ 번호 생성</p>
+            <p>연금복권720+ 번호 생성</p>
           </div>
         </ErrorHandlingWrapper>
       </div>
@@ -54,31 +51,9 @@ export default async function page() {
       </ErrorHandlingWrapper>
 
       <div className="mt-20 sm:mt-40">
-        <p className="mb-4 text-lg font-bold sm:text-2xl">
-          연금복권 번호 생성 목록
-        </p>
-        <ErrorHandlingWrapper
-          fallbackComponent={ErrorFallback}
-          suspenseFallback={<PensionGenerationHistorySkeleton />}
-        >
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <PensionGenerationHistory />
-          </HydrationBoundary>
-        </ErrorHandlingWrapper>
-      </div>
-
-      <div className="mt-20 sm:mt-40">
-        <p className="mb-4 text-lg font-bold sm:text-2xl">
-          생성한 연금복권 번호 당첨 내역
-        </p>
-        <ErrorHandlingWrapper
-          fallbackComponent={ErrorFallback}
-          suspenseFallback={<PensionGeneratorWinningSkeleton />}
-        >
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <PensionGeneratorWinning />
-          </HydrationBoundary>
-        </ErrorHandlingWrapper>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <LotteryRecordsTabs game="pension" />
+        </HydrationBoundary>
       </div>
 
       <div className="my-20 sm:my-40">

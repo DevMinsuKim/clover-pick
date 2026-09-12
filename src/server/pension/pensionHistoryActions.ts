@@ -1,37 +1,12 @@
 "use server";
-
-import prisma from "@/libs/prisma";
-import { convertToKoreaTime } from "@/utils/convertToKoreaTime";
-import * as Sentry from "@sentry/nextjs";
-
-export async function pensionHistoryActions() {
+import { captureException } from "@sentry/nextjs";
+import type { LotteryRecordsInput } from "@/server/lottery/lotteryRecordsContracts";
+import { getPensionRecords } from "@/server/lottery/pensionRecords";
+export async function pensionHistoryActions(input: LotteryRecordsInput = {}) {
   try {
-    const pensionCreateListData = await prisma.created_pension.findMany({
-      orderBy: { id: "desc" },
-      take: 18,
-      select: {
-        draw_number: true,
-        number: true,
-        created: true,
-      },
-    });
-
-    const pensionCreateList = pensionCreateListData.map((item) => ({
-      ...item,
-      created: convertToKoreaTime(new Date(item.created)),
-    }));
-
-    if (pensionCreateList == null) {
-      Sentry.captureMessage(
-        "연금복권 번호 생성 내역 데이터가 존재하지 않습니다.",
-        "error",
-      );
-      throw new Error("1000");
-    }
-
-    return { success: pensionCreateList };
-  } catch (error) {
-    Sentry.captureException(error);
-    throw new Error("2000");
+    return await getPensionRecords("history", input);
+  } catch {
+    captureException(new Error("Pension history query failed"));
+    throw new Error("목록을 불러오지 못했어요.");
   }
 }

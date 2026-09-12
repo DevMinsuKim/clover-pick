@@ -1,60 +1,76 @@
-"use client";
+import {
+  HiArrowsRightLeft,
+  HiChatBubbleLeftRight,
+  HiCheck,
+} from "react-icons/hi2";
 
-import React from "react";
-import { DotLottiePlayer, Controls } from "@dotlottie/react-player";
-import "@dotlottie/react-player/dist/index.css";
-
+const methods = [
+  {
+    title: "고민 없이, 랜덤 생성",
+    description:
+      "특별히 떠오르는 번호가 없다면 게임 수만 고르세요. 한 번에 최대 5게임을 간편하게 만들 수 있어요.",
+    icon: HiArrowsRightLeft,
+    steps: ["게임 수 선택", "번호 생성"],
+    note: "한 번에 만든 게임끼리는 같은 조합이 나오지 않아요.",
+  },
+  {
+    title: "내 조건으로, 맞춤 생성",
+    description:
+      "빠른 조건을 고르거나 원하는 조건을 문장으로 적어보세요. AI가 정리한 조건을 확인한 뒤 번호를 만들어요.",
+    icon: HiChatBubbleLeftRight,
+    steps: ["조건 입력", "조건 확인", "번호 생성"],
+    note: "포함·제외할 숫자부터 앞·끝자리까지, 복권별로 선택해요.",
+  },
+];
 export default function HomeFeature() {
   return (
-    <div className="mx-auto mt-52 max-w-screen-xl px-6">
-      <div className="flex flex-col items-center text-center sm:flex-row sm:justify-between">
-        <div className="mb-6 sm:mb-0">
-          <p className="text-3xl font-bold sm:text-6xl">
-            로또, 연금복권 <br /> AI로 편리하게
-          </p>
-          <p className="mt-12 text-xl font-bold sm:text-2xl">
-            부담없이 무료로 쉽고 빠르게 생성해보세요!
-          </p>
-        </div>
-
-        <div className="h-[50%] w-[50%]">
-          <DotLottiePlayer src="/lottie/ai.lottie" autoplay loop />
-        </div>
-      </div>
-
-      <div className="mt-52 flex flex-col items-center justify-center text-center sm:text-left">
-        <p className="text-2xl font-bold sm:text-5xl">
-          다음 기능들이 곧 추가됩니다.
-        </p>
-        <p className="mt-12 text-xl font-bold sm:text-2xl">
-          빠른 시일 내에 만나보실 수 있도록 최선을 다하고 있어요.
-        </p>
-
-        <div className="mt-10 flex w-full flex-col items-center justify-center md:flex-row md:items-stretch md:gap-12 lg:gap-32">
-          <div className="flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow dark:border-none">
-            <div className="max-h-[100px] max-w-[100px] rounded-xl bg-primaryHover sm:max-h-[150px] sm:max-w-[150px]">
-              <DotLottiePlayer src="/lottie/calculator.lottie" autoplay loop />
-            </div>
-            <p className="mt-7 text-xl font-bold">당첨금 실수령액 계산기</p>
-            <p className="mt-3 text-base">
-              축하합니다! 당첨 금액을 알려주세요.
-              <br />
-              세금을 제외한 실 수령액을 빠르게 알려드릴게요.
+    <section aria-labelledby="home-methods-title" className="py-14 sm:py-20">
+      <p className="text-sm font-semibold text-green-700 dark:text-green-400">
+        고르는 방법은 두 가지
+      </p>
+      <h2
+        id="home-methods-title"
+        className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl"
+      >
+        가볍게 골라도, 취향을 담아도 좋아요.
+      </h2>
+      <div className="mt-8 grid gap-4 md:grid-cols-2 sm:gap-6">
+        {methods.map(({ title, description, icon: Icon, steps, note }) => (
+          <article
+            key={title}
+            className="flex flex-col rounded-2xl border border-divider bg-content1 p-5 dark:border-zinc-600 sm:p-7"
+          >
+            <Icon
+              aria-hidden="true"
+              className="size-7 text-green-700 dark:text-green-400"
+            />
+            <h3 className="mt-5 text-lg font-bold sm:text-xl">{title}</h3>
+            <p className="mt-3 text-sm leading-7 text-content3 sm:text-base">
+              {description}
             </p>
-          </div>
-
-          <div className="mt-5 flex w-full max-w-[360px] flex-col items-center justify-center rounded-xl border bg-content1 px-4 py-6 text-center shadow dark:border-none md:mt-0">
-            <div className="max-h-[100px] max-w-[100px] rounded-xl bg-primaryHover sm:max-h-[150px] sm:max-w-[150px]">
-              <DotLottiePlayer src="/lottie/analysis.lottie" autoplay loop />
-            </div>
-            <p className="mt-7 text-xl font-bold">당첨 통계 분석</p>
-            <p className="mt-3 text-base">
-              당첨 번호의 패턴을 분석하고, <br />
-              최신 통계 정보를 제공합니다.
+            <ol className="mt-6 flex flex-wrap gap-x-4 gap-y-3 border-t border-divider pt-5 text-xs font-semibold dark:border-zinc-600 sm:text-sm">
+              {steps.map((step, index) => (
+                <li key={step} className="flex items-center gap-2">
+                  <span
+                    className="flex size-5 items-center justify-center rounded-full bg-content1Hover text-xs tabular-nums"
+                    aria-hidden="true"
+                  >
+                    {index + 1}
+                  </span>
+                  {step}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-auto flex items-start gap-2 pt-5 text-xs leading-5 text-content3">
+              <HiCheck
+                aria-hidden="true"
+                className="mt-0.5 size-4 shrink-0 text-green-700 dark:text-green-400"
+              />
+              {note}
             </p>
-          </div>
-        </div>
+          </article>
+        ))}
       </div>
-    </div>
+    </section>
   );
 }

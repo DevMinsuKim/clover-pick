@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
-import { FallbackProps } from "react-error-boundary";
-import Button from "./Button";
+import type { FallbackProps } from "react-error-boundary";
 import { errorHandler } from "@/utils/errorHandler";
+import Button from "./Button";
 
 export default function ErrorFallback({
   error,
@@ -14,12 +13,12 @@ export default function ErrorFallback({
   return (
     <div className="my-2 flex w-full flex-col items-center justify-center rounded-xl border bg-content1 px-2 py-4 text-center shadow-md dark:border-none">
       {title && (
-        <h2 className="mb-2 whitespace-pre-wrap break-words font-extrabold sm:text-lg">
+        <h2 className="mb-2 whitespace-pre-wrap wrap-break-word font-extrabold sm:text-lg">
           {title}
         </h2>
       )}
       {description && (
-        <div className="mb-4 whitespace-pre-wrap break-words text-sm sm:text-base">
+        <div className="mb-4 whitespace-pre-wrap wrap-break-word text-sm sm:text-base">
           <p>{description}</p>
         </div>
       )}

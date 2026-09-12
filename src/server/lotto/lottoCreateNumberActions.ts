@@ -1,66 +1,52 @@
 "use server";
 
-import { getLottoCurrentRound } from "@/constants/lotteryRounds";
-import prisma from "@/libs/prisma";
-import { openai } from "@ai-sdk/openai";
-import { generateObject } from "ai";
-import { z } from "zod";
-import * as Sentry from "@sentry/nextjs";
-import { isLottoGenerationRestricted } from "@/utils/generationRestriction";
+import { limitLotteryRequest } from "@/server/lottery/lotteryRequestLimit";
+import { lottoActionError } from "@/server/lottery/lottoActionError";
+import {
+  emptyLottoConstraints,
+  type LottoActionResult,
+  type LottoCreateInput,
+  type LottoGeneration,
+  lottoCreateInputSchema,
+} from "@/server/lottery/lottoContracts";
+import {
+  generateLottoNumbers,
+  normalizeLottoConstraints,
+} from "@/server/lottery/lottoEngine";
+import { getLottoFrequency } from "@/server/lottery/lottoFrequency";
+import {
+  assertLottoRound,
+  findLottoBatch,
+  lottoRequestHash,
+  saveLottoBatch,
+} from "@/server/lottery/lottoPersistence";
 
-export async function lottoCreateNumberActions({ repeat }: { repeat: number }) {
+export async function lottoCreateNumberActions(
+  input: LottoCreateInput,
+): Promise<LottoActionResult<LottoGeneration>> {
   try {
-    if (isLottoGenerationRestricted()) {
-      Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "warning");
-      throw new Error("1102");
-    }
-
-    if (repeat > 5) {
-      Sentry.captureMessage(
-        "로또 번호 생성 회차가 5회를 초과했습니다.",
-        "error",
-      );
-      throw new Error("1101");
-    }
-
-    const { object: data } = await generateObject({
-      model: openai("gpt-4o"),
-      system: "You're a lotto number prediction system",
-      prompt: `Predict ${repeat} sets of 6 winning numbers from 1 to 45`,
-      schema: z.object({
-        lottoNumbers: z.array(
-          z.object({
-            numbers: z.array(z.number().min(1).max(45)).length(6),
-          }),
-        ),
-      }),
-    });
-
-    data.lottoNumbers.forEach((obj) => {
-      obj.numbers.sort((a, b) => a - b);
-    });
-
-    const currentRound = getLottoCurrentRound();
-
-    const lottoNumbersDB = data.lottoNumbers.map((item) => {
-      return {
-        draw_number: currentRound,
-        number1: item.numbers[0],
-        number2: item.numbers[1],
-        number3: item.numbers[2],
-        number4: item.numbers[3],
-        number5: item.numbers[4],
-        number6: item.numbers[5],
-      };
-    });
-
-    await prisma.created_lotto.createMany({
-      data: lottoNumbersDB,
-    });
-
-    return { success: data };
+    const parsed = lottoCreateInputSchema.parse(input);
+    const constraints = normalizeLottoConstraints(
+      parsed.constraints ?? emptyLottoConstraints,
+    );
+    const hash = lottoRequestHash(parsed, constraints);
+    const existing = await findLottoBatch(
+      parsed.requestId,
+      hash,
+      parsed.repeat,
+    );
+    // A retry after a lost response returns its saved result without spending quota again.
+    if (existing) return { success: existing };
+    assertLottoRound(parsed.expectedRound);
+    await limitLotteryRequest("generation");
+    const frequency = constraints.frequent ? await getLottoFrequency() : null;
+    const numbers = generateLottoNumbers(
+      constraints,
+      parsed.repeat,
+      frequency?.pool,
+    );
+    return { success: await saveLottoBatch(parsed, hash, numbers) };
   } catch (error) {
-    Sentry.captureException(error);
-    throw new Error("2000");
+    return lottoActionError(error, "generation");
   }
 }

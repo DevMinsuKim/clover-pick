@@ -1,7 +1,7 @@
 "use server";
 
-import { getPensionCurrentRound } from "@/constants/lotteryRounds";
 import * as Sentry from "@sentry/nextjs";
+import { getPensionCurrentRound } from "@/constants/lotteryRounds";
 
 export async function pensionActions() {
   try {

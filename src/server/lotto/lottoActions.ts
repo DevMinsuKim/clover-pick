@@ -1,7 +1,7 @@
 "use server";
 
-import { getLottoCurrentRound } from "@/constants/lotteryRounds";
 import * as Sentry from "@sentry/nextjs";
+import { getLottoCurrentRound } from "@/constants/lotteryRounds";
 
 export async function lottoActions() {
   try {

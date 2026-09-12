@@ -1,0 +1,19 @@
+name: cloverpick-local
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cloverpick
+      POSTGRES_PASSWORD: cloverpick_test
+      POSTGRES_DB: cloverpick_test
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cloverpick -d cloverpick_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+volumes:
+  postgres-data:

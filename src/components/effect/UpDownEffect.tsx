@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Transition } from "motion/react";
 
-const UpDownTransition = {
+const UpDownTransition: Transition = {
   duration: 1.5,
   ease: "easeOut",
   repeat: Infinity,

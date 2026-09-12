@@ -1,36 +1,60 @@
-import React from "react";
-import Info from "../ui/icons/Info";
+import LotteryGuide, { lotteryPurchaseNotice } from "../lottery/LotteryGuide";
 
 export default function LottoInfo() {
   return (
-    <div>
-      <div className="flex">
-        <div className="rounded-tl-xl rounded-tr-xl bg-content4">
-          <div className="m-3 flex">
-            <div className="rounded-full bg-content4Hover p-1">
-              <Info className="h-5 w-5" />
-            </div>
-            <p className="ml-2 text-center">안내</p>
+    <LotteryGuide
+      id="lotto-guide-title"
+      title="로또6/45 이용 안내"
+      officialUrl="https://www.dhlottery.co.kr/lt645/intro"
+      sections={[
+        {
+          title: "서로 다른 번호 6개가 한 게임이에요",
+          description:
+            "1~45 중 서로 다른 번호 6개를 무작위로 골라요. 번호의 순서는 당첨 결과에 영향을 주지 않아요.",
+          note: "맞춤 생성에서는 빠른 조건을 선택하거나 문장으로 조건을 입력해요. AI가 정리한 조건을 확인하면, 그 안에서 번호를 무작위로 골라요.",
+        },
+        {
+          title: "한 번에 최대 5게임을 만들어요",
+          description:
+            "한 번에 생성한 게임끼리는 같은 조합이 나오지 않아요. 이전에 생성한 조합은 다시 나올 수 있어요.",
+          note: "생성 방식이나 과거 출현 횟수에 따라 당첨확률이 높아지지는 않아요. 맞춤 생성은 당첨 번호를 예측하는 기능이 아니에요.",
+        },
+        {
+          title: "당첨 내역은 생성한 번호의 대조 결과예요",
+          description:
+            "생성한 번호를 해당 회차의 추첨 결과와 비교해요. 일치하는 번호 개수로 등수를 구분하고, 번호 5개가 맞으면 보너스 번호도 확인해요.",
+          note: lotteryPurchaseNotice,
+        },
+        {
+          title: "추첨 당일에는 잠시 쉬어가요",
+          description: (
+            <>
+              매주 토요일{" "}
+              <strong className="font-semibold text-foreground">
+                20:00~23:30
+              </strong>
+              에는 결과 반영과 다음 회차 준비를 위해 생성을 멈춰요. 기존 번호와
+              목록은 계속 볼 수 있어요.
+            </>
+          ),
+          note: "추첨 방송은 토요일 20:35경이며, 방송 일정에 따라 달라질 수 있어요.",
+        },
+      ]}
+      details={{
+        summary: "최근 많이 나온 번호 기준 보기",
+        content: (
+          <div className="space-y-3 text-sm leading-6 text-content3 sm:text-base sm:leading-7">
+            <p>
+              최근 100회 추첨에서 각 번호가 나온 횟수를 집계해요. 보너스 번호는
+              제외해요.
+            </p>
+            <p>
+              많이 나온 상위 20개 번호 안에서 선택한 조건에 맞춰 번호를 골라요.
+              횟수가 같으면 작은 번호를 먼저 포함해요.
+            </p>
           </div>
-        </div>
-      </div>
-      <div className="rounded-bl-xl rounded-br-xl rounded-tr-xl bg-content4 p-3">
-        <strong>로또 번호 생성 가능 시간 안내</strong>
-        <p className="mb-8 mt-1">
-          추첨 결과 확인 및 다음 회차 준비로 인해 번호 생성이 매주 토요일 저녁
-          20시부터 23시 30분까지 제한됩니다.
-          <br />
-          서비스 이용에 착오 없으시길 바랍니다.
-        </p>
-
-        <strong>로또 번호 생성 안내</strong>
-        <p className="mb-4 mt-1">
-          로또 번호 생성은 독립적인 무작위 생성 방식을 따르지만, 재미와 편리함을
-          위해 AI 모델을 활용한 번호 생성를 제공하고 있습니다.
-          <br /> AI 모델이 제안하는 번호는 통계적 분석을 기반으로 한 추천 번호일
-          뿐, 당첨 확률을 보장하지는 않습니다.
-        </p>
-      </div>
-    </div>
+        ),
+      }}
+    />
   );
 }

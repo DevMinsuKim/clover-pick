@@ -1,8 +1,7 @@
 "use client";
 
-import { getPensionQuery } from "@/libs/queries/pensionQueries";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import React from "react";
+import { getPensionQuery } from "@/libs/queries/pensionQueries";
 
 export default function PensionDrawNumber() {
   const { data, error, isFetching } = useSuspenseQuery(getPensionQuery);

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mapLottoDrawJsonToRow } from "./lottoDrawMapper";
 
-describe("mapLottoDrawJsonToRow", () => {
+describe("로또 추첨 응답 변환 (mapLottoDrawJsonToRow)", () => {
   it("1236회 JSON을 lotto 스키마 행으로 변환한다", () => {
     const row = mapLottoDrawJsonToRow({
       ltEpsd: 1236,

@@ -1,8 +1,8 @@
 export const dynamic = "force-dynamic";
 
-import axios from "axios";
-import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
+import axios from "axios";
+import { type NextRequest, NextResponse } from "next/server";
 import { getPensionLastCompletedRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
 import { assertExpectedDrawRound } from "@/utils/assertExpectedDrawRound";
@@ -30,16 +30,13 @@ export async function GET(request: NextRequest) {
       throw new Error("PENSION_LATEST_DRAW_URL 값이 올바르지 않습니다.");
     }
 
-    const response = await axios.get<PensionLatestDrawResponse>(
-      url,
-      {
-        timeout: 15000,
-        headers: {
-          Accept: "application/json",
-          "User-Agent": "Mozilla/5.0",
-        },
+    const response = await axios.get<PensionLatestDrawResponse>(url, {
+      timeout: 15000,
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "Mozilla/5.0",
       },
-    );
+    });
 
     const items = response.data.data?.result;
     if (!items || items.length === 0) {

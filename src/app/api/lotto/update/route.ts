@@ -1,15 +1,15 @@
 export const dynamic = "force-dynamic";
 
-import axios from "axios";
-import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
+import axios from "axios";
+import { type NextRequest, NextResponse } from "next/server";
 import { getLottoLastCompletedRound } from "@/constants/lotteryRounds";
 import prisma from "@/libs/prisma";
 import { assertExpectedDrawRound } from "@/utils/assertExpectedDrawRound";
 import { isAuthorizedCronRequest } from "@/utils/cronAuth";
 import {
-  mapLottoDrawJsonToRow,
   type LottoDrawJsonItem,
+  mapLottoDrawJsonToRow,
 } from "@/utils/lottoDrawMapper";
 import { getLottoRanking } from "@/utils/lottoRanking";
 
@@ -30,16 +30,13 @@ export async function GET(request: NextRequest) {
       throw new Error("LOTTO_LATEST_DRAW_URL 값이 올바르지 않습니다.");
     }
 
-    const response = await axios.get<LottoLatestDrawResponse>(
-      url,
-      {
-        timeout: 15000,
-        headers: {
-          Accept: "application/json",
-          "User-Agent": "Mozilla/5.0",
-        },
+    const response = await axios.get<LottoLatestDrawResponse>(url, {
+      timeout: 15000,
+      headers: {
+        Accept: "application/json",
+        "User-Agent": "Mozilla/5.0",
       },
-    );
+    });
 
     const item = response.data.data?.list?.[0];
     if (!item) {

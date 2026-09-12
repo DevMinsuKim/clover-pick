@@ -1,31 +1,27 @@
 export const revalidate = 1;
 
-import LottoGenerator from "@/components/lotto/LottoGenerator";
-import React from "react";
+import { dehydrate, HydrationBoundary, noop } from "@tanstack/react-query";
 import ErrorFallback from "@/components/common/ErrorFallback";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
+import LotteryRecordsTabs from "@/components/lottery/LotteryRecordsTabs";
+import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
+import LottoDrawNumberSkeleton from "@/components/lotto/LottoDrawNumberSkeleton";
+import LottoGenerator from "@/components/lotto/LottoGenerator";
+import LottoInfo from "@/components/lotto/LottoInfo";
+import { getQueryClient } from "@/libs/getQueryClient";
 import {
   getLottoHistoryQuery,
   getLottoQuery,
   getLottoWinningQuery,
 } from "@/libs/queries/lottoQueries";
-import { getQueryClient } from "@/libs/getQueryClient";
-import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
-import LottoDrawNumberSkeleton from "@/components/lotto/LottoDrawNumberSkeleton";
-import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
-import LottoGenerationHistory from "@/components/lotto/LottoGenerationHistory";
-import LottoGenerationHistorySkeleton from "@/components/lotto/LottoGenerationHistorySkeleton";
-import LottoGeneratorWinning from "@/components/lotto/LottoGeneratorWinning";
-import LottoInfo from "@/components/lotto/LottoInfo";
-import LottoGeneratorWinningSkeleton from "@/components/lotto/LottoGeneratorWinningSkeleton";
 
 export default async function Page() {
   const queryClient = getQueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(getLottoQuery),
-    queryClient.prefetchQuery(getLottoHistoryQuery),
-    queryClient.prefetchQuery(getLottoWinningQuery),
+    queryClient.query(getLottoQuery).catch(noop),
+    queryClient.query(getLottoHistoryQuery()).catch(noop),
+    queryClient.query(getLottoWinningQuery()).catch(noop),
   ]);
 
   return (
@@ -55,31 +51,9 @@ export default async function Page() {
       </ErrorHandlingWrapper>
 
       <div className="mt-20 sm:mt-40">
-        <p className="mb-4 text-lg font-bold sm:text-2xl">
-          로또 번호 생성 목록
-        </p>
-        <ErrorHandlingWrapper
-          fallbackComponent={ErrorFallback}
-          suspenseFallback={<LottoGenerationHistorySkeleton />}
-        >
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <LottoGenerationHistory />
-          </HydrationBoundary>
-        </ErrorHandlingWrapper>
-      </div>
-
-      <div className="mt-20 sm:mt-40">
-        <p className="mb-4 text-lg font-bold sm:text-2xl">
-          생성한 로또 번호 당첨 내역
-        </p>
-        <ErrorHandlingWrapper
-          fallbackComponent={ErrorFallback}
-          suspenseFallback={<LottoGeneratorWinningSkeleton />}
-        >
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <LottoGeneratorWinning />
-          </HydrationBoundary>
-        </ErrorHandlingWrapper>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <LotteryRecordsTabs game="lotto" />
+        </HydrationBoundary>
       </div>
 
       <div className="my-20 sm:my-40">

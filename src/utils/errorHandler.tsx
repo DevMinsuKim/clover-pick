@@ -8,7 +8,7 @@ interface errorHandlerProps {
   btnText: string;
 }
 
-export const errorHandler = (error: Error): errorHandlerProps => {
+export const errorHandler = (error: unknown): errorHandlerProps => {
   if (error) {
     Sentry.captureException(error);
 
@@ -33,7 +33,7 @@ export const errorHandler = (error: Error): errorHandlerProps => {
           btnText: "다시 시도하기",
         };
       }
-    } else if (error.message) {
+    } else if (error instanceof Error && error.message) {
       const errorCode = error.message;
       const { title, description, btnText } = errorMessage(errorCode);
       return {

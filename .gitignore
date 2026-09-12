@@ -8,6 +8,7 @@
 
 # testing
 /coverage
+/.vitest/
 
 # next.js
 /.next/
@@ -44,3 +45,6 @@ bun.lockb
 #Python cache directories
 __pycache__/
 *.py[cod]
+
+# generated Prisma client
+/src/generated/prisma/

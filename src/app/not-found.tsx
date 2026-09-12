@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Button from "@/components/common/Button";
-import Link from "next/link";
 
 export default function NotFound() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 "use client";
 
+import { createContext, type ReactNode, useContext, useState } from "react";
 import ErrorModal from "@/components/common/ErrorModal";
-import { createContext, useState, useContext, ReactNode } from "react";
 
 interface ErrorMessage {
   title: string;
@@ -38,9 +38,9 @@ export const ErrorModalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ErrorContext.Provider value={{ showError, hideError }}>
+    <ErrorContext value={{ showError, hideError }}>
       {children}
       {error && <ErrorModal message={error} onClose={hideError} />}
-    </ErrorContext.Provider>
+    </ErrorContext>
   );
 };

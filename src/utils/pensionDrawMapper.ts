@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface PensionDrawJsonItem {
   wnSqNo: number;
   wnBndNo: string | null;
@@ -14,10 +16,21 @@ export interface PensionDrawRow {
 }
 
 function parseDrawDate(ymd: string): Date {
-  return new Date(
-    `${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}T00:00:00.000Z`,
-  );
+  if (!/^[0-9]{8}$/.test(ymd))
+    throw new Error("추첨일 형식이 올바르지 않습니다.");
+  const iso = `${ymd.slice(0, 4)}-${ymd.slice(4, 6)}-${ymd.slice(6, 8)}`;
+  const date = new Date(`${iso}T00:00:00.000Z`);
+  if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== iso)
+    throw new Error("실제 존재하는 추첨일이 아닙니다.");
+  return date;
 }
+const drawItemSchema = z.object({
+  wnSqNo: z.number().int(),
+  wnBndNo: z.string().nullable(),
+  wnRnkVl: z.string().regex(/^[0-9]{1,6}$/),
+  psltRflYmd: z.string(),
+  psltEpsd: z.number().int().positive(),
+});
 
 /**
  * 회차당 8행(1~7등 + 보너스) JSON을 pension 1행으로 접는다.
@@ -30,7 +43,19 @@ export function mapPensionDrawJsonToRows(
   const firstByRound = new Map<number, PensionDrawJsonItem>();
   const bonusByRound = new Map<number, PensionDrawJsonItem>();
 
-  for (const item of items) {
+  for (const raw of items) {
+    if (raw.wnSqNo !== 1 && raw.wnSqNo !== 21) continue;
+    const item = drawItemSchema.parse(raw);
+    const prior = (item.wnSqNo === 1 ? firstByRound : bonusByRound).get(
+      item.psltEpsd,
+    );
+    if (
+      prior &&
+      (prior.wnBndNo !== item.wnBndNo ||
+        prior.wnRnkVl !== item.wnRnkVl ||
+        prior.psltRflYmd !== item.psltRflYmd)
+    )
+      throw new Error(`${item.psltEpsd}회 추첨 데이터가 서로 다릅니다.`);
     if (item.wnSqNo === 1) {
       firstByRound.set(item.psltEpsd, item);
     } else if (item.wnSqNo === 21) {
@@ -38,13 +63,19 @@ export function mapPensionDrawJsonToRows(
     }
   }
 
+  if ([...bonusByRound.keys()].some((round) => !firstByRound.has(round)))
+    throw new Error("1등 번호가 없는 보너스 회차가 있습니다.");
   const rows: PensionDrawRow[] = [];
   firstByRound.forEach((first, drawNumber) => {
     const bonus = bonusByRound.get(drawNumber);
-    if (!first.wnBndNo || !bonus) {
+    if (!first.wnBndNo || !/^[1-5]$/.test(first.wnBndNo) || !bonus) {
       throw new Error(`${drawNumber}회 1등 조 또는 보너스 번호가 없습니다.`);
     }
 
+    if (first.psltRflYmd !== bonus.psltRflYmd)
+      throw new Error(`${drawNumber}회 추첨일이 서로 다릅니다.`);
+    if (first.wnRnkVl.padStart(6, "0") === bonus.wnRnkVl.padStart(6, "0"))
+      throw new Error(`${drawNumber}회 1등과 보너스 번호가 같습니다.`);
     rows.push({
       draw_number: drawNumber,
       draw_date: parseDrawDate(first.psltRflYmd),
