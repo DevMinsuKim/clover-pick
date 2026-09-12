@@ -19,25 +19,6 @@
 
 @theme {
   --breakpoint-xs: 23.4375rem;
-  --animate-loop-scroll: loop-scroll 30s linear infinite;
-  --animate-reverse-loop-scroll: reverse-loop-scroll 30s linear infinite;
-
-  @keyframes loop-scroll {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(calc(-100% - 4rem));
-    }
-  }
-  @keyframes reverse-loop-scroll {
-    from {
-      transform: translateX(calc(-100% - 4rem));
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
 }
 
 /* Preserve the v3 border and button defaults during the v4 migration. */
@@ -92,10 +73,6 @@ body {
 
 .custom-tooltip {
   @apply rounded-lg! bg-gray-100! text-foreground! dark:bg-black!;
-}
-
-@utility paused {
-  animation-play-state: paused;
 }
 
 /* Keep native details grouping, keyboard behavior and the no-JS fallback. */

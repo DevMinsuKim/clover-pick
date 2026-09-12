@@ -1,5 +1,6 @@
 "use client";
 import { type ButtonHTMLAttributes, type ReactNode, useState } from "react";
+import { primaryActionClassName } from "../common/actionStyles";
 import Button from "../common/Button";
 export function LotteryActionButton({
   busy = false,
@@ -8,10 +9,7 @@ export function LotteryActionButton({
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { busy?: boolean }) {
   return (
-    <Button
-      {...props}
-      className={`flex min-h-12 w-full items-center justify-center gap-2 rounded-lg! px-4 py-3 text-sm leading-5 text-white! bg-green-700! hover:bg-green-800! focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
-    >
+    <Button {...props} className={`${primaryActionClassName} ${className}`}>
       {busy && (
         <span
           aria-hidden="true"

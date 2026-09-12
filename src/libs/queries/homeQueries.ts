@@ -3,7 +3,8 @@ import { getHome } from "@/server/home/homeActions";
 
 export const getHomeQuery = queryOptions({
   queryKey: ["home"],
-  queryFn: () => {
-    return getHome();
-  },
+  queryFn: () => getHome(),
+  staleTime: 60_000,
+  retry: 1,
+  refetchOnWindowFocus: false,
 });
