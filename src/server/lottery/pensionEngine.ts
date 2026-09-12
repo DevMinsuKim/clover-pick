@@ -110,11 +110,11 @@ export function assertPensionCapacity(
   pensionCountSchema.parse(repeat);
   if (isAllGroup && repeat !== 5)
     throw new LotteryInputError(
-      "모든 조를 선택하면 같은 번호로 1~5조, 총 5개를 생성해요.",
+      "모든 조를 선택하면 같은 번호로 1~5조, 총 5게임을 생성해요.",
     );
   if (!isAllGroup && repeat > count)
     throw new LotteryInputError(
-      `이 조건으로는 서로 다른 번호를 ${count}개까지 만들 수 있어요. 생성 개수를 줄여 주세요.`,
+      `이 조건으로는 서로 다른 번호로 ${count}게임까지 만들 수 있어요. 게임 수를 줄여 주세요.`,
     );
 }
 export function generatePensionNumbers(

@@ -105,13 +105,13 @@ describe("연금복권 맞춤 조건 확인", () => {
       }),
     );
     expect((await analyze({ ...base, prompt: "고정번호2개" })).error).toContain(
-      "1개까지",
+      "1게임까지",
     );
     parse.mockResolvedValue(
       extraction({ requestedCount: 10, allGroups: true }),
     );
     expect((await analyze({ ...base, prompt: "모든조2세트" })).error).toContain(
-      "1~5개",
+      "1~5게임",
     );
   });
   it("300자를 초과하거나 빈 입력이면 AI와 한도를 사용하지 않는다", async () => {

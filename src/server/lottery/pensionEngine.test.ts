@@ -70,7 +70,7 @@ describe("연금복권의 순서 있는 번호 생성", () => {
     );
     expect(() =>
       generatePensionNumbers(c({ groups: [1], prefix: "000007" }), 2, false),
-    ).toThrow("1개까지");
+    ).toThrow("1게임까지");
   });
   it.each([
     { groups: [0] },
@@ -90,7 +90,7 @@ describe("연금복권의 순서 있는 번호 생성", () => {
     expect(() => generatePensionNumbers(c({ groups: [2] }), 5, true)).toThrow(
       "특정 조",
     );
-    expect(() => generatePensionNumbers(empty, 1, true)).toThrow("총 5개");
+    expect(() => generatePensionNumbers(empty, 1, true)).toThrow("총 5게임");
     expect(() => generatePensionNumbers(empty, 6, false)).toThrow();
   });
   it("출력에서 중복 번호·개수 부족·서로 다른 모든 조 번호를 거부한다", () => {

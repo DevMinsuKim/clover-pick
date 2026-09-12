@@ -36,7 +36,7 @@ function LottoRandomGenerator({
       </h2>
       <p className="mt-2 text-sm leading-6 text-content3">
         1부터 45까지의 번호 중 6개를 무작위로 골라요.
-        <br />한 번에 생성한 세트끼리는 같은 조합이 나오지 않아요.
+        <br />한 번에 생성한 게임끼리는 같은 조합이 나오지 않아요.
       </p>
       <LottoSetSelector
         value={repeat}
@@ -55,8 +55,8 @@ function LottoRandomGenerator({
           onAgain={generate}
           againLabel={
             repeat === generation.result.lottoNumbers.length
-              ? `${repeat}세트 다시 생성하기`
-              : `선택한 ${repeat}세트로 다시 생성`
+              ? `${repeat}게임 다시 생성하기`
+              : `선택한 ${repeat}게임으로 다시 생성`
           }
         />
       ) : (
@@ -67,7 +67,7 @@ function LottoRandomGenerator({
           onClick={generate}
           className="mt-6"
         >
-          {generation.busy ? "번호 생성 중..." : `${repeat}세트 랜덤 생성하기`}
+          {generation.busy ? "번호 생성 중..." : `${repeat}게임 랜덤 생성하기`}
         </LottoActionButton>
       )}
     </div>

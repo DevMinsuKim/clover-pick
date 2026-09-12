@@ -25,7 +25,6 @@ export function PensionTicketSelector({
         value={isAllGroup ? 5 : repeat}
         onChange={(value) => onChange(value, false)}
         disabled={disabled || isAllGroup}
-        unit="개"
       />
       <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg border border-divider bg-background p-4 dark:border-zinc-600">
         <input
@@ -46,7 +45,7 @@ export function PensionTicketSelector({
             id={`${id}-hint`}
             className="mt-1 block text-xs leading-5 text-content3"
           >
-            여섯 자리 번호 하나에 1~5조를 붙여, 총 5개를 만들어요.
+            여섯 자리 번호 하나에 1~5조를 붙여, 총 5게임을 만들어요.
           </span>
         </span>
       </label>
@@ -80,7 +79,7 @@ export function PensionGenerationResult({
       againLabel={againLabel}
     >
       <h3 className="text-sm font-bold">
-        {result.round}회 · 번호 {result.pensionNumbers.length}개
+        {result.round}회 · {result.pensionNumbers.length}게임
         {result.isAllGroup ? " · 모든 조" : ""}
       </h3>
       <ul className="mt-3 space-y-3" aria-label="생성한 연금복권 번호">

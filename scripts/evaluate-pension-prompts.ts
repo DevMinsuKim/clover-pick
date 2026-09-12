@@ -6,19 +6,29 @@ import { preparePensionSpace } from "../src/server/lottery/pensionEngine";
 // Opt-in live regression checks. No database import or writes; never run in CI.
 const cases = [
   {
-    name: "조·끝자리·개수",
-    prompt: "3조로, 끝 두 자리는 07로 고정해서 3개 만들어줘.",
+    name: "조·끝자리·게임 수",
+    prompt: "3조로, 끝 두 자리는 07로 고정해서 3게임 만들어줘.",
     expected: { groups: [3], suffix: "07", count: 3 },
   },
   {
     name: "앞자리 0·숫자 포함",
-    prompt: "앞 두 자리는 00으로 하고 7을 넣어서 2개",
+    prompt: "앞 두 자리는 00으로 하고 7을 넣어서 두 게임",
     expected: { prefix: "00", includeDigits: [7], count: 2 },
   },
   {
     name: "제외·중복 숫자",
     prompt: "0은 빼고 숫자 중복 없이 5개",
     expected: { excludeDigits: [0], uniqueDigits: true, count: 5 },
+  },
+  {
+    name: "모든 조 5게임",
+    prompt: "같은 번호로 모든 조 5게임 만들어줘",
+    expected: { allGroups: true, count: 5 },
+  },
+  {
+    name: "모든 조와 충돌하는 게임 수 보존",
+    prompt: "모든 조 1게임 만들어줘",
+    expected: { allGroups: true, count: 1 },
   },
   {
     name: "모든 조 1세트",

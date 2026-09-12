@@ -1,98 +1,60 @@
-import Info from "../ui/icons/Info";
-
-const bodyClass =
-  "text-sm leading-6 text-zinc-600 sm:text-base sm:leading-7 dark:text-zinc-300";
+import LotteryGuide, { lotteryPurchaseNotice } from "../lottery/LotteryGuide";
 
 export default function LottoInfo() {
   return (
-    <section
-      aria-labelledby="lotto-guide-title"
-      className="break-keep rounded-2xl border border-divider bg-content4/60 p-5 sm:p-8 dark:border-zinc-700"
-    >
-      <div className="flex items-center gap-3">
-        <span
-          aria-hidden="true"
-          className="flex size-9 shrink-0 items-center justify-center rounded-full bg-content1 text-primary1 dark:text-primary"
-        >
-          <Info className="size-6" />
-        </span>
-        <h2 id="lotto-guide-title" className="text-lg font-bold sm:text-2xl">
-          로또 이용 안내
-        </h2>
-      </div>
-
-      <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-10">
-        <div>
-          <h3 className="text-base font-bold sm:text-lg">번호 생성 방식</h3>
-          <dl className="mt-4 space-y-5">
-            <div>
-              <dt className="text-sm font-semibold sm:text-base">랜덤 생성</dt>
-              <dd className={`mt-1.5 ${bodyClass}`}>
-                1~45 중 서로 다른 번호 6개를 무작위로 골라요.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-sm font-semibold sm:text-base">맞춤 생성</dt>
-              <dd className={`mt-1.5 space-y-2 ${bodyClass}`}>
-                <p>
-                  빠른 조건을 선택하거나 원하는 조건을 문장으로 입력해요. 입력한
-                  문장은 AI가 번호 조건으로 정리해요.
-                </p>
-                <p>
-                  정리된 조건을 확인하면, 그 조건에 맞는 번호를 무작위로 골라요.
-                </p>
-              </dd>
-            </div>
-            <div>
-              <dt className="text-sm font-semibold sm:text-base">
-                한 번에 최대 5세트
-              </dt>
-              <dd className={`mt-1.5 ${bodyClass}`}>
-                한 번에 생성한 세트끼리는 같은 조합이 나오지 않아요. 이전에
-                생성한 조합은 다시 나올 수 있어요.
-              </dd>
-            </div>
-          </dl>
-        </div>
-
-        <div className="space-y-6 sm:space-y-8">
-          <div className="rounded-xl border border-divider bg-content1 p-4 sm:p-5 dark:border-zinc-600">
-            <h3 className="text-base font-bold sm:text-lg">
-              번호 생성 제한 시간
-            </h3>
-            <p className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 font-semibold text-primary1 dark:text-primary">
-              <span className="text-sm sm:text-base">매주 토요일</span>
-              <span className="whitespace-nowrap text-base tabular-nums sm:text-lg">
-                20:00 ~ 23:30
-              </span>
+    <LotteryGuide
+      id="lotto-guide-title"
+      title="로또6/45 이용 안내"
+      officialUrl="https://www.dhlottery.co.kr/lt645/intro"
+      sections={[
+        {
+          title: "서로 다른 번호 6개가 한 게임이에요",
+          description:
+            "1~45 중 서로 다른 번호 6개를 무작위로 골라요. 번호의 순서는 당첨 결과에 영향을 주지 않아요.",
+          note: "맞춤 생성에서는 빠른 조건을 선택하거나 문장으로 조건을 입력해요. AI가 정리한 조건을 확인하면, 그 안에서 번호를 무작위로 골라요.",
+        },
+        {
+          title: "한 번에 최대 5게임을 만들어요",
+          description:
+            "한 번에 생성한 게임끼리는 같은 조합이 나오지 않아요. 이전에 생성한 조합은 다시 나올 수 있어요.",
+          note: "생성 방식이나 과거 출현 횟수에 따라 당첨확률이 높아지지는 않아요. 맞춤 생성은 당첨 번호를 예측하는 기능이 아니에요.",
+        },
+        {
+          title: "당첨 내역은 생성한 번호의 대조 결과예요",
+          description:
+            "생성한 번호를 해당 회차의 추첨 결과와 비교해요. 일치하는 번호 개수로 등수를 구분하고, 번호 5개가 맞으면 보너스 번호도 확인해요.",
+          note: lotteryPurchaseNotice,
+        },
+        {
+          title: "추첨 당일에는 잠시 쉬어가요",
+          description: (
+            <>
+              매주 토요일{" "}
+              <strong className="font-semibold text-foreground">
+                20:00~23:30
+              </strong>
+              에는 결과 반영과 다음 회차 준비를 위해 생성을 멈춰요. 기존 번호와
+              목록은 계속 볼 수 있어요.
+            </>
+          ),
+          note: "추첨 방송은 토요일 20:35경이며, 방송 일정에 따라 달라질 수 있어요.",
+        },
+      ]}
+      details={{
+        summary: "최근 많이 나온 번호 기준 보기",
+        content: (
+          <div className="space-y-3 text-sm leading-6 text-content3 sm:text-base sm:leading-7">
+            <p>
+              최근 100회 추첨에서 각 번호가 나온 횟수를 집계해요. 보너스 번호는
+              제외해요.
             </p>
-            <p className={`mt-3 ${bodyClass}`}>
-              추첨 결과를 확인하고 다음 회차를 준비하는 동안 번호 생성을 잠시
-              멈춰요.
+            <p>
+              많이 나온 상위 20개 번호 안에서 선택한 조건에 맞춰 번호를 골라요.
+              횟수가 같으면 작은 번호를 먼저 포함해요.
             </p>
           </div>
-
-          <div>
-            <h3 className="text-base font-bold sm:text-lg">
-              최근 많이 나온 번호 기준
-            </h3>
-            <div className={`mt-3 space-y-2 ${bodyClass}`}>
-              <p>
-                최근 100회 추첨에서 각 번호가 나온 횟수를 집계해요. 보너스
-                번호는 제외해요.
-              </p>
-              <p>
-                많이 나온 상위 20개 번호 안에서 선택한 조건에 맞춰 번호를
-                골라요.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <p className="mt-6 border-t border-divider pt-5 text-sm leading-6 text-zinc-600 sm:mt-8 dark:border-zinc-600 dark:text-zinc-300">
-        생성 방식이나 과거 출현 횟수에 따라 당첨확률이 높아지지는 않아요.
-      </p>
-    </section>
+        ),
+      }}
+    />
   );
 }

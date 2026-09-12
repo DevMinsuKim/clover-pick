@@ -40,7 +40,6 @@ export default function LotteryRecordsList({
   const listStart = useRef<HTMLParagraphElement>(null);
   const [input, setInput] = useState<LotteryRecordsInput>({ page: 1 });
   const gameLabel = game === "lotto" ? "로또" : "연금복권";
-  const unit = game === "lotto" ? "세트" : "개";
   const options =
     game === "lotto"
       ? kind === "history"
@@ -60,7 +59,7 @@ export default function LotteryRecordsList({
   const label = kind === "history" ? "생성 목록" : "당첨 내역";
   const busy = isFetching || isPlaceholderData;
   const pageSummary = data?.totalCount
-    ? `${label} ${data.page} / ${data.totalPages}페이지 · 총 ${data.totalCount.toLocaleString("ko-KR")}${unit}`
+    ? `${label} ${data.page} / ${data.totalPages}페이지 · 총 ${data.totalCount.toLocaleString("ko-KR")}게임`
     : "";
 
   function changePage(page: number) {

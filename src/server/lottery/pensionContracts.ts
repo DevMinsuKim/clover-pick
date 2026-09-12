@@ -59,7 +59,7 @@ export const pensionCreateInputSchema = z
   })
   .refine(
     (input) => !input.isAllGroup || input.repeat === 5,
-    "모든 조를 선택하면 번호 5개를 생성해요.",
+    "모든 조를 선택하면 5게임을 생성해요.",
   );
 export type PensionCreateInput = z.infer<typeof pensionCreateInputSchema>;
 export function pensionOutputSchema(input: {

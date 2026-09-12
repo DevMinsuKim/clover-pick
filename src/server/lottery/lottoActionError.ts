@@ -10,7 +10,7 @@ export function lottoActionError(
   if (error instanceof z.ZodError)
     return {
       error:
-        "입력한 조건을 확인해 주세요. 번호는 1~45, 세트 수는 1~5까지 사용할 수 있어요.",
+        "입력한 조건을 확인해 주세요. 번호는 1~45, 게임 수는 1~5게임까지 사용할 수 있어요.",
     };
   // SDK/DB exceptions can contain prompts, connection details or provider payloads.
   captureException(new Error(`Lotto ${operation} failed`));

@@ -31,7 +31,7 @@ function PensionRandomGenerator({
     generation.result &&
     (generation.result.pensionNumbers.length !== repeat ||
       generation.result.isAllGroup !== isAllGroup);
-  const selectionLabel = isAllGroup ? "모든 조 5개" : `번호 ${repeat}개`;
+  const selectionLabel = isAllGroup ? "모든 조 5게임" : `${repeat}게임`;
   return (
     <div
       className="px-5 pb-5 pt-6 text-left sm:px-6"
@@ -69,7 +69,7 @@ function PensionRandomGenerator({
           onAgain={generate}
           againLabel={
             selectionChanged
-              ? `선택한 조건으로 ${repeat}개 다시 생성`
+              ? `선택한 조건으로 ${repeat}게임 다시 생성`
               : `${selectionLabel} 다시 생성하기`
           }
         />
@@ -127,7 +127,7 @@ export default function PensionGenerator() {
         </div>
         <div className="border-t border-divider dark:border-zinc-600 px-5 py-4 text-center text-xs leading-5 text-content3">
           {mode === "custom" && (
-            <p>조건을 선택해도 번호 한 개의 당첨확률은 같아요.</p>
+            <p>조건을 선택해도 한 게임의 당첨확률은 같아요.</p>
           )}
           <p>생성한 번호는 생성 목록에 보여요.</p>
         </div>

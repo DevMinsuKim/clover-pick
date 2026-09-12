@@ -46,7 +46,7 @@ describe("조건에 맞는 로또 조합", () => {
     expect(generateLottoNumbers(constraints, 1)[0].numbers).toEqual([
       1, 2, 3, 4, 5, 6,
     ]);
-    expect(() => generateLottoNumbers(constraints, 2)).toThrow("1개까지");
+    expect(() => generateLottoNumbers(constraints, 2)).toThrow("1게임까지");
   });
   it.each([
     { ...defaults, include: [1], exclude: [1] },

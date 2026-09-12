@@ -27,18 +27,16 @@ export function LotteryCountSelector({
   value,
   onChange,
   disabled,
-  unit = "세트",
 }: {
   value: number;
   onChange: (value: number) => void;
   disabled: boolean;
-  unit?: "세트" | "개";
 }) {
   return (
     <fieldset disabled={disabled} className="mt-5">
       <legend className="text-sm font-semibold">
-        {unit === "세트" ? "생성할 세트 수" : "생성할 번호 개수"}{" "}
-        <span className="font-normal text-content3">· 최대 5{unit}</span>
+        생성할 게임 수{" "}
+        <span className="font-normal text-content3">· 최대 5게임</span>
       </legend>
       <div className="mt-2 grid grid-cols-5 gap-2">
         {Array.from({ length: 5 }, (_, index) => index + 1).map((count) => (
@@ -49,8 +47,7 @@ export function LotteryCountSelector({
             onClick={() => onChange(count)}
             className={`min-h-11 rounded-lg border px-1 py-2 text-sm font-semibold transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60 ${value === count ? "border-primary bg-primary/10 text-primary1 dark:text-primary" : "border-divider dark:border-zinc-600 hover:bg-content1Hover"}`}
           >
-            {count}
-            {unit}
+            {count}게임
           </button>
         ))}
       </div>

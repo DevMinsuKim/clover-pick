@@ -32,14 +32,14 @@ export function LottoGenerationResult({
       againLabel={againLabel}
     >
       <h3 className="text-sm font-bold">
-        {result.round}회 · {result.lottoNumbers.length}세트
+        {result.round}회 · {result.lottoNumbers.length}게임
       </h3>
       <ul className="mt-3 space-y-3" aria-label="생성한 로또 번호">
         {result.lottoNumbers.map(({ numbers }, index) => (
           <li
             key={numbers.join(",")}
             className="flex justify-between gap-1 rounded-lg bg-content1Hover/50 p-3"
-            aria-label={`${index + 1}세트: ${numbers.join(", ")}`}
+            aria-label={`${index + 1}게임: ${numbers.join(", ")}`}
           >
             {numbers.map((number) => (
               <span

@@ -14,7 +14,7 @@ export function assertLottoSetCapacity(
 ) {
   if (repeat > combinationCount)
     throw new LottoInputError(
-      `이 조건으로는 서로 다른 조합을 ${combinationCount}개까지 만들 수 있어요. 세트 수를 줄여 주세요.`,
+      `이 조건으로는 서로 다른 조합으로 ${combinationCount}게임까지 만들 수 있어요. 게임 수를 줄여 주세요.`,
     );
 }
 

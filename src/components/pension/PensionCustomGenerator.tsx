@@ -130,7 +130,7 @@ export default function PensionCustomGenerator({
             disabled={busy}
             maxLength={PENSION_PROMPT_MAX_LENGTH}
             rows={3}
-            placeholder="예: 3조로, 끝 두 자리는 07로 고정해서 3개 만들어줘."
+            placeholder="예: 3조로, 끝 두 자리는 07로 고정해서 3게임 만들어줘."
             aria-describedby={`${inputId}-hint ${inputId}-count ${inputId}-privacy${error ? ` ${inputId}-error` : ""}`}
             aria-invalid={Boolean(error)}
             className="sentry-mask block max-h-48 min-h-28 w-full resize-y rounded-lg border border-divider dark:border-zinc-600 bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-content3 focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
@@ -171,8 +171,8 @@ export default function PensionCustomGenerator({
             disabled={busy}
           />
           <p className="mt-2 text-xs leading-5 text-content3">
-            문장에 생성 개수를 적으면 그 수를 우선 적용해요. 모든 조는 총
-            5개예요.
+            문장에 게임 수를 적으면 그 수를 우선 적용해요. 모든 조는 총
+            5게임이에요.
           </p>
           <LotteryInlineError message={error} id={`${inputId}-error`} />
           <LotteryActionButton
@@ -215,7 +215,7 @@ export default function PensionCustomGenerator({
             )}
             <ul aria-label="확인한 생성 조건" className="flex flex-wrap gap-2">
               {[
-                `${plan.round}회 · 번호 ${plan.repeat}개`,
+                `${plan.round}회 · ${plan.repeat}게임`,
                 ...(plan.isAllGroup ? ["같은 번호로 1~5조"] : []),
                 ...describePensionConditions(plan.constraints),
               ].map((condition) => (
@@ -246,7 +246,7 @@ export default function PensionCustomGenerator({
             >
               {generation.busy
                 ? "번호 생성 중..."
-                : `번호 ${plan.repeat}개 생성하기`}
+                : `${plan.repeat}게임 번호 생성하기`}
             </LotteryActionButton>
           )}
         </div>

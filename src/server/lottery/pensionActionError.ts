@@ -9,7 +9,7 @@ export function pensionActionError(
   if (error instanceof z.ZodError)
     return {
       error:
-        "입력한 조건을 확인해 주세요. 조는 1~5, 각 자리 숫자는 0~9, 생성 개수는 1~5개까지 사용할 수 있어요.",
+        "입력한 조건을 확인해 주세요. 조는 1~5, 각 자리 숫자는 0~9, 게임 수는 1~5게임까지 사용할 수 있어요.",
     };
   // Never report SDK payloads, user prompts or database credentials.
   captureException(new Error(`Pension ${operation} failed`));
