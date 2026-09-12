@@ -4,6 +4,8 @@ import { withSentryConfig } from "@sentry/nextjs/config";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Free-text Server Action arguments must not appear in development logs.
+  logging: { serverFunctions: false },
   outputFileTracingRoot: dirname(fileURLToPath(import.meta.url)),
   turbopack: {
     rules: {

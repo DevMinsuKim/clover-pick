@@ -85,3 +85,19 @@ model winning_pension {
 
   @@unique([draw_number, ranking, winning_number, winning_created])
 }
+
+model lotto_generation_batch {
+  request_id  String   @id @db.Uuid
+  input_hash  String
+  draw_number Int
+  numbers     Json
+  created     DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model lottery_request_limit {
+  key     String   @id
+  count   Int
+  expires DateTime @db.Timestamptz(6)
+
+  @@index([expires])
+}

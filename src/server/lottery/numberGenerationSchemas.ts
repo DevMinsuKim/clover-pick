@@ -1,12 +1,10 @@
 import { z } from "zod";
 
 const repeatSchema = z.number().int().min(1).max(5);
-export const lottoGenerationInputSchema = z.object({ repeat: repeatSchema });
 export const pensionGenerationInputSchema = z.object({
   repeat: repeatSchema,
   isAllGroup: z.boolean(),
 });
-export type LottoGenerationInput = z.infer<typeof lottoGenerationInputSchema>;
 export type PensionGenerationInput = z.infer<
   typeof pensionGenerationInputSchema
 >;

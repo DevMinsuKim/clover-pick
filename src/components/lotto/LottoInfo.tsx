@@ -1,35 +1,98 @@
 import Info from "../ui/icons/Info";
 
+const bodyClass =
+  "text-sm leading-6 text-zinc-600 sm:text-base sm:leading-7 dark:text-zinc-300";
+
 export default function LottoInfo() {
   return (
-    <div>
-      <div className="flex">
-        <div className="rounded-tl-xl rounded-tr-xl bg-content4">
-          <div className="m-3 flex">
-            <div className="rounded-full bg-content4Hover p-1">
-              <Info className="h-5 w-5" />
+    <section
+      aria-labelledby="lotto-guide-title"
+      className="break-keep rounded-2xl border border-divider bg-content4/60 p-5 sm:p-8 dark:border-zinc-700"
+    >
+      <div className="flex items-center gap-3">
+        <span
+          aria-hidden="true"
+          className="flex size-9 shrink-0 items-center justify-center rounded-full bg-content1 text-primary1 dark:text-primary"
+        >
+          <Info className="size-6" />
+        </span>
+        <h2 id="lotto-guide-title" className="text-lg font-bold sm:text-2xl">
+          로또 이용 안내
+        </h2>
+      </div>
+
+      <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-10">
+        <div>
+          <h3 className="text-base font-bold sm:text-lg">번호 생성 방식</h3>
+          <dl className="mt-4 space-y-5">
+            <div>
+              <dt className="text-sm font-semibold sm:text-base">랜덤 생성</dt>
+              <dd className={`mt-1.5 ${bodyClass}`}>
+                1~45 중 서로 다른 번호 6개를 무작위로 골라요.
+              </dd>
             </div>
-            <p className="ml-2 text-center">안내</p>
+            <div>
+              <dt className="text-sm font-semibold sm:text-base">맞춤 생성</dt>
+              <dd className={`mt-1.5 space-y-2 ${bodyClass}`}>
+                <p>
+                  빠른 조건을 선택하거나 원하는 조건을 문장으로 입력해요. 입력한
+                  문장은 AI가 번호 조건으로 정리해요.
+                </p>
+                <p>
+                  정리된 조건을 확인하면, 그 조건에 맞는 번호를 무작위로 골라요.
+                </p>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold sm:text-base">
+                한 번에 최대 5세트
+              </dt>
+              <dd className={`mt-1.5 ${bodyClass}`}>
+                한 번에 생성한 세트끼리는 같은 조합이 나오지 않아요. 이전에
+                생성한 조합은 다시 나올 수 있어요.
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div className="space-y-6 sm:space-y-8">
+          <div className="rounded-xl border border-divider bg-content1 p-4 sm:p-5 dark:border-zinc-600">
+            <h3 className="text-base font-bold sm:text-lg">
+              번호 생성 제한 시간
+            </h3>
+            <p className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1 font-semibold text-primary1 dark:text-primary">
+              <span className="text-sm sm:text-base">매주 토요일</span>
+              <span className="whitespace-nowrap text-base tabular-nums sm:text-lg">
+                20:00 ~ 23:30
+              </span>
+            </p>
+            <p className={`mt-3 ${bodyClass}`}>
+              추첨 결과를 확인하고 다음 회차를 준비하는 동안 번호 생성을 잠시
+              멈춰요.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-base font-bold sm:text-lg">
+              최근 많이 나온 번호 기준
+            </h3>
+            <div className={`mt-3 space-y-2 ${bodyClass}`}>
+              <p>
+                최근 100회 추첨에서 각 번호가 나온 횟수를 집계해요. 보너스
+                번호는 제외해요.
+              </p>
+              <p>
+                많이 나온 상위 20개 번호 안에서 선택한 조건에 맞춰 번호를
+                골라요.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      <div className="rounded-bl-xl rounded-br-xl rounded-tr-xl bg-content4 p-3">
-        <strong>로또 번호 생성 가능 시간 안내</strong>
-        <p className="mb-8 mt-1">
-          추첨 결과 확인 및 다음 회차 준비로 인해 번호 생성이 매주 토요일 저녁
-          20시부터 23시 30분까지 제한됩니다.
-          <br />
-          서비스 이용에 착오 없으시길 바랍니다.
-        </p>
 
-        <strong>로또 번호 생성 안내</strong>
-        <p className="mb-4 mt-1">
-          로또 번호 생성은 독립적인 무작위 생성 방식을 따르지만, 재미와 편리함을
-          위해 AI 모델을 활용한 번호 생성를 제공하고 있습니다.
-          <br /> AI 모델이 제안하는 번호는 통계적 분석을 기반으로 한 추천 번호일
-          뿐, 당첨 확률을 보장하지는 않습니다.
-        </p>
-      </div>
-    </div>
+      <p className="mt-6 border-t border-divider pt-5 text-sm leading-6 text-zinc-600 sm:mt-8 dark:border-zinc-600 dark:text-zinc-300">
+        생성 방식이나 과거 출현 횟수에 따라 당첨확률이 높아지지는 않아요.
+      </p>
+    </section>
   );
 }

@@ -5,12 +5,9 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
 import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
 import LottoDrawNumberSkeleton from "@/components/lotto/LottoDrawNumberSkeleton";
-import LottoGenerationHistory from "@/components/lotto/LottoGenerationHistory";
-import LottoGenerationHistorySkeleton from "@/components/lotto/LottoGenerationHistorySkeleton";
 import LottoGenerator from "@/components/lotto/LottoGenerator";
-import LottoGeneratorWinning from "@/components/lotto/LottoGeneratorWinning";
-import LottoGeneratorWinningSkeleton from "@/components/lotto/LottoGeneratorWinningSkeleton";
 import LottoInfo from "@/components/lotto/LottoInfo";
+import LottoRecordsTabs from "@/components/lotto/LottoRecordsTabs";
 import { getQueryClient } from "@/libs/getQueryClient";
 import {
   getLottoHistoryQuery,
@@ -23,8 +20,8 @@ export default async function Page() {
 
   await Promise.all([
     queryClient.query(getLottoQuery).catch(noop),
-    queryClient.query(getLottoHistoryQuery).catch(noop),
-    queryClient.query(getLottoWinningQuery).catch(noop),
+    queryClient.query(getLottoHistoryQuery()).catch(noop),
+    queryClient.query(getLottoWinningQuery()).catch(noop),
   ]);
 
   return (
@@ -54,31 +51,9 @@ export default async function Page() {
       </ErrorHandlingWrapper>
 
       <div className="mt-20 sm:mt-40">
-        <p className="mb-4 text-lg font-bold sm:text-2xl">
-          로또 번호 생성 목록
-        </p>
-        <ErrorHandlingWrapper
-          fallbackComponent={ErrorFallback}
-          suspenseFallback={<LottoGenerationHistorySkeleton />}
-        >
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <LottoGenerationHistory />
-          </HydrationBoundary>
-        </ErrorHandlingWrapper>
-      </div>
-
-      <div className="mt-20 sm:mt-40">
-        <p className="mb-4 text-lg font-bold sm:text-2xl">
-          생성한 로또 번호 당첨 내역
-        </p>
-        <ErrorHandlingWrapper
-          fallbackComponent={ErrorFallback}
-          suspenseFallback={<LottoGeneratorWinningSkeleton />}
-        >
-          <HydrationBoundary state={dehydrate(queryClient)}>
-            <LottoGeneratorWinning />
-          </HydrationBoundary>
-        </ErrorHandlingWrapper>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <LottoRecordsTabs />
+        </HydrationBoundary>
       </div>
 
       <div className="my-20 sm:my-40">

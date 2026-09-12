@@ -1,60 +1,52 @@
 "use server";
 
-import { openai } from "@ai-sdk/openai";
-import * as Sentry from "@sentry/nextjs";
-import { generateText, Output } from "ai";
-import { getLottoCurrentRound } from "@/constants/lotteryRounds";
-import prisma from "@/libs/prisma";
+import { lottoActionError } from "@/server/lottery/lottoActionError";
 import {
-  type LottoGenerationInput,
-  lottoGenerationInputSchema,
-  lottoGenerationOutputSchema,
-} from "@/server/lottery/numberGenerationSchemas";
-import { isLottoGenerationRestricted } from "@/utils/generationRestriction";
+  emptyLottoConstraints,
+  type LottoActionResult,
+  type LottoCreateInput,
+  type LottoGeneration,
+  lottoCreateInputSchema,
+} from "@/server/lottery/lottoContracts";
+import {
+  generateLottoNumbers,
+  normalizeLottoConstraints,
+} from "@/server/lottery/lottoEngine";
+import { getLottoFrequency } from "@/server/lottery/lottoFrequency";
+import {
+  assertLottoRound,
+  findLottoBatch,
+  lottoRequestHash,
+  saveLottoBatch,
+} from "@/server/lottery/lottoPersistence";
+import { limitLottoRequest } from "@/server/lottery/lottoRequestLimit";
 
-export async function lottoCreateNumberActions(input: LottoGenerationInput) {
+export async function lottoCreateNumberActions(
+  input: LottoCreateInput,
+): Promise<LottoActionResult<LottoGeneration>> {
   try {
-    const { repeat } = lottoGenerationInputSchema.parse(input);
-    if (isLottoGenerationRestricted()) {
-      Sentry.captureMessage("로또 번호 생성 시간이 아닙니다.", "warning");
-      throw new Error("1102");
-    }
-
-    const { output: data } = await generateText({
-      model: openai.chat("gpt-4o"),
-      instructions:
-        "Generate lottery number combinations, without predicting winning numbers.",
-      prompt: `Generate exactly ${repeat} distinct combinations. Each combination must contain 6 distinct integers from 1 to 45. Do not repeat a combination in a different order.`,
-      output: Output.object({
-        schema: lottoGenerationOutputSchema(repeat),
-      }),
-    });
-
-    data.lottoNumbers.forEach((obj) => {
-      obj.numbers.sort((a, b) => a - b);
-    });
-
-    const currentRound = getLottoCurrentRound();
-
-    const lottoNumbersDB = data.lottoNumbers.map((item) => {
-      return {
-        draw_number: currentRound,
-        number1: item.numbers[0],
-        number2: item.numbers[1],
-        number3: item.numbers[2],
-        number4: item.numbers[3],
-        number5: item.numbers[4],
-        number6: item.numbers[5],
-      };
-    });
-
-    await prisma.created_lotto.createMany({
-      data: lottoNumbersDB,
-    });
-
-    return { success: data };
+    const parsed = lottoCreateInputSchema.parse(input);
+    const constraints = normalizeLottoConstraints(
+      parsed.constraints ?? emptyLottoConstraints,
+    );
+    const hash = lottoRequestHash(parsed, constraints);
+    const existing = await findLottoBatch(
+      parsed.requestId,
+      hash,
+      parsed.repeat,
+    );
+    // A retry after a lost response returns its saved result without spending quota again.
+    if (existing) return { success: existing };
+    assertLottoRound(parsed.expectedRound);
+    await limitLottoRequest("generation");
+    const frequency = constraints.frequent ? await getLottoFrequency() : null;
+    const numbers = generateLottoNumbers(
+      constraints,
+      parsed.repeat,
+      frequency?.pool,
+    );
+    return { success: await saveLottoBatch(parsed, hash, numbers) };
   } catch (error) {
-    Sentry.captureException(error);
-    throw new Error("2000");
+    return lottoActionError(error, "generation");
   }
 }
