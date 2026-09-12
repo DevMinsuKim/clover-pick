@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomeActions from "@/components/home/HomeActions";
+import HomeBallExperience from "@/components/home/HomeBallExperience";
 import HomeFAQ from "@/components/home/HomeFAQ";
 import HomeFeature from "@/components/home/HomeFeature";
 import HomeNumberPreview from "@/components/home/HomeNumberPreview";
@@ -64,6 +65,7 @@ export default function Home() {
         </div>
       </section>
       <HomeFeature />
+      <HomeBallExperience />
       <HomeStats />
       <HomeFAQ />
       <section
