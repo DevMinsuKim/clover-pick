@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
+import Accordion from "@/components/common/Accordion";
 import {
   describeLottoConditions,
   LOTTO_PROMPT_MAX_LENGTH,
@@ -221,10 +222,10 @@ export default function LottoCustomGenerator({
               ))}
             </ul>
             {plan.frequency && (
-              <details className="text-xs leading-5 text-content3">
-                <summary className="cursor-pointer">
-                  최근 많이 나온 번호의 기준 보기
-                </summary>
+              <Accordion
+                summary="최근 많이 나온 번호의 기준 보기"
+                className="text-xs leading-5 text-content3"
+              >
                 <p className="mt-2">
                   {plan.frequency.fromRound}~{plan.frequency.toRound}회, 최근{" "}
                   {plan.frequency.drawCount}회 당첨 번호 기준이에요. 보너스
@@ -236,7 +237,7 @@ export default function LottoCustomGenerator({
                 <p className="mt-2">
                   과거 출현 횟수가 다음 당첨확률을 높이지는 않아요.
                 </p>
-              </details>
+              </Accordion>
             )}
           </div>
           <LottoInlineError message={generation.error} />

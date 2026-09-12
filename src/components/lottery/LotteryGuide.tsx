@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Accordion from "../common/Accordion";
 import Info from "../ui/icons/Info";
 
 export const lotteryPurchaseNotice =
@@ -44,12 +45,13 @@ export default function LotteryGuide({
           </div>
         ))}
       </div>
-      <details className="mt-6 border-t border-divider pt-5 dark:border-zinc-600">
-        <summary className="cursor-pointer py-1 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-          {details.summary}
-        </summary>
-        <div className="mt-4">{details.content}</div>
-      </details>
+      <Accordion
+        summary={details.summary}
+        className="mt-6 border-t border-divider pt-5 dark:border-zinc-600"
+        summaryClassName="py-1 text-sm font-semibold"
+      >
+        <div className="pt-4">{details.content}</div>
+      </Accordion>
       <a
         href={officialUrl}
         target="_blank"

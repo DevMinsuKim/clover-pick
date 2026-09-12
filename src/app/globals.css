@@ -97,3 +97,51 @@ body {
 @utility paused {
   animation-play-state: paused;
 }
+
+/* Keep native details grouping, keyboard behavior and the no-JS fallback. */
+.accordion > summary::marker {
+  content: "";
+}
+
+.accordion-indicator {
+  transition: rotate 240ms ease;
+}
+
+.accordion[open] > summary .accordion-indicator {
+  rotate: 180deg;
+}
+
+.accordion[open] > summary .accordion-plus {
+  rotate: 45deg;
+}
+
+/* A single grid item collapses to zero without fixed heights or size interpolation. */
+@supports selector(details::details-content) and
+  (transition-behavior: allow-discrete) {
+  .accordion::details-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 260ms cubic-bezier(0.2, 0, 0, 1),
+      opacity 200ms ease,
+      content-visibility 260ms allow-discrete;
+  }
+
+  .accordion[open]::details-content {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .accordion-panel {
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-indicator,
+  .accordion::details-content {
+    transition: none;
+  }
+}
