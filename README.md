@@ -24,7 +24,7 @@
 ## 🛠️ 주요 기능 및 기술적 접근
 
 - **반응형 UX/UI**: `Next.js`, `TypeScript`, `Tailwind CSS`를 기반으로 모바일·데스크톱에 대응하는 반응형 UI와 다크 모드를 구현
-- **SEO 및 인터랙션 애니메이션**: `SSR` 적용과 메타데이터 최적화를 통해 검색 엔진 노출을 고려했으며, `Three.js(R3F)`와 `Motion for React`을 활용해 메인 페이지의 3D 인터랙션과 애니메이션을 구현
+- **랜딩 페이지 및 SEO**: 홈의 소개와 생성 링크는 서버에서 렌더링하고, 생성 기록은 별도로 조회해 데이터 로딩·실패가 시작 버튼을 막지 않게 구성합니다. 로또·연금복권과 버튼 스타일을 공유하고, 실제 맞춤 생성 흐름을 예시로 안내하며 메타데이터를 제공합니다.
 - **데이터 페칭 및 상태 관리**: `TanStack Query(React Query)`와 `Next.js Server Action`을 함께 활용해 서버 데이터 요청 흐름을 구성하고, `React Suspense`를 적용해 로딩 상태를 선언적으로 관리
 - **AI 조건 해석과 번호 생성 분리**: `generateText`·`Output.object`·`Zod`로 자연어를 조건으로 정리하고, 사용자가 확인한 조건 안에서 암호학적 난수로 조합을 선택합니다. 게임 수·번호·충돌을 서버에서 검증하며, 요청 UUID로 중복 적재를 방지합니다. [주요 설계](#로또-생성의-주요-설계)을 참고하세요.
 - **에러 핸들링 및 모니터링**: `React Error Boundary`를 통해 런타임 에러를 선언적으로 처리하고, `Sentry`와 연동해 프로덕션 환경에서 발생하는 오류를 추적할 수 있도록 환경 구성
@@ -45,7 +45,7 @@
 | 상태 관리 및 데이터 페칭 | `TanStack Query(React Query)`, `Server Action` |
 | 비동기 UI 처리           | `React Suspense`, `React Error Boundary`       |
 | 스타일링 및 애니메이션   | `Tailwind CSS`, `Motion for React`                |
-| 3D 그래픽                | `Three.js(R3F)`                                |
+| 3D 그래픽                | `Three.js`, `React Three Fiber`, `Cannon`       |
 | 패키지 매니저            | `Bun`                                          |
 | 빌드 도구                | `Turbopack`                                          |
 | 테스트                   | `Vitest`                                       |
@@ -111,8 +111,8 @@ flowchart LR
 ## 로컬 개발 및 품질 검사
 
 - Node.js 22.12 이상(22 LTS 권장)과 Bun 1.2.23을 사용합니다. `bun.lock`을 커밋하고 CI에서도 같은 Bun 버전으로 설치합니다.
-- Next.js 16.3.5와 React 19.2.8을 사용합니다. React Three Fiber 9.7의 지원 범위에 맞춰 React 19.3으로 자동 업데이트되지 않도록 고정했습니다.
-- React 19 호환성을 위해 Three.js 계열, Motion, next-themes, TanStack Query를 갱신하고 Lottie 플레이어를 `@lottiefiles/dotlottie-react`로 교체했습니다.
+- Next.js 16.3.5와 React 19.2.8을 사용하며, 주요 런타임 버전은 검증한 버전으로 고정합니다.
+- React 19 호환성을 위해 Motion, next-themes, TanStack Query를 갱신했습니다. Lottie와 자동 재생하던 홈 애니메이션을 정리했습니다. Three.js·React Three Fiber·Cannon은 ‘추첨기 체험하기’를 누른 뒤에만 로드하며, 일시 정지·화면 이탈 시 렌더링과 물리 연산을 멈춥니다. 체험을 닫으면 Canvas와 물리 Worker를 해제합니다.
 - 개발·프로덕션 빌드 모두 Next.js 기본 Turbopack을 사용하며 SVG 컴포넌트는 `turbopack.rules`에서 SVGR로 변환합니다. `svgr.d.ts`에서 SVG 속성 타입을 선언합니다.
 - Sentry 10.74와 Turbopack의 기본 소스맵 생성·업로드·클라이언트 소스맵 삭제 동작을 사용합니다. 중복된 수동 삭제 glob은 제거했으며, 서버 소스맵은 런타임 오류 추적을 위해 유지합니다. 업로드에는 빌드 환경의 Sentry 인증 설정이 필요합니다.
 - TanStack Query 5.102의 `environmentManager.isServer()`와 `queryClient.query()`를 사용합니다. 사전 조회 실패는 `.catch(noop)`으로 처리해 기존 Suspense·Error Boundary 재시도 흐름을 유지합니다. Next.js 라우트 오류 화면은 16.3의 `retry()`로 데이터를 다시 요청하며, React Context는 19의 Provider 표기를 사용합니다. Motion의 공식 권장 import인 `motion/react`로 갱신했습니다.
