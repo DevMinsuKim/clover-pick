@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { headers } from "next/headers";
 import prisma from "@/libs/prisma";
-import { LottoInputError } from "./lottoEngine";
+import { LotteryInputError } from "./lotteryInputError";
 
 export interface RateBucket {
   key: string;
@@ -22,7 +22,7 @@ export async function consumeBuckets(buckets: RateBucket[]) {
         RETURNING count
       `;
       if (!rows.length)
-        throw new LottoInputError(
+        throw new LotteryInputError(
           bucket.period === "day"
             ? "오늘 이용 가능한 횟수를 모두 사용했어요. 내일 다시 이용해 주세요."
             : "이용 요청이 많아요. 잠시 후 다시 시도해 주세요.",
@@ -34,7 +34,7 @@ export async function consumeBuckets(buckets: RateBucket[]) {
   });
 }
 
-export async function limitLottoRequest(
+export async function limitLotteryRequest(
   kind: "analysis" | "generation" | "quick",
 ) {
   const requestHeaders = await headers();

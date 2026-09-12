@@ -1,11 +1,12 @@
-import { randomInt } from "node:crypto";
+import { LotteryInputError as LottoInputError } from "./lotteryInputError";
 import {
   type LottoConstraints,
   lottoConstraintsSchema,
   lottoSetCountSchema,
 } from "./lottoContracts";
+import { sampleDistinctRanks } from "./sampleDistinctRanks";
 
-export class LottoInputError extends Error {}
+export { LotteryInputError as LottoInputError } from "./lotteryInputError";
 
 export function assertLottoSetCapacity(
   repeat: number,
@@ -115,10 +116,7 @@ export function generateLottoNumbers(
   lottoSetCountSchema.parse(repeat);
   const space = prepareLottoSpace(input, frequentPool);
   assertLottoSetCapacity(repeat, space.count);
-  const ranks = new Set<number>();
-  for (let i = space.count - repeat; i < space.count; i++) {
-    const rank = randomInt(i + 1);
-    ranks.add(ranks.has(rank) ? i : rank);
-  }
-  return [...ranks].map((rank) => ({ numbers: space.at(rank) }));
+  return sampleDistinctRanks(space.count, repeat).map((rank) => ({
+    numbers: space.at(rank),
+  }));
 }

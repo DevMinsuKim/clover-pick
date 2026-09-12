@@ -7,7 +7,7 @@ import {
   type LotteryRecordsPage,
 } from "./lotteryRecordsContracts";
 
-export async function getLottoRecords(
+export async function getPensionRecords(
   kind: LotteryRecordsKind,
   input: LotteryRecordsInput = {},
 ): Promise<LotteryRecordsPage> {
@@ -25,15 +25,15 @@ export async function getLottoRecords(
       };
       const latest =
         kind === "history"
-          ? await tx.created_lotto.findFirst(latestArgs)
-          : await tx.winning_lotto.findFirst(latestArgs);
+          ? await tx.created_pension.findFirst(latestArgs)
+          : await tx.winning_pension.findFirst(latestArgs);
       const snapshotId = latest?.id ?? 0;
       // Keep newly inserted rows from shifting later pages while someone browses.
       const where = { id: { lte: snapshotId } };
       const totalCount =
         kind === "history"
-          ? await tx.created_lotto.count({ where })
-          : await tx.winning_lotto.count({ where });
+          ? await tx.created_pension.count({ where })
+          : await tx.winning_pension.count({ where });
       const totalPages = Math.max(
         1,
         Math.ceil(totalCount / LOTTERY_RECORDS_PAGE_SIZE),
@@ -47,18 +47,13 @@ export async function getLottoRecords(
       const metadata = { page, totalPages, totalCount, snapshotId };
 
       if (kind === "history") {
-        const rows = await tx.created_lotto.findMany({
+        const rows = await tx.created_pension.findMany({
           ...window,
           orderBy: { id: "desc" },
           select: {
             id: true,
             draw_number: true,
-            number1: true,
-            number2: true,
-            number3: true,
-            number4: true,
-            number5: true,
-            number6: true,
+            number: true,
             created: true,
           },
         });
@@ -67,14 +62,7 @@ export async function getLottoRecords(
           items: rows.map((row) => ({
             id: row.id,
             round: row.draw_number,
-            numbers: [
-              row.number1,
-              row.number2,
-              row.number3,
-              row.number4,
-              row.number5,
-              row.number6,
-            ],
+            numbers: row.number.split("").map(Number),
             generatedAt: row.created.toISOString(),
             drawDate: null,
             ranking: null,
@@ -82,24 +70,19 @@ export async function getLottoRecords(
         };
       }
 
-      const rows = await tx.winning_lotto.findMany({
+      const rows = await tx.winning_pension.findMany({
         ...window,
         orderBy: [{ draw_number: "desc" }, { id: "desc" }],
         select: {
           id: true,
           draw_number: true,
           ranking: true,
-          winning_number1: true,
-          winning_number2: true,
-          winning_number3: true,
-          winning_number4: true,
-          winning_number5: true,
-          winning_number6: true,
+          winning_number: true,
           winning_created: true,
         },
       });
       const draws = rows.length
-        ? await tx.lotto.findMany({
+        ? await tx.pension.findMany({
             where: {
               draw_number: {
                 in: [...new Set(rows.map((row) => row.draw_number))],
@@ -120,14 +103,7 @@ export async function getLottoRecords(
         items: rows.map((row) => ({
           id: row.id,
           round: row.draw_number,
-          numbers: [
-            row.winning_number1,
-            row.winning_number2,
-            row.winning_number3,
-            row.winning_number4,
-            row.winning_number5,
-            row.winning_number6,
-          ],
+          numbers: row.winning_number.split("").map(Number),
           generatedAt: row.winning_created.toISOString(),
           drawDate: dates.get(row.draw_number) ?? null,
           ranking: row.ranking,

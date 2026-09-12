@@ -1,11 +1,8 @@
 function getSeoulWeekdayAndClock(now: Date) {
-  const seoulTime = new Date(
-    now.toLocaleString("en-US", { timeZone: "Asia/Seoul", hour12: false }),
-  );
-
+  const seoulTime = new Date(now.getTime() + 9 * 60 * 60 * 1000);
   return {
-    day: seoulTime.getDay(),
-    totalMinutes: seoulTime.getHours() * 60 + seoulTime.getMinutes(),
+    day: seoulTime.getUTCDay(),
+    totalMinutes: seoulTime.getUTCHours() * 60 + seoulTime.getUTCMinutes(),
   };
 }
 

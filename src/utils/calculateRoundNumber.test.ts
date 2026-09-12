@@ -9,7 +9,7 @@ import {
   LOTTO_DRAW_SCHEDULE,
   PENSION_ANCHOR_DATE,
   PENSION_ANCHOR_ROUND,
-  PENSION_DRAW_SCHEDULE,
+  PENSION_SALES_CLOSE_SCHEDULE,
 } from "@/constants/lotteryRounds";
 import { calculateRoundNumber } from "./calculateRoundNumber";
 
@@ -81,27 +81,27 @@ describe("복권 회차 계산 (calculateRoundNumber)", () => {
     });
   });
 
-  describe("연금복권720+ (앵커 2020-05-07, 목 17:00 KST)", () => {
-    it("1회차 추첨 전에는 1회차를 반환한다", () => {
+  describe("연금복권720+ (앵커 2020-05-07, 목 17:00 KST 판매 마감)", () => {
+    it("1회차 판매 마감 전에는 1회차를 반환한다", () => {
       const beforeFirstDraw = new Date("2020-05-07T16:59:00+09:00");
       expect(
         calculateRoundNumber(
           PENSION_ANCHOR_DATE,
           PENSION_ANCHOR_ROUND,
           beforeFirstDraw,
-          PENSION_DRAW_SCHEDULE,
+          PENSION_SALES_CLOSE_SCHEDULE,
         ),
       ).toBe(1);
     });
 
-    it("1회차 추첨 직후에는 2회차를 반환한다", () => {
+    it("1회차 판매 마감 직후에는 2회차를 반환한다", () => {
       const afterFirstDraw = new Date("2020-05-07T17:00:00+09:00");
       expect(
         calculateRoundNumber(
           PENSION_ANCHOR_DATE,
           PENSION_ANCHOR_ROUND,
           afterFirstDraw,
-          PENSION_DRAW_SCHEDULE,
+          PENSION_SALES_CLOSE_SCHEDULE,
         ),
       ).toBe(2);
     });
@@ -111,7 +111,7 @@ describe("복권 회차 계산 (calculateRoundNumber)", () => {
       expect(getPensionCurrentRound(today)).toBe(329);
     });
 
-    it("2026-08-20(목) 추첨 전에는 329, 추첨 직후에는 330", () => {
+    it("2026-08-20(목) 판매 마감 전에는 329, 판매 마감 직후에는 330", () => {
       const beforeDraw = new Date("2026-08-20T16:59:00+09:00");
       const afterDraw = new Date("2026-08-20T17:00:00+09:00");
       expect(getPensionCurrentRound(beforeDraw)).toBe(329);

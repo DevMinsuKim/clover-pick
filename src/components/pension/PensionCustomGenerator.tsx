@@ -2,48 +2,46 @@
 
 import { useId, useRef, useState } from "react";
 import {
-  describeLottoConditions,
-  LOTTO_PROMPT_MAX_LENGTH,
-  type LottoPlan,
-  type LottoQuickCondition,
-  lottoQuickConditions,
-} from "@/server/lottery/lottoContracts";
-import { analyzeLottoConditionsActions } from "@/server/lotto/analyzeLottoConditionsActions";
+  LotteryActionButton,
+  LotteryInlineError,
+} from "@/components/lottery/LotteryGenerationControls";
 import {
-  LottoActionButton,
-  LottoGenerationResult,
-  LottoInlineError,
-  LottoSetSelector,
-} from "./LottoGenerationControls";
-import { useLottoGeneration } from "./useLottoGeneration";
+  describePensionConditions,
+  PENSION_PROMPT_MAX_LENGTH,
+  type PensionPlan,
+  type PensionQuickCondition,
+  pensionQuickConditions,
+} from "@/server/lottery/pensionContracts";
+import { analyzePensionConditionsActions } from "@/server/pension/analyzePensionConditionsActions";
+import {
+  PensionGenerationResult,
+  PensionTicketSelector,
+} from "./PensionGenerationControls";
+import { usePensionGeneration } from "./usePensionGeneration";
 
-export default function LottoCustomGenerator({
+export default function PensionCustomGenerator({
   onBusyChange,
 }: {
   onBusyChange: (busy: boolean) => void;
 }) {
   const inputId = useId();
   const [prompt, setPrompt] = useState("");
-  const [presets, setPresets] = useState<LottoQuickCondition[]>([]);
+  const [presets, setPresets] = useState<PensionQuickCondition[]>([]);
   const [repeat, setRepeat] = useState(1);
-  const [plan, setPlan] = useState<LottoPlan | null>(null);
+  const [isAllGroup, setIsAllGroup] = useState(false);
+  const [plan, setPlan] = useState<PensionPlan | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState("");
   const active = useRef(false);
-  const generation = useLottoGeneration(onBusyChange);
+  const generation = usePensionGeneration(onBusyChange);
   const busy = analyzing || generation.busy;
 
-  function toggle(id: LottoQuickCondition) {
+  function toggle(id: PensionQuickCondition) {
     setError("");
     setPresets((current) =>
       current.includes(id)
         ? current.filter((item) => item !== id)
-        : [
-            ...current.filter(
-              (item) => id === "frequent" || item === "frequent",
-            ),
-            id,
-          ],
+        : [...current, id],
     );
   }
   async function analyze() {
@@ -53,15 +51,17 @@ export default function LottoCustomGenerator({
     onBusyChange(true);
     setError("");
     try {
-      const response = await analyzeLottoConditionsActions({
+      const response = await analyzePensionConditionsActions({
         prompt,
         repeat,
         presets,
+        isAllGroup,
       });
       if (response.error) setError(response.error);
       else if (response.success) {
         setPlan(response.success);
         setRepeat(response.success.repeat);
+        setIsAllGroup(response.success.isAllGroup);
       }
     } catch {
       setError(
@@ -78,6 +78,7 @@ export default function LottoCustomGenerator({
       void generation.generate({
         repeat: plan.repeat,
         constraints: plan.constraints,
+        isAllGroup: plan.isAllGroup,
         expectedRound: plan.round,
       });
   }
@@ -105,7 +106,7 @@ export default function LottoCustomGenerator({
       >
         {plan
           ? "확인한 조건을 모두 만족하는 번호를 무작위로 골라요."
-          : "빠른 조건을 선택하거나, 포함·제외할 번호와 홀수·짝수 조건을 편하게 적어 주세요."}
+          : "원하는 조, 앞·끝자리, 포함·제외할 숫자를 적어 주세요. 숫자 조건은 조를 제외한 여섯 자리에 적용해요."}
       </p>
       {!plan ? (
         <form
@@ -127,9 +128,9 @@ export default function LottoCustomGenerator({
               setError("");
             }}
             disabled={busy}
-            maxLength={LOTTO_PROMPT_MAX_LENGTH}
+            maxLength={PENSION_PROMPT_MAX_LENGTH}
             rows={3}
-            placeholder="예: 7과 21은 넣고, 30번대는 제외해서 3세트 만들어줘."
+            placeholder="예: 3조로, 끝 두 자리는 07로 고정해서 3개 만들어줘."
             aria-describedby={`${inputId}-hint ${inputId}-count ${inputId}-privacy${error ? ` ${inputId}-error` : ""}`}
             aria-invalid={Boolean(error)}
             className="sentry-mask block max-h-48 min-h-28 w-full resize-y rounded-lg border border-divider dark:border-zinc-600 bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-content3 focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
@@ -138,14 +139,14 @@ export default function LottoCustomGenerator({
             id={`${inputId}-count`}
             className="mt-1 text-right text-xs text-content3"
           >
-            {prompt.length}/{LOTTO_PROMPT_MAX_LENGTH}자
+            {prompt.length}/{PENSION_PROMPT_MAX_LENGTH}자
           </p>
           <fieldset disabled={busy} className="mt-4">
             <legend className="text-xs text-content3">
               빠른 조건 · 원하는 조건을 골라보세요
             </legend>
             <div className="mt-2 flex flex-wrap gap-2">
-              {lottoQuickConditions.map((item) => (
+              {pensionQuickConditions.map((item) => (
                 <button
                   key={item.id}
                   type="button"
@@ -159,26 +160,31 @@ export default function LottoCustomGenerator({
               ))}
             </div>
           </fieldset>
-          <LottoSetSelector
-            value={repeat}
-            onChange={(value) => {
-              setRepeat(value);
+          <PensionTicketSelector
+            repeat={repeat}
+            isAllGroup={isAllGroup}
+            onChange={(count, all) => {
+              setRepeat(count);
+              setIsAllGroup(all);
               setError("");
             }}
             disabled={busy}
           />
           <p className="mt-2 text-xs leading-5 text-content3">
-            문장에 세트 수를 적으면 그 수를 우선 적용해요.
+            문장에 생성 개수를 적으면 그 수를 우선 적용해요. 모든 조는 총
+            5개예요.
           </p>
-          <LottoInlineError message={error} id={`${inputId}-error`} />
-          <LottoActionButton
+          <LotteryInlineError message={error} id={`${inputId}-error`} />
+          <LotteryActionButton
             type="submit"
             busy={analyzing}
-            disabled={busy || (!prompt.trim() && !presets.length)}
+            disabled={
+              busy || (!prompt.trim() && !presets.length && !isAllGroup)
+            }
             className="mt-6"
           >
             {analyzing ? "조건 확인 중..." : "조건 확인하기"}
-          </LottoActionButton>
+          </LotteryActionButton>
           <p
             id={`${inputId}-privacy`}
             className="mt-3 text-xs leading-5 text-content3"
@@ -209,8 +215,9 @@ export default function LottoCustomGenerator({
             )}
             <ul aria-label="확인한 생성 조건" className="flex flex-wrap gap-2">
               {[
-                `${plan.round}회 · ${plan.repeat}세트`,
-                ...describeLottoConditions(plan.constraints),
+                `${plan.round}회 · 번호 ${plan.repeat}개`,
+                ...(plan.isAllGroup ? ["같은 번호로 1~5조"] : []),
+                ...describePensionConditions(plan.constraints),
               ].map((condition) => (
                 <li
                   key={condition}
@@ -220,35 +227,17 @@ export default function LottoCustomGenerator({
                 </li>
               ))}
             </ul>
-            {plan.frequency && (
-              <details className="text-xs leading-5 text-content3">
-                <summary className="cursor-pointer">
-                  최근 많이 나온 번호의 기준 보기
-                </summary>
-                <p className="mt-2">
-                  {plan.frequency.fromRound}~{plan.frequency.toRound}회, 최근{" "}
-                  {plan.frequency.drawCount}회 당첨 번호 기준이에요. 보너스
-                  번호는 제외하며 횟수가 같으면 작은 번호를 먼저 선택해요.
-                </p>
-                <p className="mt-2 break-words">
-                  번호 후보: {plan.frequency.pool.join(", ")}
-                </p>
-                <p className="mt-2">
-                  과거 출현 횟수가 다음 당첨확률을 높이지는 않아요.
-                </p>
-              </details>
-            )}
           </div>
-          <LottoInlineError message={generation.error} />
+          <LotteryInlineError message={generation.error} />
           {generation.result ? (
-            <LottoGenerationResult
+            <PensionGenerationResult
               key={JSON.stringify(generation.result)}
               result={generation.result}
               busy={generation.busy}
               onAgain={generate}
             />
           ) : (
-            <LottoActionButton
+            <LotteryActionButton
               type="button"
               busy={generation.busy}
               disabled={busy}
@@ -257,8 +246,8 @@ export default function LottoCustomGenerator({
             >
               {generation.busy
                 ? "번호 생성 중..."
-                : `${plan.repeat}세트 번호 생성하기`}
-            </LottoActionButton>
+                : `번호 ${plan.repeat}개 생성하기`}
+            </LotteryActionButton>
           )}
         </div>
       )}

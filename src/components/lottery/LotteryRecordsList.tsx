@@ -10,32 +10,45 @@ import {
   getLottoHistoryQuery,
   getLottoWinningQuery,
 } from "@/libs/queries/lottoQueries";
+import {
+  getPensionHistoryQuery,
+  getPensionWinningQuery,
+} from "@/libs/queries/pensionQueries";
 import type {
-  LottoRecordsInput,
-  LottoRecordsKind,
-} from "@/server/lottery/lottoRecordsContracts";
+  LotteryRecordsInput,
+  LotteryRecordsKind,
+} from "@/server/lottery/lotteryRecordsContracts";
 import { formatDate, formatDrawDate } from "@/utils/formatDate";
 import { lottoNumberBg } from "@/utils/lottoNumberBg";
 import DeferredComponent from "../common/DeferredComponent";
-import LottoGenerationHistorySkeleton from "./LottoGenerationHistorySkeleton";
+import PensionNumbers from "../pension/PensionNumbers";
+import LotteryRecordsSkeleton from "./LotteryRecordsSkeleton";
 
 const controlClass =
   "min-h-11 rounded-lg border border-divider px-4 py-2 text-sm font-semibold transition hover:bg-content1Hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed dark:border-zinc-600";
 
-export default function LottoRecordsList({
+export default function LotteryRecordsList({
   kind,
   active,
+  game,
 }: {
-  kind: LottoRecordsKind;
+  kind: LotteryRecordsKind;
   active: boolean;
+  game: "lotto" | "pension";
 }) {
   const client = useQueryClient();
   const listStart = useRef<HTMLParagraphElement>(null);
-  const [input, setInput] = useState<LottoRecordsInput>({ page: 1 });
+  const [input, setInput] = useState<LotteryRecordsInput>({ page: 1 });
+  const gameLabel = game === "lotto" ? "로또" : "연금복권";
+  const unit = game === "lotto" ? "세트" : "개";
   const options =
-    kind === "history"
-      ? getLottoHistoryQuery(input)
-      : getLottoWinningQuery(input);
+    game === "lotto"
+      ? kind === "history"
+        ? getLottoHistoryQuery(input)
+        : getLottoWinningQuery(input)
+      : kind === "history"
+        ? getPensionHistoryQuery(input)
+        : getPensionWinningQuery(input);
   const { data, isPending, isFetching, isPlaceholderData, isError, refetch } =
     useQuery({
       ...options,
@@ -47,7 +60,7 @@ export default function LottoRecordsList({
   const label = kind === "history" ? "생성 목록" : "당첨 내역";
   const busy = isFetching || isPlaceholderData;
   const pageSummary = data?.totalCount
-    ? `${label} ${data.page} / ${data.totalPages}페이지 · 총 ${data.totalCount.toLocaleString("ko-KR")}세트`
+    ? `${label} ${data.page} / ${data.totalPages}페이지 · 총 ${data.totalCount.toLocaleString("ko-KR")}${unit}`
     : "";
 
   function changePage(page: number) {
@@ -76,7 +89,7 @@ export default function LottoRecordsList({
     else {
       await client.invalidateQueries({
         queryKey: [
-          kind === "history" ? "lottoHistory" : "lottoWinning",
+          `${game}${kind === "history" ? "History" : "Winning"}`,
           1,
           null,
         ],
@@ -96,8 +109,8 @@ export default function LottoRecordsList({
           className="scroll-mt-24 text-sm text-content3 focus:outline-none"
         >
           {kind === "history"
-            ? "생성한 로또 번호"
-            : "생성한 로또 번호의 당첨 내역"}
+            ? `생성한 ${gameLabel} 번호`
+            : `생성한 ${gameLabel} 번호의 당첨 내역`}
         </p>
         <button
           type="button"
@@ -109,7 +122,7 @@ export default function LottoRecordsList({
         </button>
       </div>
       <div aria-busy={busy}>
-        {isPending && <LottoGenerationHistorySkeleton />}
+        {isPending && <LotteryRecordsSkeleton />}
         {isError && (
           <div
             role="alert"
@@ -157,24 +170,30 @@ export default function LottoRecordsList({
                       <p>{item.round}회</p>
                       {item.ranking !== null && (
                         <span className="rounded-full bg-primary/10 px-2.5 py-1 text-sm text-primary1 dark:text-primary">
-                          {item.ranking}등
+                          {game === "pension" && item.ranking === 8
+                            ? "보너스"
+                            : `${item.ranking}등`}
                         </span>
                       )}
                     </div>
-                    <div className="flex w-full max-w-72 justify-between gap-1">
-                      {item.numbers.map((number) => (
-                        <span
-                          key={number}
-                          className="flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white xs:size-9 xs:text-base"
-                          style={{
-                            backgroundColor: lottoNumberBg(number),
-                            textShadow: "0px 0px 3px rgba(73, 57, 0, .8)",
-                          }}
-                        >
-                          {number}
-                        </span>
-                      ))}
-                    </div>
+                    {game === "pension" ? (
+                      <PensionNumbers compact number={item.numbers.join("")} />
+                    ) : (
+                      <div className="flex w-full max-w-72 justify-between gap-1">
+                        {item.numbers.map((number) => (
+                          <span
+                            key={number}
+                            className="flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white xs:size-9 xs:text-base"
+                            style={{
+                              backgroundColor: lottoNumberBg(number),
+                              textShadow: "0px 0px 3px rgba(73, 57, 0, .8)",
+                            }}
+                          >
+                            {number}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     {kind === "history" ? (
                       <p className="text-xs text-content3">
                         생성일{" "}

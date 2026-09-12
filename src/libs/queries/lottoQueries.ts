@@ -1,5 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import type { LottoRecordsInput } from "@/server/lottery/lottoRecordsContracts";
+import type { LotteryRecordsInput } from "@/server/lottery/lotteryRecordsContracts";
 import { lottoActions } from "@/server/lotto/lottoActions";
 import { lottoHistoryActions } from "@/server/lotto/lottoHistoryActions";
 import { lottoWinningActions } from "@/server/lotto/lottoWinningActions";
@@ -9,14 +9,14 @@ export const getLottoQuery = queryOptions({
   queryFn: () => lottoActions(),
 });
 
-export const getLottoHistoryQuery = (input: LottoRecordsInput = {}) =>
+export const getLottoHistoryQuery = (input: LotteryRecordsInput = {}) =>
   queryOptions({
     queryKey: ["lottoHistory", input.page ?? 1, input.snapshotId ?? null],
     queryFn: () => lottoHistoryActions(input),
     staleTime: 30_000,
   });
 
-export const getLottoWinningQuery = (input: LottoRecordsInput = {}) =>
+export const getLottoWinningQuery = (input: LotteryRecordsInput = {}) =>
   queryOptions({
     queryKey: ["lottoWinning", input.page ?? 1, input.snapshotId ?? null],
     queryFn: () => lottoWinningActions(input),

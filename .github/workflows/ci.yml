@@ -70,7 +70,9 @@ jobs:
         run: bunx prisma db push
 
       - name: Verify additive lottery setup
-        run: bun run db:setup:lotto
+        run: |
+          bun run db:setup:lotto
+          bun run db:setup:pension
 
       - name: Run tests including database concurrency
         run: bun run test

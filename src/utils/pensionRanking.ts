@@ -1,32 +1,23 @@
-/** 낙첨은 0. 8은 보너스 등위 동행복권 연금복권 규칙과 같다. */
+/** 낙첨은 0, 보너스는 8. 여러 등위가 겹치면 가장 큰 당첨금 하나만 적용한다.
+ * 기준: https://www.dhlottery.co.kr/pt720/intro
+ */
 export function getPensionRanking(
   userNumber: string,
   winningNumber: string,
   bonusNumber: string,
 ): number {
-  if (userNumber === winningNumber) {
-    return 1;
-  }
-  if (userNumber.slice(-6) === winningNumber.slice(-6)) {
-    return 2;
-  }
-  if (userNumber.slice(-5) === winningNumber.slice(-5)) {
-    return 3;
-  }
-  if (userNumber.slice(-4) === winningNumber.slice(-4)) {
-    return 4;
-  }
-  if (userNumber.slice(-3) === winningNumber.slice(-3)) {
-    return 5;
-  }
-  if (userNumber.slice(-2) === winningNumber.slice(-2)) {
-    return 6;
-  }
-  if (userNumber.slice(-1) === winningNumber.slice(-1)) {
-    return 7;
-  }
-  if (userNumber.slice(-6) === bonusNumber.slice(-6)) {
-    return 8;
+  if (
+    !/^[1-5][0-9]{6}$/.test(userNumber) ||
+    !/^[1-5][0-9]{6}$/.test(winningNumber) ||
+    !/^[0-9]{6}$/.test(bonusNumber)
+  )
+    throw new Error("연금복권 번호 형식이 올바르지 않습니다.");
+  if (userNumber === winningNumber) return 1;
+  if (userNumber.slice(1) === winningNumber.slice(1)) return 2;
+  if (userNumber.slice(1) === bonusNumber) return 8;
+  for (let length = 5; length >= 1; length--) {
+    if (userNumber.slice(-length) === winningNumber.slice(-length))
+      return 8 - length;
   }
   return 0;
 }

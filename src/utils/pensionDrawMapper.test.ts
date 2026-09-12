@@ -43,3 +43,60 @@ describe("연금복권 추첨 응답 변환 (mapPensionDrawJsonToRows)", () => {
     );
   });
 });
+
+describe("외부 연금복권 응답의 잘못된 값 차단", () => {
+  const first = {
+    wnSqNo: 1,
+    wnBndNo: "1",
+    wnRnkVl: "7",
+    psltRflYmd: "20260910",
+    psltEpsd: 332,
+  };
+  const bonus = { ...first, wnSqNo: 21, wnBndNo: null, wnRnkVl: "123456" };
+  it("여섯 자리에 미달하는 숫자는 앞의 0을 보존해 맞춘다", () => {
+    expect(mapPensionDrawJsonToLatestRow([first, bonus]).winning_number).toBe(
+      "1000007",
+    );
+  });
+  it.each([
+    { wnBndNo: "6" },
+    { wnRnkVl: "1234567" },
+    { wnRnkVl: "abc" },
+    { psltRflYmd: "20260230" },
+    { psltEpsd: -1 },
+  ])("잘못된 공식 번호나 날짜 %o는 저장 전에 거부한다", (changes) => {
+    expect(() =>
+      mapPensionDrawJsonToLatestRow([
+        { ...first, ...changes },
+        { ...bonus, psltRflYmd: changes.psltRflYmd ?? bonus.psltRflYmd },
+      ]),
+    ).toThrow();
+  });
+  it("서로 다른 추첨일과 동일한 1등·보너스 번호를 거부한다", () => {
+    expect(() =>
+      mapPensionDrawJsonToLatestRow([
+        first,
+        { ...bonus, psltRflYmd: "20260917" },
+      ]),
+    ).toThrow();
+    expect(() =>
+      mapPensionDrawJsonToLatestRow([first, { ...bonus, wnRnkVl: "000007" }]),
+    ).toThrow();
+  });
+  it("최신 회차 일부가 빠졌거나 중복 회차가 서로 다르면 이전 회차로 대신하지 않는다", () => {
+    expect(() =>
+      mapPensionDrawJsonToLatestRow([
+        first,
+        bonus,
+        { ...first, psltEpsd: 333 },
+      ]),
+    ).toThrow();
+    expect(() =>
+      mapPensionDrawJsonToLatestRow([
+        first,
+        bonus,
+        { ...bonus, wnRnkVl: "222222" },
+      ]),
+    ).toThrow();
+  });
+});

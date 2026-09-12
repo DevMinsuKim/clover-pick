@@ -1,5 +1,6 @@
 "use server";
 
+import { limitLotteryRequest } from "@/server/lottery/lotteryRequestLimit";
 import { lottoActionError } from "@/server/lottery/lottoActionError";
 import {
   emptyLottoConstraints,
@@ -19,7 +20,6 @@ import {
   lottoRequestHash,
   saveLottoBatch,
 } from "@/server/lottery/lottoPersistence";
-import { limitLottoRequest } from "@/server/lottery/lottoRequestLimit";
 
 export async function lottoCreateNumberActions(
   input: LottoCreateInput,
@@ -38,7 +38,7 @@ export async function lottoCreateNumberActions(
     // A retry after a lost response returns its saved result without spending quota again.
     if (existing) return { success: existing };
     assertLottoRound(parsed.expectedRound);
-    await limitLottoRequest("generation");
+    await limitLotteryRequest("generation");
     const frequency = constraints.frequent ? await getLottoFrequency() : null;
     const numbers = generateLottoNumbers(
       constraints,

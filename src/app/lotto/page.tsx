@@ -3,11 +3,11 @@ export const revalidate = 1;
 import { dehydrate, HydrationBoundary, noop } from "@tanstack/react-query";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ErrorHandlingWrapper from "@/components/common/ErrorHandlingWrapper";
+import LotteryRecordsTabs from "@/components/lottery/LotteryRecordsTabs";
 import LottoDrawNumber from "@/components/lotto/LottoDrawNumber";
 import LottoDrawNumberSkeleton from "@/components/lotto/LottoDrawNumberSkeleton";
 import LottoGenerator from "@/components/lotto/LottoGenerator";
 import LottoInfo from "@/components/lotto/LottoInfo";
-import LottoRecordsTabs from "@/components/lotto/LottoRecordsTabs";
 import { getQueryClient } from "@/libs/getQueryClient";
 import {
   getLottoHistoryQuery,
@@ -52,7 +52,7 @@ export default async function Page() {
 
       <div className="mt-20 sm:mt-40">
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <LottoRecordsTabs />
+          <LotteryRecordsTabs game="lotto" />
         </HydrationBoundary>
       </div>
 

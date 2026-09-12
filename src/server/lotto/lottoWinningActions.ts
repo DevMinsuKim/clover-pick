@@ -1,10 +1,10 @@
 "use server";
 
 import * as Sentry from "@sentry/nextjs";
+import type { LotteryRecordsInput } from "@/server/lottery/lotteryRecordsContracts";
 import { getLottoRecords } from "@/server/lottery/lottoRecords";
-import type { LottoRecordsInput } from "@/server/lottery/lottoRecordsContracts";
 
-export async function lottoWinningActions(input: LottoRecordsInput = {}) {
+export async function lottoWinningActions(input: LotteryRecordsInput = {}) {
   try {
     return await getLottoRecords("winning", input);
   } catch (error) {

@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 model created_lotto {
@@ -100,4 +100,12 @@ model lottery_request_limit {
   expires DateTime @db.Timestamptz(6)
 
   @@index([expires])
+}
+
+model pension_generation_batch {
+  request_id  String   @id @db.Uuid
+  input_hash  String
+  draw_number Int
+  numbers     Json
+  created     DateTime @default(now()) @db.Timestamptz(6)
 }

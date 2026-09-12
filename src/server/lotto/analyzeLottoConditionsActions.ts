@@ -1,6 +1,7 @@
 "use server";
 
 import { getLottoCurrentRound } from "@/constants/lotteryRounds";
+import { limitLotteryRequest } from "@/server/lottery/lotteryRequestLimit";
 import { lottoActionError } from "@/server/lottery/lottoActionError";
 import {
   emptyLottoConstraints,
@@ -18,7 +19,6 @@ import {
 } from "@/server/lottery/lottoEngine";
 import { getLottoFrequency } from "@/server/lottery/lottoFrequency";
 import { assertLottoRound } from "@/server/lottery/lottoPersistence";
-import { limitLottoRequest } from "@/server/lottery/lottoRequestLimit";
 import { parseLottoPrompt } from "@/server/lottery/parseLottoPrompt";
 
 export async function analyzeLottoConditionsActions(
@@ -33,7 +33,7 @@ export async function analyzeLottoConditionsActions(
       throw new LottoInputError("홀수·짝수 조건은 한 가지만 선택해 주세요.");
     const round = getLottoCurrentRound();
     assertLottoRound(round);
-    await limitLottoRequest(prompt ? "analysis" : "quick");
+    await limitLotteryRequest(prompt ? "analysis" : "quick");
     const extraction = prompt
       ? await parseLottoPrompt(prompt)
       : { constraints: { ...emptyLottoConstraints }, requestedSets: null };

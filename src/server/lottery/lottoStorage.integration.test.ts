@@ -7,7 +7,7 @@ import { emptyLottoConstraints } from "./lottoContracts";
 const testUrl = process.env.TEST_DATABASE_URL;
 let prisma: typeof import("@/libs/prisma")["default"];
 let persistence: typeof import("./lottoPersistence");
-let consumeBuckets: typeof import("./lottoRequestLimit")["consumeBuckets"];
+let consumeBuckets: typeof import("./lotteryRequestLimit")["consumeBuckets"];
 const requestIds: string[] = [];
 const ratePrefix = `integration:${randomUUID()}`;
 
@@ -26,7 +26,7 @@ describe.skipIf(!testUrl)("격리된 PostgreSQL의 저장·동시성 검증", ()
     vi.setSystemTime(new Date("2026-09-08T10:00:00+09:00"));
     prisma = (await import("@/libs/prisma")).default;
     persistence = await import("./lottoPersistence");
-    consumeBuckets = (await import("./lottoRequestLimit")).consumeBuckets;
+    consumeBuckets = (await import("./lotteryRequestLimit")).consumeBuckets;
   });
   afterAll(async () => {
     if (prisma) {

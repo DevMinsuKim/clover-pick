@@ -1,14 +1,19 @@
 "use client";
 
 import { type KeyboardEvent, useId, useRef, useState } from "react";
-import LottoRecordsList from "./LottoRecordsList";
+import LotteryRecordsList from "./LotteryRecordsList";
 
 const tabs = [
   { kind: "history", label: "생성 목록" },
   { kind: "winning", label: "당첨 내역" },
 ] as const;
 
-export default function LottoRecordsTabs() {
+export default function LotteryRecordsTabs({
+  game,
+}: {
+  game: "lotto" | "pension";
+}) {
+  const gameLabel = game === "lotto" ? "로또" : "연금복권";
   const [selected, setSelected] = useState(0);
   const id = useId();
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
@@ -37,11 +42,13 @@ export default function LottoRecordsTabs() {
   }
 
   return (
-    <section aria-label="로또 번호 기록">
-      <h2 className="mb-4 text-lg font-bold sm:text-2xl">로또 번호 기록</h2>
+    <section aria-label={`${gameLabel} 번호 기록`}>
+      <h2 className="mb-4 text-lg font-bold sm:text-2xl">
+        {gameLabel} 번호 기록
+      </h2>
       <div
         role="tablist"
-        aria-label="로또 번호 목록"
+        aria-label={`${gameLabel} 번호 목록`}
         className="mb-5 grid grid-cols-2 gap-1 rounded-xl border border-divider bg-content1 p-1 dark:border-zinc-600"
       >
         {tabs.map((tab, index) => (
@@ -73,7 +80,11 @@ export default function LottoRecordsTabs() {
           hidden={selected !== index}
           className="rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         >
-          <LottoRecordsList kind={tab.kind} active={selected === index} />
+          <LotteryRecordsList
+            game={game}
+            kind={tab.kind}
+            active={selected === index}
+          />
         </div>
       ))}
     </section>

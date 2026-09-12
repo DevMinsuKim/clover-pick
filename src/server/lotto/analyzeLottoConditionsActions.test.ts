@@ -11,8 +11,8 @@ const { parse, limit, frequency, assertRound } = vi.hoisted(() => ({
 vi.mock("@/server/lottery/parseLottoPrompt", () => ({
   parseLottoPrompt: parse,
 }));
-vi.mock("@/server/lottery/lottoRequestLimit", () => ({
-  limitLottoRequest: limit,
+vi.mock("@/server/lottery/lotteryRequestLimit", () => ({
+  limitLotteryRequest: limit,
 }));
 vi.mock("@/server/lottery/lottoFrequency", () => ({
   getLottoFrequency: frequency,

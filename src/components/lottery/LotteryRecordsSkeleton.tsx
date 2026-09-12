@@ -2,7 +2,7 @@
 
 import DeferredComponent from "../common/DeferredComponent";
 
-export default function PensionGeneratorWinningSkeleton() {
+export default function LotteryRecordsSkeleton() {
   const skeletonItems = Array.from({ length: 6 });
 
   return (
@@ -11,10 +11,9 @@ export default function PensionGeneratorWinningSkeleton() {
         {skeletonItems.map((_item, index) => (
           <div key={index} className="rounded-lg bg-divider p-4">
             <div className="flex flex-col gap-y-3">
-              <div className="h-4 rounded-sm bg-content2"></div>
-              <div className="h-4 rounded-sm bg-content2"></div>
-              <div className="h-4 rounded-sm bg-content2"></div>
-              <div className="h-4 rounded-sm bg-content2"></div>
+              <div className="bg-content2 h-4 rounded-sm"></div>
+              <div className="bg-content2 h-4 rounded-sm"></div>
+              <div className="bg-content2 h-4 rounded-sm"></div>
             </div>
           </div>
         ))}

@@ -16,7 +16,7 @@
 
 - **운영 지표: GA4 기준 누적 활성 사용자 수(AU) 400명 기록 (2026.09 기준)**
 - **개발 형태**: 1인 프로젝트로 기획, UI/UX 디자인, 프론트엔드/백엔드 개발, 배포 및 운영까지 전 과정 직접 수행
-- **핵심 기능**: 주 단위(회차 마감 후)로 동행복권의 최신 당첨 번호 데이터를 자동 수집 및 정제하여 데이터베이스에 저장하고, 로또의 자연어 조건 해석과 무작위 번호 생성, 최근 출현 빈도 조건을 제공
+- **핵심 기능**: 주 단위(회차 마감 후)로 동행복권의 최신 당첨 번호 데이터를 자동 수집 및 정제하여 데이터베이스에 저장하고, 로또·연금복권의 자연어 조건 해석과 무작위 번호 생성, 로또의 최근 출현 빈도 조건을 제공
 - **로드맵**: 유저 리텐션 향상을 위한 당첨금 실수령액 계산기, 시각화된 당첨 통계, LLM 기반 대화형 분석 기능 개발 중
 
 <br>
@@ -87,7 +87,7 @@ flowchart LR
 #### 4-1. 아키텍처 설명
 
 - Vercel Cron Job을 활용해 주 단위(회차 마감 후)로 동행복권 데이터를 자동 수집하고 DB에 적재했습니다.
-- OpenAI는 자연어에서 로또 조건을 추출합니다. 조건을 확인한 뒤 서버가 조합을 생성하고 요청 기록과 번호를 한 트랜잭션에 저장합니다.
+- OpenAI는 자연어에서 복권별 조건을 추출합니다. 조건을 확인한 뒤 서버가 조합을 생성하고 요청 기록과 번호를 한 트랜잭션에 저장합니다.
 - Prisma ORM과 PostgreSQL을 활용해 생성 이력과 수집 데이터를 타입 안정성 있게 관리했습니다.
 - Sentry와 GA4를 연동해 에러 추적 및 사용자 분석이 가능한 운영 환경을 구성했습니다.
 
@@ -96,10 +96,17 @@ flowchart LR
 - **AI의 역할 제한**: 자유 문장을 번호 조건으로 변환하고 사용자가 확인한 뒤 생성합니다. 실제 번호 선택은 서버의 암호학적 난수로 처리하며, 랜덤 생성과 빠른 조건에는 AI를 호출하지 않습니다. 최대 300자·5세트를 허용하고 충돌하거나 지원하지 않는 조건은 임의로 무시하지 않습니다.
 - **통계 기준 명시**: 최근 100회 추첨의 본번호 출현 횟수 상위 20개를 후보로 사용합니다. 보너스 번호는 제외하고 동률은 작은 번호부터 선택합니다. 회차 누락 시 해당 조건을 제공하지 않으며, 당첨확률을 높이는 기능으로 설명하지 않습니다.
 - **저장과 재시도**: 요청 UUID·입력 해시로 중복 요청을 구분하고 번호와 요청 기록을 한 트랜잭션에 저장합니다. 응답을 받지 못해 같은 요청을 재시도하면 저장된 결과를 반환합니다. 재시도 식별자는 열린 페이지에서 유지되며 새로고침 후에는 새 요청입니다. 한 번에 생성한 세트끼리는 동일한 조합을 허용하지 않습니다.
-- **비용·입력 보호**: AI 호출은 15초로 제한하고 PostgreSQL에서 분당·일일 요청 한도와 서비스 전체 예산을 관리합니다. 원문은 서비스 DB에 저장하지 않으며 화면에 OpenAI 전송을 안내합니다. 입력 내용은 개발 로그와 오류 재현 기록에서도 제외하거나 마스킹합니다. 상세 한도는 [요청 제한 코드](src/server/lottery/lottoRequestLimit.ts)에서 관리합니다.
+- **비용·입력 보호**: AI 호출은 15초로 제한하고 PostgreSQL에서 분당·일일 요청 한도와 서비스 전체 예산을 관리합니다. 원문은 서비스 DB에 저장하지 않으며 화면에 OpenAI 전송을 안내합니다. 입력 내용은 개발 로그와 오류 재현 기록에서도 제외하거나 마스킹합니다. 상세 한도는 [요청 제한 코드](src/server/lottery/lotteryRequestLimit.ts)에서 관리합니다.
 - **안정적인 목록 탐색**: 생성 목록과 당첨 내역은 6세트씩 조회합니다. 페이지 탐색 중 새 기록이 추가되어도 항목이 밀리지 않도록 조회 기준을 유지하고, 로딩 중 기존 화면을 보존합니다. 당첨 내역은 생성 시각 대신 해당 회차의 추첨일을 연결합니다.
 
 핵심 구현: [조건 해석](src/server/lottery/parseLottoPrompt.ts) · [조합 생성](src/server/lottery/lottoEngine.ts) · [중복 저장 방지](src/server/lottery/lottoPersistence.ts) · [목록 조회](src/server/lottery/lottoRecords.ts)
+
+## 연금복권720+의 규칙과 공통 처리
+
+- **복권별 규칙 분리**: 1~5조와 순서가 있는 여섯 자리 숫자를 사용하며, 앞자리 0과 반복 숫자를 보존합니다. 조·앞/끝자리·포함/제외 숫자·중복 여부를 조건으로 받고, 같은 번호의 모든 조 생성은 총 5개로 검증합니다. 자리별 후보를 세어 암호학적 난수로 고릅니다.
+- **당첨 판정**: 오른쪽 끝자리부터 비교하고 보너스가 3~7등과 겹치면 보너스를 적용합니다. 외부 추첨 응답의 번호·날짜·회차 충돌도 저장 전에 검증합니다. [공식 규칙](https://www.dhlottery.co.kr/pt720/intro) · [생성 엔진](src/server/lottery/pensionEngine.ts) · [등수 판정](src/utils/pensionRanking.ts)
+- **AI 해석 검증**: `bun run eval:pension`으로 한글 개수·복수 조·앞자리 0·지원하지 않는 조건을 실제 모델에 대조합니다. 로컬 API 키로 소량의 API 호출을 하며 DB에는 접근하지 않습니다. CI는 외부 호출 없는 SDK 계약 테스트만 실행합니다.
+- **공통 오류 예방**: 버튼·재시도·탭·페이지네이션은 두 복권이 같은 컴포넌트를 사용합니다. 생성 결과를 유지한 채 개수를 바꾸고, 캐시되지 않은 페이지를 불러올 때도 기존 목록을 유지합니다. 요청 제한은 두 복권 합산이며, 연금복권도 UUID와 트랜잭션으로 중복 저장을 막습니다.
 
 ## 로컬 개발 및 품질 검사
 
@@ -114,8 +121,8 @@ flowchart LR
 - 기존 위치 기반 번호 표시와 스켈레톤의 key 정책은 이번 도구 전환에서 유지하므로 `noArrayIndexKey`는 비활성화했습니다. Tailwind 클래스 정렬은 Biome의 실험적 규칙과 기존 플러그인의 동작이 달라 자동 적용하지 않습니다.
 - Prisma CLI·Client·PostgreSQL 드라이버를 정식 7.10.0으로 맞췄습니다. `latest`의 Prisma 8 RC는 적용하지 않았습니다. 생성 코드는 `src/generated/prisma`에 두고 Git에서 제외합니다.
 - Prisma CLI는 `prisma.config.ts`의 `POSTGRES_URL_NON_POOLING`, 앱은 `POSTGRES_PRISMA_URL`을 사용합니다. `pg` 어댑터는 인스턴스당 최대 연결 5개, 연결 대기 5초, 유휴 연결 10초로 설정하며 개발 중에는 클라이언트를 재사용합니다. 기존 DB 모델과 데이터는 유지합니다. SSL의 `require` 등 기존 별칭은 `pg` 8과 같은 인증서 검증을 유지하도록 `verify-full`로 명시하며, 원본 환경변수는 바꾸지 않습니다.
-- 생성 요청은 서버에서 1~5의 정수만 허용하며 연금복권의 모든 조 옵션은 boolean으로 검증합니다. 연금복권은 1~5조와 6자리 숫자를 유지하고, 모든 조 선택 시 같은 번호의 5개 조합을 생성합니다. 일반 생성의 중복 재시도는 최대 100회이며 개수를 채우지 못하면 저장하지 않습니다. 중복 제한은 한 요청 안에 적용하며 과거 생성 이력과의 중복을 금지하지 않습니다.
-- AI SDK 7·OpenAI Provider 4·Zod 4를 사용합니다. 로또 자유 문장은 Responses의 구조화 출력으로 해석하며, 기본 모델은 `gpt-5.4-nano-2026-03-17`입니다. 랜덤 생성과 빠른 조건은 AI 호출 없이 처리합니다. `OPENAI_API_KEY`를 설정하며 모델은 `OPENAI_LOTTO_MODEL`로 변경할 수 있습니다.
+- 생성 요청은 서버에서 1~5의 정수만 허용하며 연금복권의 모든 조 옵션은 boolean으로 검증합니다. 연금복권은 1~5조와 6자리 숫자를 유지하고, 모든 조 선택 시 같은 번호의 5개 조합을 생성합니다. 가능한 번호 개수를 먼저 계산하고 중복 없는 순위를 추출하므로 충돌 재시도나 임의의 대체 번호를 사용하지 않습니다. 중복 제한은 한 요청 안에 적용하며 과거 생성 이력과의 중복을 금지하지 않습니다.
+- AI SDK 7·OpenAI Provider 4·Zod 4를 사용합니다. 로또·연금복권 자유 문장은 Responses의 구조화 출력으로 해석하며, 기본 모델은 `gpt-5.4-nano-2026-03-17`입니다. 랜덤 생성과 빠른 조건은 AI 호출 없이 처리합니다. `OPENAI_API_KEY`를 설정하며 모델은 `OPENAI_LOTTO_MODEL`로 변경하며 연금복권만 다르게 지정하려면 `OPENAI_PENSION_MODEL`을 사용합니다.
 - Tailwind CSS 4의 테마·다크 모드·애니메이션을 `src/app/globals.css`로 옮기고 PostCSS 전용 플러그인을 사용합니다. 지원 브라우저 기준은 Safari 16.4+, Chrome 111+, Firefox 128+입니다. 기존 테두리·그림자·툴팁 및 버튼 커서 표현은 전환 시 보존합니다.
 - TypeScript 7.0.2와 Vitest 5를 사용합니다. Next.js 16.3.5의 기본 CLI 타입 검사 경로(`experimental.useTypeScriptCli`)를 사용하며 빌드 오류 검사를 유지합니다. 해당 Next.js 설정은 공식 문서상 experimental입니다. React Error Boundary 6의 `unknown` 오류는 타입을 확인한 뒤 처리합니다.
 - Vercel CLI는 개발 의존성으로 이동하고, 사용하지 않는 `@types/minimatch`와 Tailwind 4에서 불필요한 Autoprefixer는 제거했습니다.
@@ -156,12 +163,14 @@ CI는 별도 PostgreSQL 서비스에 테스트 스키마를 생성한 뒤 빌드
 - `POSTGRES_PRISMA_URL`: 앱의 PostgreSQL 연결
 - `POSTGRES_URL_NON_POOLING`: Prisma CLI의 직접 연결
 - `OPENAI_API_KEY`: 자연어 조건 확인에 필요한 서버 키
-- `OPENAI_LOTTO_MODEL`: 조건 해석 모델 변경 시에만 지정
+- `OPENAI_LOTTO_MODEL`: 공통 조건 해석 모델 변경 시에만 지정
+- `OPENAI_PENSION_MODEL`: 연금복권에 별도 모델을 사용할 때만 지정
 
-로컬 `:local` 명령은 DB 주소를 Docker 주소로 덮어씁니다. 운영 배포 전에는 직접 연결 대상을 확인하고 [추가 SQL](prisma/lotto-generation-setup.sql)로 `lotto_generation_batch`와 `lottery_request_limit` 두 테이블을 준비합니다. 기존 번호 데이터는 변경하지 않으며 운영 DB에 `prisma db push`나 reset을 사용하지 않습니다.
+로컬 `:local` 명령은 DB 주소를 Docker 주소로 덮어씁니다. 운영 배포 전에는 직접 연결 대상을 확인하고 [로또 SQL](prisma/lotto-generation-setup.sql)·[연금복권 SQL](prisma/pension-generation-setup.sql)로 `lotto_generation_batch`, `pension_generation_batch`, `lottery_request_limit` 세 테이블을 준비합니다. 기존 번호 데이터는 변경하지 않으며 운영 DB에 `prisma db push`나 reset을 사용하지 않습니다.
 
 ```sh
 bun run db:setup:lotto
+bun run db:setup:pension
 ```
 
 </details>

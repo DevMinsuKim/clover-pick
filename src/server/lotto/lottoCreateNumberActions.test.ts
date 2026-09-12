@@ -11,8 +11,8 @@ const { limit, find, save, round, frequency, capture } = vi.hoisted(() => ({
   frequency: vi.fn(),
   capture: vi.fn(),
 }));
-vi.mock("@/server/lottery/lottoRequestLimit", () => ({
-  limitLottoRequest: limit,
+vi.mock("@/server/lottery/lotteryRequestLimit", () => ({
+  limitLotteryRequest: limit,
 }));
 vi.mock("@/server/lottery/lottoPersistence", () => ({
   findLottoBatch: find,
